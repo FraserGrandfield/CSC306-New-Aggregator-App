@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">News-Aggregator</string>
+    <string name="tab_text_1">For You</string>
+    <string name="tab_text_2">Trending</string>
+    <string name="tab_text_3">Local</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
