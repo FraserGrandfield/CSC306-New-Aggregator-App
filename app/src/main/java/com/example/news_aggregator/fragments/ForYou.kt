@@ -18,11 +18,6 @@ import kotlinx.android.synthetic.main.fragment_for_you.*
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ForYou.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ForYou : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
@@ -59,7 +54,8 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         val data = DataSource.createDataSet()
-        articleAdapter.submitList(data)
+        val list = data[0]
+        articleAdapter.submitList(list)
     }
 
 }
