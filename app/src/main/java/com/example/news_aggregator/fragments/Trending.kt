@@ -1,4 +1,4 @@
-package com.example.news_aggregator.ui.main
+package com.example.news_aggregator.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ForYou.newInstance] factory method to
+ * Use the [Trending.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ForYou : Fragment() {
+class Trending : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -30,8 +30,12 @@ class ForYou : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_for_you, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_trending, container, false)
     }
 
     companion object {
@@ -41,11 +45,13 @@ class ForYou : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment ForYou.
+         * @return A new instance of fragment Trending.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() = ForYou().apply { arguments = Bundle().apply {
+        fun newInstance() =
+            Trending().apply {
+                arguments = Bundle().apply {
                 }
             }
     }

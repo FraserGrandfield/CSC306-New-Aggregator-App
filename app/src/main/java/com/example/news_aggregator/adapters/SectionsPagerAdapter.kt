@@ -1,10 +1,13 @@
-package com.example.news_aggregator.ui.main
+package com.example.news_aggregator.adapters
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.news_aggregator.R
+import com.example.news_aggregator.fragments.ForYou
+import com.example.news_aggregator.fragments.Local
+import com.example.news_aggregator.fragments.Trending
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,
