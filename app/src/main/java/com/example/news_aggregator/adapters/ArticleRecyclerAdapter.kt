@@ -3,6 +3,8 @@ package com.example.news_aggregator.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import androidx.recyclerview.widget.RecyclerView
@@ -35,19 +37,24 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     class ArticleViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val blog_image = itemView.article_image
-        val blog_title = itemView.article_title
-        val blog_author = itemView.article_author
+        private val articleImage: ImageView = itemView.article_image
+        private val articleTitle: TextView = itemView.article_title
+        private val articleAuthor = itemView.article_author
+        private val articlePublisher = itemView.article_publisher
+        private val articleSummary = itemView.article_summary
+
 
         fun bind(dummyData: DummyData) {
-            blog_title.setText(dummyData.title)
-            blog_author.setText(dummyData.author)
+            articleTitle.text = dummyData.title
+            articleAuthor.text = "Author: " + dummyData.author
+            articlePublisher.text = "Publisher: " + dummyData.publisher
+            articleSummary.text = dummyData.summary
 
             val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
                 R.drawable.ic_launcher_background
             )
 
-            Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions).load(dummyData.image).into(blog_image)
+            Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions).load(dummyData.image).into(articleImage)
         }
     }
 

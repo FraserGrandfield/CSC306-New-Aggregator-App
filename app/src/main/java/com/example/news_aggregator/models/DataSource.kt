@@ -9,75 +9,83 @@ class DataSource {
             val list = ArrayList<DummyData>()
             list.add(
                 DummyData(
-                    "Congratulations!",
+                    "UK Trade Talks",
                     "You made it to the end of the course!\r\n\r\nNext we'll be building the REST API!",
-                    "https://raw.githubusercontent.com/mitchtabian/Blog-Images/master/digital_ocean.png",
-                    "Sally"
+                    "https://images.pexels.com/photos/275496/pexels-photo-275496.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                    "Sally",
+                    "UK welcomes EU promise to 'intensify' trade talks",
+                    "BBC"
                 )
             )
             list.add(
                 DummyData(
-                    "Time to Build a Kotlin App!",
+                    "Covid Update",
                     "The REST API course is complete. You can find the videos here: https://codingwithmitch.com/courses/build-a-rest-api/.",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/time_to_build_a_kotlin_app.png",
-                    "mitch"
+                    "https://images.pexels.com/photos/3970332/pexels-photo-3970332.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "mitch",
+                    "New areas currently in lockdown",
+                    "BBC"
                 )
             )
 
             list.add(
                 DummyData(
-                    "Interviewing a Web Developer and YouTuber",
+                    "Premier League",
                     "Justin has been producing online courses for YouTube, Udemy, and his website CodingForEntrepreneurs.com for over 5 years.",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png",
-                    "John"
+                    "https://images.pexels.com/photos/159400/television-camera-men-outdoors-ballgame-159400.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "John",
+                    "The Premier League will still go on",
+                    "BBC"
                 )
             )
             list.add(
                 DummyData(
-                    "Freelance Android Developer (Vasiliy Zukanov)",
+                    "Covid 19 stats",
                     "Vasiliy has been a freelance android developer for several years. He also has some of the best android development courses I've had the pleasure of taking on Udemy.com.",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/freelance_android_dev_vasiliy_zukanov.png",
-                    "Steven"
+                    "https://images.pexels.com/photos/3970333/pexels-photo-3970333.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Steven",
+                    "New numbers for cases",
+                    "BBC"
                 )
             )
             list.add(
                 DummyData(
                     "Freelance Android Developer, Donn Felker",
                     "Freelancing as an Android developer with Donn Felker.\\r\\n\\r\\nDonn is also:\\r\\n\\r\\n1) Founder of caster.io\\r\\n\\r\\n2) Co-host of the fragmented podcast (fragmentedpodcast.com).",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/freelance_android_dev_donn_felker.png",
-                    "Richelle"
+                    "https://images.pexels.com/photos/4560150/pexels-photo-4560150.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Richelle",
+                    "Article number 1",
+                    "BBC"
                 )
             )
             list.add(
                 DummyData(
                     "Work Life Balance for Software Developers",
                     "What kind of hobbies do software developers have? It sounds like many software developers don't have a lot of hobbies and choose to focus on work. Is that a good idea?",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/work_life_balance.png",
-                    "Jessica"
+                    "https://images.pexels.com/photos/3856050/pexels-photo-3856050.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Jessica",
+                    "Article number 1",
+                    "BBC"
                 )
             )
             list.add(
                 DummyData(
                     "Full Stack Web Developer - Nicholas Olsen",
                     "In this podcast I interviewed the Fullsnack Developer (AKA Nicholas Olsen).\\r\\n\\r\\nNicholas is many things. What I mean by that is, he's good at many things.\\r\\n\\r\\n1. He’s an entrepreneur\\r\\n\\r\\n2. Web developer\\r\\n\\r\\n3. Artist\\r\\n\\r\\n4. Graphic designer\\r\\n\\r\\n5. Musician (drums)\\r\\n\\r\\n6. Professional BodyBuilder.",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/fullsnack_developer.png",
-                    "Guy"
+                    "https://images.pexels.com/photos/4127694/pexels-photo-4127694.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Guy",
+                    "Article number 1",
+                    "BBC"
                 )
             )
             list.add(
                 DummyData(
                     "Javascript Expert - Wes Bos",
                     "Interviewing a web developer, javascript expert, entrepreneur, freelancer, podcaster, and much more.",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/javascript_expert_wes_bos.png",
-                    "Ruby"
-                )
-            )
-            list.add(
-                DummyData(
-                    "Senior Android Engineer - Kaushik Gopal",
-                    "Kaushik Gopal is a Senior Android Engineer working in Silicon Valley.\r\n\r\nHe works as a Senior Staff engineer at Instacart.\r\n\r\nInstacart: https://www.instacart.com/",
-                    "https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/senior_android_engineer_kaushik_gopal.png",
-                    "mitch"
+                    "https://images.pexels.com/photos/4524369/pexels-photo-4524369.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Ruby",
+                    "Article number 1",
+                    "BBC"
                 )
             )
             return list

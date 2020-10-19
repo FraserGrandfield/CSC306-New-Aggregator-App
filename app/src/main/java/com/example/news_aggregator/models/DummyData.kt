@@ -5,6 +5,8 @@ data class DummyData(
     var body: String,
     var image: String,
     var author: String,
+    var summary: String,
+    var publisher: String,
 ) {
 
 }
