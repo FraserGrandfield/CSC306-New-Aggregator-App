@@ -6,27 +6,11 @@ class DataSource {
         fun createDataSet(): ArrayList<ArrayList<DummyData>> {
             var forYouList = ArrayList<DummyData>()
             var trendingList = ArrayList<DummyData>()
+            var localList = ArrayList<DummyData>()
 
             val list = ArrayList<ArrayList<DummyData>>()
-            forYouList.add(
-                    DummyData(
-                        "UK Trade Talks",
-                        "https://images.pexels.com/photos/275496/pexels-photo-275496.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-                        "Sam",
-                        "UK welcomes EU promise to 'intensify' trade talks",
-                        "BBC"
-                    )
-                    )
-            forYouList.add(
-                DummyData(
-                    "Covid Update",
-                    "https://images.pexels.com/photos/3970332/pexels-photo-3970332.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                    "James",
-                    "New areas currently in lockdown",
-                    "BBC"
-                )
-            )
 
+            //Temp For You data
             forYouList.add(
                 DummyData(
                     "Premier League",
@@ -82,6 +66,7 @@ class DataSource {
                 )
             )
 
+            //Temp trending data
             trendingList.add(
                 DummyData(
                     "UK Trade Talks",
@@ -156,8 +141,47 @@ class DataSource {
                 )
             )
 
+            //Temp Local data
+            localList.add(
+                DummyData(
+                    "No Exams",
+                    "https://images.pexels.com/photos/4560150/pexels-photo-4560150.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Luke",
+                    "A-Level students will no longer have any exams",
+                    "BBC"
+                )
+            )
+            localList.add(
+                DummyData(
+                    "iPhone 12",
+                    "https://images.pexels.com/photos/3856050/pexels-photo-3856050.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Guy",
+                    "Details on new iPhone",
+                    "BBC"
+                )
+            )
+            localList.add(
+                DummyData(
+                    "Californian fires",
+                    "https://images.pexels.com/photos/4127694/pexels-photo-4127694.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Laurence",
+                    "Fires in California continue to burn",
+                    "BBC"
+                )
+            )
+            localList.add(
+                DummyData(
+                    "NHS Track and Trace app",
+                    "https://images.pexels.com/photos/4524369/pexels-photo-4524369.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                    "Leon",
+                    "Reviewers says the new app is useless",
+                    "BBC"
+                )
+            )
+
             list.add(forYouList)
             list.add(trendingList)
+            list.add(localList)
             return list
         }
 
