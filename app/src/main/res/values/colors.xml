@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#CBA7FF</color>
-    <color name="colorPrimaryDark">#7538FF</color>
-    <color name="colorAccent">#03DAC5</color>
+<!--    https://visme.co/blog/website-color-schemes/-->
+    <color name="colorPrimary">#7395AE</color>
+    <color name="colorPrimaryDark">#557A95</color>
+    <color name="colorAccent">#B1A296</color>
 </resources>
