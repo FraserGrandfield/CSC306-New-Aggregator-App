@@ -5,4 +5,6 @@
     <string name="tab_text_3">Local</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_nav_draw">Open Navigation Draw</string>
+    <string name="close_nav_draw">Close Navigation Draw</string>
 </resources>

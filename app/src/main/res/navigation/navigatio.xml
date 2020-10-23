@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    app:startDestination="@id/activity_main">
+
+    <activity
+        android:id="@+id/activity_main"
+        android:name="com.example.news_aggregator.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/activity_login"
+        android:name="com.example.news_aggregator.activities.LogInActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+
+</navigation>
