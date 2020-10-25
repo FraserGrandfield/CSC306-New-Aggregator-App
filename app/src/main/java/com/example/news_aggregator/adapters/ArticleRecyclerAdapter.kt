@@ -41,14 +41,12 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val articleTitle: TextView = itemView.article_title
         private val articleAuthor = itemView.article_author
         private val articlePublisher = itemView.article_publisher
-        private val articleSummary = itemView.article_summary
 
 
         fun bind(dummyData: DummyData) {
             articleTitle.text = dummyData.title
             articleAuthor.text = "Author: " + dummyData.author
             articlePublisher.text = "Publisher: " + dummyData.publisher
-            articleSummary.text = dummyData.summary
 
             val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
                 R.drawable.ic_launcher_background

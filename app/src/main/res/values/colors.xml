@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <!--    https://visme.co/blog/website-color-schemes/-->
-    <color name="colorPrimary">#7395AE</color>
+    <color name="colorPrimary">#FF0A09</color>
     <color name="colorPrimaryDark">#557A95</color>
     <color name="colorAccent">#B1A296</color>
+    <color name="colorSecondary">#B1A296</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

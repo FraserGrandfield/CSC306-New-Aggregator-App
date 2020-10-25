@@ -9,7 +9,6 @@ import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.SectionsPagerAdapter
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
-
+        supportActionBar?.setDisplayShowTitleEnabled(false);
         val drawerLayout = drawer
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav_draw, R.string.close_nav_draw)
         drawerLayout.addDrawerListener(toggle)

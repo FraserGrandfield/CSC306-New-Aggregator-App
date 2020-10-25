@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_for_you.*
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class Trending : Fragment() {
+class Popular : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
 
@@ -30,11 +30,11 @@ class Trending : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_trending, container, false)
+        return inflater.inflate(R.layout.fragment_popular, container, false)
     }
 
     companion object {
-        fun newInstance() = Trending().apply { arguments = Bundle().apply {
+        fun newInstance() = Popular().apply { arguments = Bundle().apply {
                 }
             }
     }
