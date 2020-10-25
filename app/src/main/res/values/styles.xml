@@ -38,4 +38,22 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <style name="NavigationItems" parent="Widget.MaterialComponents.TabLayout">
+        <item name="fontFamily">@font/bebas_regular</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="LoginTitle">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/bebas_regular</item>
+        <item name="android:textSize">40dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+    <style name="ToolBarArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
 </resources>

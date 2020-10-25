@@ -9,12 +9,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/saved"
-        android:title="Saved"
-        android:icon="@drawable/ic_saved_icon"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/settings"
         android:title="Settings"
         android:icon="@drawable/ic_baseline_settings_24"
