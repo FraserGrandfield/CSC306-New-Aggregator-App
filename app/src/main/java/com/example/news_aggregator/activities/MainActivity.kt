@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val navigationView = nav_view
         navigationView.setNavigationItemSelectedListener { menuItem ->
             val id = menuItem.itemId
-            if (id == R.id.log_in) {
+            if (id == R.id.log_out) {
                 val intent = Intent(this, LogInActivity::class.java)
                 startActivity(intent)
             }
@@ -45,11 +45,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    override fun onCreateOptionsMenu(menu : Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.search_menu ,menu )
-        return true;
-    }
-
 }

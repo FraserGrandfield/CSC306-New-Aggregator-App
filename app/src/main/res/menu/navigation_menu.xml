@@ -3,19 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/bookmarked"
-        android:title="Bookmarked"
-        android:icon="@drawable/ic_baseline_bookmarks_24"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/settings"
         android:title="Settings"
         android:icon="@drawable/ic_baseline_settings_24"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/log_in"
+        android:id="@+id/log_out"
         android:title="Log Out"
         android:icon="@drawable/ic_baseline_login_24"
         app:showAsAction="never"/>

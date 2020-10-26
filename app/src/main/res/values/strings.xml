@@ -8,4 +8,10 @@
     <string name="open_nav_draw">Open Navigation Draw</string>
     <string name="close_nav_draw">Close Navigation Draw</string>
     <string name="read_more_button">Read More</string>
+    <string name="email">email</string>
+    <string name="password">Password</string>
+    <string name="stay_logged_in">Stay Logged In</string>
+    <string name="login">Login</string>
+    <string name="card_line_spliter">|</string>
+    <string name="zero">0</string>
 </resources>
