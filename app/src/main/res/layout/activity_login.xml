@@ -33,7 +33,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bebas_regular"
+            android:fontFamily="@font/timesbd"
             />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:fontFamily="@font/bebas_regular"
+            android:fontFamily="@font/timesbd"
             />
     </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout
@@ -64,7 +64,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:text="@string/stay_logged_in"
-            android:fontFamily="@font/bebas_regular"
+            android:fontFamily="@font/timesbd"
             android:src="@drawable/keep_loggedin_selector"
             />
         <com.google.android.material.button.MaterialButton

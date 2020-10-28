@@ -14,4 +14,6 @@
     <string name="login">Login</string>
     <string name="card_line_spliter">|</string>
     <string name="zero">0</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log Out</string>
 </resources>
