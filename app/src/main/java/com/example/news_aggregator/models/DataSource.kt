@@ -31,7 +31,9 @@ class DataSource {
                             val responseData = response.body?.string()
                             val json = JSONObject(responseData)
                             val jsonArray = json.getJSONArray("articles")
-                            Log.e("Response data", jsonArray.get(0).toString())
+                            Log.e("Response data",
+                                jsonArray.getJSONObject(0).get("title") as String
+                            )
                         }
                         response.close()
                     }

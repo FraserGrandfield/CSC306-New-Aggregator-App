@@ -10,6 +10,7 @@ import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.DataSource
+import com.example.news_aggregator.models.NewsAPI
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,8 +53,8 @@ class Popular : Fragment() {
     }
 
     private fun addDataSet() {
-        val data = DataSource.createDataSet()
-//        val list = data[1]
-//        articleAdapter.submitList(list)
+//        val data = DataSource.createDataSet()
+        val list = NewsAPI.getArticles("top-headlines", "country", "gb")
+        articleAdapter.submitList(list)
     }
 }
