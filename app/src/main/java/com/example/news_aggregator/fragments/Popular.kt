@@ -53,7 +53,7 @@ class Popular : Fragment() {
 
     private fun addDataSet() {
         val data = DataSource.createDataSet()
-        val list = data[1]
-        articleAdapter.submitList(list)
+//        val list = data[1]
+//        articleAdapter.submitList(list)
     }
 }

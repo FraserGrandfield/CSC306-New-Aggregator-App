@@ -52,8 +52,8 @@ class Local : Fragment() {
 
     private fun addDataSet() {
         val data = DataSource.createDataSet()
-        val list = data[2]
-        articleAdapter.submitList(list)
+//        val list = data[2]
+//        articleAdapter.submitList(list)
     }
 
 }

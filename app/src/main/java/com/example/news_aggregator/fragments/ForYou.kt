@@ -54,8 +54,8 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         val data = DataSource.createDataSet()
-        val list = data[0]
-        articleAdapter.submitList(list)
+        //val list = data[0]
+        //articleAdapter.submitList(list)
     }
 
 }
