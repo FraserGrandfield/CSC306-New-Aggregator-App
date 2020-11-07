@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "815413529587",
+    "firebase_url": "https://quick-news-bits.firebaseio.com",
+    "project_id": "quick-news-bits",
+    "storage_bucket": "quick-news-bits.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815413529587:android:4277c0a3d6e49530792086",
+        "android_client_info": {
+          "package_name": "com.example.news_aggregator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815413529587-u0qm20peshvg6b7d5utpfn92qgmuntk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCYKfFUCUltv_vlLx_qvlNiJ2U3uijuhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815413529587-u0qm20peshvg6b7d5utpfn92qgmuntk5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

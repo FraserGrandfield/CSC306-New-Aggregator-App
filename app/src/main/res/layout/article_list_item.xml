@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -22,29 +22,29 @@
             android:padding="10dp"
             android:id="@+id/container1"
             >
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/article_title"
                 android:theme="@style/ArticleTitle"
                 />
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/article_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop" />
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/article_author"
                     android:theme="@style/ArticleData"
                     android:layout_marginTop="10dp" />
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/ArticleData"
@@ -53,24 +53,24 @@
                     android:paddingLeft="10dp"
                     android:text="@string/card_line_spliter"
                     android:textStyle="bold"/>
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/article_publisher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/ArticleData"
                     android:layout_marginTop="10dp" />
-            </LinearLayout>
-        <LinearLayout
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:layout_width="25dp"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:button="@drawable/like_selector"
                 />
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/article_likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,13 +80,14 @@
                 android:layout_marginEnd="20dp"
                 android:theme="@style/ArticleData"/>
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/article_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="180dp"
                 android:text="@string/read_more_button"
                 android:theme="@style/Button"
                 />
-        </LinearLayout>
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
