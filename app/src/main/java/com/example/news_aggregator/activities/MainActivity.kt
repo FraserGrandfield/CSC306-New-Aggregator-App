@@ -37,6 +37,12 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             val id = menuItem.itemId
             if (id == R.id.log_out) {
+//                val intent = Intent(this, LogInActivity::class.java)
+//                startActivity(intent)
+            } else if (id == R.id.create_account) {
+                val intent = Intent(this, CreateAccountActivity::class.java)
+                startActivity(intent)
+            } else if (id == R.id.log_in) {
                 val intent = Intent(this, LogInActivity::class.java)
                 startActivity(intent)
             }

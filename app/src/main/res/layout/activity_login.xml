@@ -67,12 +67,13 @@
             android:fontFamily="@font/timesbd"
             android:src="@drawable/keep_loggedin_selector"
             />
+
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:onClick="buttonLogInOnClick"
             android:text="@string/login"
-            android:theme="@style/Button"
-            />
+            android:theme="@style/Button" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

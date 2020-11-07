@@ -28,6 +28,11 @@
             android:parentActivityName=".activities.MainActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".activities.CreateAccountActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:label="@string/app_name">
+        </activity>
 
     </application>
 
