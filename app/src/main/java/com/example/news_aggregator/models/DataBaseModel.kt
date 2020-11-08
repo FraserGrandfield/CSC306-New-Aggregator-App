@@ -6,7 +6,7 @@ class DataBaseModel {
     companion object {
         fun addKeyTerm(userID : String, keyTerm : String) {
             val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-            val ref = database.getReference(userID)
+            val ref = database.getReference("users/$userID")
             ref.child(keyTerm).setValue(keyTerm)
         }
     }
