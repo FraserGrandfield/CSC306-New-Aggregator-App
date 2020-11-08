@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.log_in) {
                 val intent = Intent(this, LogInActivity::class.java)
                 startActivity(intent)
+            } else if (id == R.id.settings) {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
             }
             drawer.closeDrawer(GravityCompat.START)
             true
