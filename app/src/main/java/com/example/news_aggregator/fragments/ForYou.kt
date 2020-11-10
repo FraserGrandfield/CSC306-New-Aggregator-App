@@ -22,7 +22,6 @@ private const val ARG_PARAM2 = "param2"
 class ForYou : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
-    private lateinit var thisContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +53,6 @@ class ForYou : Fragment() {
     }
 
     private fun addDataSet() {
-//        val data = DataSource.createDataSet()
         val list = NewsAPI.getArticles("top-headlines", "country", "fr")
         articleAdapter.submitList(list)
     }
