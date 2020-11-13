@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:theme="@style/AppTheme">
     <com.google.android.material.appbar.AppBarLayout
@@ -26,16 +25,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/TextFieldKeyTerm"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="@string/key_term"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TextFieldKeyTerm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:fontFamily="@font/timesbd"
+                android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+                android:maxLength="20"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 

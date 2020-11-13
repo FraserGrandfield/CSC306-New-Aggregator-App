@@ -2,6 +2,7 @@ package com.example.news_aggregator.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,22 +13,20 @@ import com.example.news_aggregator.models.DataSource
 import com.example.news_aggregator.R
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.NewsAPI
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_for_you.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ForYou : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
-
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var ref : DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
+        mAuth = FirebaseAuth.getInstance()
+        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+        ref = database.getReference("users/${mAuth.uid}/key_terms")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,8 +52,39 @@ class ForYou : Fragment() {
     }
 
     private fun addDataSet() {
-        val list = NewsAPI.getArticles("top-headlines", "country", "fr")
-        articleAdapter.submitList(list)
-    }
+        if (mAuth.currentUser == null) {
+            val list = NewsAPI.getArticles("top-headlines", "country", "gb")
+            articleAdapter.submitList(list)
+            articleAdapter.notifyDataSetChanged()
+        } else {
+            var parameters = ""
+            val keyTermListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val keyTerms = dataSnapshot.value
+                    if (keyTerms != null) {
+                        for ((key, value) in keyTerms as HashMap<*, *>) {
+                            if (value.toString() != "@anchor") {
+                                parameters += "$value OR "
+                            }
+                        }
+                    }
+                    parameters = parameters.dropLast(4)
+                    Log.e("parameters", parameters)
+                    if(parameters == "") {
+                        val list = NewsAPI.getArticles("top-headlines", "country", "gb")
+                        articleAdapter.submitList(list)
+                        articleAdapter.notifyDataSetChanged()
+                    } else {
+                        val list = NewsAPI.getArticles("everything", "q", parameters)
+                        articleAdapter.submitList(list)
+                        articleAdapter.notifyDataSetChanged()
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
 
+                }
+            }
+            ref.addListenerForSingleValueEvent(keyTermListener)
+        }
+    }
 }

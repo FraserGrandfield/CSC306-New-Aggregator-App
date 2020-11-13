@@ -1,17 +1,16 @@
 package com.example.news_aggregator.activities
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
-import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.adapters.KeyTermRecyclerAdapter
-import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.DataBaseModel
-import com.example.news_aggregator.models.DummyData
-import com.example.news_aggregator.models.NewsAPI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,7 +47,9 @@ class SettingsActivity : AppCompatActivity() {
                 val keyTerms = dataSnapshot.value
                 if (keyTerms != null) {
                     for ((key, value) in keyTerms as HashMap<*, *>) {
-                        list.add(value.toString())
+                        if (value.toString() != "@anchor") {
+                            list.add(value.toString())
+                        }
                     }
                     KeyTermAdapter.submitList(list)
                     KeyTermAdapter.notifyDataSetChanged()
@@ -63,7 +64,10 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun buttonAddKeyTermOnClick(view : View) {
-        mAuth.uid?.let { DataBaseModel.addKeyTerm(it, TextFieldKeyTerm.editText?.text.toString()) }
+        mAuth.uid?.let { DataBaseModel.addKeyTerm(it, TextFieldKeyTerm.text.toString()) }
+        TextFieldKeyTerm.text?.clear()
+        val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
