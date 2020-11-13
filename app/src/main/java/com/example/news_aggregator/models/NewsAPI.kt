@@ -9,7 +9,7 @@ import java.util.concurrent.CountDownLatch
 class NewsAPI {
 
     companion object {
-        const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
+        private const val NEWSAPI_KEY = "apiKey=bcba5b1f25f1446e9896fa7d58d81d2d"
         fun getArticles(endPoint: String, parameter: String, query: String) : ArrayList<DummyData> {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()

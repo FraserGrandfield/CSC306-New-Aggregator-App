@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
+import com.example.news_aggregator.models.DataBaseModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_create_account.*
@@ -33,6 +34,9 @@ class CreateAccountActivity : AppCompatActivity()  {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Success", "createUserWithEmail:success")
                     val user = mAuth.currentUser
+                    if (user != null) {
+                        DataBaseModel.addKeyTerm(user.uid, "@anchor")
+                    }
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
