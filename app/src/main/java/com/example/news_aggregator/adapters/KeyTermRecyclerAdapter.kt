@@ -11,6 +11,8 @@ import com.example.news_aggregator.R
 import com.example.news_aggregator.activities.ArticleActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.article_list_item.view.*
 import kotlinx.android.synthetic.main.key_term_list_item.view.*
 
@@ -45,32 +47,14 @@ class KeyTermRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val keyTermTextView: TextView = itemView.key_term_text_view
         private val deleteButton = itemView.delete_button
         var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        var ref: DatabaseReference = database.getReference("users/${mAuth.uid}/key_terms")
+        private val database : FirebaseFirestore = FirebaseFirestore.getInstance()
+        var ref = database.collection("users").document(mAuth.uid.toString())
 
         fun bind(keyTerm: String) {
             keyTermTextView.text = keyTerm
 
             deleteButton.setOnClickListener {
-                val keyTermListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val keyTerms = dataSnapshot.value
-                        var itemKey = ""
-                        if (keyTerms != null) {
-                            for ((key, value) in keyTerms as HashMap<*, *>) {
-                                if (value == keyTerm) {
-                                    itemKey = key as String
-                                }
-                            }
-                            ref.child(itemKey).removeValue()
-                            Log.e("Item deleted", keyTerm)
-                        }
-                    }
-                    override fun onCancelled(databaseError: DatabaseError) {
-
-                    }
-                }
-                ref.addListenerForSingleValueEvent(keyTermListener)
+                ref.update("key_terms", FieldValue.arrayRemove(keyTerm))
             }
         }
     }

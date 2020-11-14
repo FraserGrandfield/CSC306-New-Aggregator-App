@@ -1,6 +1,5 @@
 package com.example.news_aggregator.activities
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -10,18 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.KeyTermRecyclerAdapter
-import com.example.news_aggregator.models.DataBaseModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 import kotlinx.android.synthetic.main.fragment_for_you.recycler_view
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var database: FirebaseFirestore
     private lateinit var KeyTermAdapter: KeyTermRecyclerAdapter
     private var list = ArrayList<String>()
 
@@ -29,8 +26,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         mAuth = FirebaseAuth.getInstance()
-        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        val ref = database.getReference("users/${mAuth.uid}/key_terms")
+        database = FirebaseFirestore.getInstance()
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
 
@@ -41,30 +37,34 @@ class SettingsActivity : AppCompatActivity() {
             KeyTermAdapter = KeyTermRecyclerAdapter()
             adapter = KeyTermAdapter
         }
-        val keyTermListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                list.clear()
-                val keyTerms = dataSnapshot.value
-                if (keyTerms != null) {
-                    for ((key, value) in keyTerms as HashMap<*, *>) {
-                        if (value.toString() != "@anchor") {
-                            list.add(value.toString())
-                        }
-                    }
-                    KeyTermAdapter.submitList(list)
-                    KeyTermAdapter.notifyDataSetChanged()
-                    Log.e("snapshot", keyTerms.toString())
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
 
+        val ref = database.collection("users").document(mAuth.uid.toString())
+        ref.addSnapshotListener {snapshot, e ->
+            if (e != null) {
+                Log.w("Error", "Listen failed.", e)
+            }
+            if (snapshot != null && snapshot.exists()) {
+                list.clear()
+                Log.d("TEST", snapshot.toString())
+                if (snapshot.data != null) {
+                    val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
+                    for (term in keyTerms) {
+                        list.add(term.toString())
+                    }
+                }
+                KeyTermAdapter.submitList(list)
+                KeyTermAdapter.notifyDataSetChanged()
+            } else {
+                Log.d("Error", "Current data: null")
             }
         }
-        ref.addValueEventListener(keyTermListener)
     }
 
     fun buttonAddKeyTermOnClick(view : View) {
-        mAuth.uid?.let { DataBaseModel.addKeyTerm(it, TextFieldKeyTerm.text.toString()) }
+
+        val ref = database.collection("users").document(mAuth.uid.toString())
+        ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
+
         TextFieldKeyTerm.text?.clear()
         val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)

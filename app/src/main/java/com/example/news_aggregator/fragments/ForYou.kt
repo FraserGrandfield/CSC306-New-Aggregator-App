@@ -15,18 +15,18 @@ import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.NewsAPI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
 class ForYou : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var ref : DatabaseReference
+    private lateinit var database : FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        ref = database.getReference("users/${mAuth.uid}/key_terms")
+        database = FirebaseFirestore.getInstance()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,18 +58,17 @@ class ForYou : Fragment() {
             articleAdapter.notifyDataSetChanged()
         } else {
             var parameters = ""
-            val keyTermListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val keyTerms = dataSnapshot.value
-                    if (keyTerms != null) {
-                        for ((key, value) in keyTerms as HashMap<*, *>) {
-                            if (value.toString() != "@anchor") {
-                                parameters += "$value OR "
-                            }
-                        }
+            val ref = database.collection("users").document(mAuth.uid.toString())
+            ref.addSnapshotListener {snapshot, e ->
+                if (e != null) {
+                    Log.w("Error", "Listen failed.", e)
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
+                    for (term in keyTerms) {
+                        parameters += "$term OR "
                     }
                     parameters = parameters.dropLast(4)
-                    Log.e("parameters", parameters)
                     if(parameters == "") {
                         val list = NewsAPI.getArticles("top-headlines", "country", "gb")
                         articleAdapter.submitList(list)
@@ -79,12 +78,40 @@ class ForYou : Fragment() {
                         articleAdapter.submitList(list)
                         articleAdapter.notifyDataSetChanged()
                     }
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
 
+                } else {
+                    Log.d("Error", "Current data: null")
                 }
             }
-            ref.addListenerForSingleValueEvent(keyTermListener)
+
+//            var parameters = ""
+//            val keyTermListener = object : ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    val keyTerms = dataSnapshot.value
+//                    if (keyTerms != null) {
+//                        for ((key, value) in keyTerms as HashMap<*, *>) {
+//                            if (value.toString() != "@anchor") {
+//                                parameters += "$value OR "
+//                            }
+//                        }
+//                    }
+//                    parameters = parameters.dropLast(4)
+//                    Log.e("parameters", parameters)
+//                    if(parameters == "") {
+//                        val list = NewsAPI.getArticles("top-headlines", "country", "gb")
+//                        articleAdapter.submitList(list)
+//                        articleAdapter.notifyDataSetChanged()
+//                    } else {
+//                        val list = NewsAPI.getArticles("everything", "q", parameters)
+//                        articleAdapter.submitList(list)
+//                        articleAdapter.notifyDataSetChanged()
+//                    }
+//                }
+//                override fun onCancelled(databaseError: DatabaseError) {
+//
+//                }
+//            }
+//            ref.addListenerForSingleValueEvent(keyTermListener)
         }
     }
 }
