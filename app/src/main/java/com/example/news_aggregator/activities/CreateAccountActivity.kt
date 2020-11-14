@@ -54,7 +54,7 @@ class CreateAccountActivity : AppCompatActivity()  {
                             .addOnFailureListener { e -> Log.w("Error", "Error writing document", e) }
                         updateUI()
                     } else {
-                        // Need check for if password is
+                        //TODO display correct error for if the password is to short or if the account it taken
                         Log.w("Error", "createUserWithEmail:failure", task.exception)
                         TextFieldEmail.error = null
                         TextFieldPassword.error = task.exception.toString()

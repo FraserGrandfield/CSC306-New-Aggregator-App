@@ -61,13 +61,16 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun buttonAddKeyTermOnClick(view : View) {
+        if (TextFieldKeyTerm.text.toString() == "") {
+            TextFieldKeyTerm.error = "Please enter a key term"
+        } else {
+            val ref = database.collection("users").document(mAuth.uid.toString())
+            ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
 
-        val ref = database.collection("users").document(mAuth.uid.toString())
-        ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
-
-        TextFieldKeyTerm.text?.clear()
-        val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
+            TextFieldKeyTerm.text?.clear()
+            val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
 }
