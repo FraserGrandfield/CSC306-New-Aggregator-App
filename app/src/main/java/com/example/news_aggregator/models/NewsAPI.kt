@@ -46,9 +46,9 @@ class NewsAPI {
             val list = ArrayList<DummyData>()
             for (i in 0 until 20) {
                 val tempJson = jsonArray.getJSONObject(i)
-                var author = tempJson.getString("author")
-                var publisher = tempJson.getJSONObject("source").getString("name")
-                var publishedAt = tempJson.getString("publishedAt")
+                var author = "Author: " + tempJson.getString("author")
+                var publisher = "Publisher: " + tempJson.getJSONObject("source").getString("name")
+                var publishedAt = "Date: " + tempJson.getString("publishedAt")
                 if (author == "null" || author == "") {
                     author = "Unknown"
                 }

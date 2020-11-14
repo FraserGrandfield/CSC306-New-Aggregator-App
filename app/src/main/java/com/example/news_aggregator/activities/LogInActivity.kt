@@ -30,26 +30,32 @@ class LogInActivity : AppCompatActivity() {
     fun buttonLogInOnClick(view: View) {
         val email = TextFieldEmail.editText?.text.toString()
         val password = TextFieldPassword.editText?.text.toString()
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("Success", "signInWithEmail:success")
-                    val user = mAuth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("Error", "signInWithEmail:failure", task.exception)
-                    updateUI(null)
+        if (email == "") {
+            TextFieldEmail.error = "Field cannot be blank"
+        }
+        if (password == "") {
+            TextFieldPassword.error = "Field cannot be blank"
+        }
+        if (password != "" && email != "") {
+            mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("Success", "signInWithEmail:success")
+                        updateUI()
+                    } else {
+                        Log.w("Error", "signInWithEmail:failure", task.exception)
+                        TextFieldEmail.error = null
+                        TextFieldPassword.error = "Password or email is incorrect"
+                    }
                 }
-            }
+        }
+
     }
 
-    fun updateUI(user : FirebaseUser?) {
-        if (user != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+    private fun updateUI() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
 }
