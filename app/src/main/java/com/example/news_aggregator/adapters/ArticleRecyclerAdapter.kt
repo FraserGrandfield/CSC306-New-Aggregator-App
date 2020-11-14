@@ -2,6 +2,7 @@ package com.example.news_aggregator.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,11 +48,13 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val articleAuthor = itemView.article_author
         private val articlePublisher = itemView.article_publisher
         private val articleButton = itemView.article_button
+        private val articlePublishedAt = itemView.article_published_at
+
         fun bind(dummyData: DummyData) {
             articleTitle.text = dummyData.title
             articleAuthor.text = "Author: " + dummyData.author
             articlePublisher.text = "Publisher: " + dummyData.publisher
-
+            articlePublishedAt.text = "Date: " + dummyData.datePublished
             val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
                 R.drawable.ic_launcher_background
             )

@@ -1,5 +1,6 @@
 package com.example.news_aggregator.models
 
+import android.util.Log
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -45,13 +46,24 @@ class NewsAPI {
             val list = ArrayList<DummyData>()
             for (i in 0 until 20) {
                 val tempJson = jsonArray.getJSONObject(i)
+                var author = tempJson.getString("author")
+                var publisher = tempJson.getJSONObject("source").getString("name")
+                var publishedAt = tempJson.getString("publishedAt")
+                if (author == "null" || author == "") {
+                    author = "Unknown"
+                }
+                if (publisher == "null" || publisher == "") {
+                    publisher = "Unknown"
+                }
+                publishedAt = publishedAt.split("T")[0]
                 list.add(
                     DummyData(
                         tempJson.getString("title"),
                         tempJson.getString("urlToImage"),
-                        tempJson.getString("author"),
+                        author,
                         tempJson.getString("description"),
-                        tempJson.getJSONObject("source").getString("name")
+                        publisher,
+                        publishedAt
                     )
                 )
             }

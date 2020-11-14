@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -39,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="180dp"
+                    android:layout_width="wrap_content"
+                    android:maxWidth="180dp"
                     android:layout_height="20dp"
                     android:id="@+id/article_author"
                     android:theme="@style/ArticleData"
@@ -55,39 +57,61 @@
                     android:textStyle="bold"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/article_publisher"
-                    android:layout_width="180dp"
+                    android:layout_width="wrap_content"
+                    android:maxWidth="180dp"
                     android:layout_height="20dp"
                     android:theme="@style/ArticleData"
                     android:layout_marginTop="10dp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/appCompatCheckBox"
                 android:layout_width="25dp"
-                android:layout_gravity="center"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:button="@drawable/like_selector"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/article_likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
                 android:layout_gravity="center"
+                android:layout_marginStart="2dp"
                 android:text="@string/zero"
-                android:layout_marginEnd="20dp"
-                android:theme="@style/ArticleData"/>
+                android:theme="@style/ArticleData"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/appCompatCheckBox"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/article_published_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="2dp"
+                android:theme="@style/ArticleData"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/article_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/article_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="180dp"
+                android:layout_marginEnd="1dp"
                 android:text="@string/read_more_button"
                 android:theme="@style/Button"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

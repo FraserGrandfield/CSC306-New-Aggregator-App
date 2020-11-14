@@ -83,35 +83,6 @@ class ForYou : Fragment() {
                     Log.d("Error", "Current data: null")
                 }
             }
-
-//            var parameters = ""
-//            val keyTermListener = object : ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    val keyTerms = dataSnapshot.value
-//                    if (keyTerms != null) {
-//                        for ((key, value) in keyTerms as HashMap<*, *>) {
-//                            if (value.toString() != "@anchor") {
-//                                parameters += "$value OR "
-//                            }
-//                        }
-//                    }
-//                    parameters = parameters.dropLast(4)
-//                    Log.e("parameters", parameters)
-//                    if(parameters == "") {
-//                        val list = NewsAPI.getArticles("top-headlines", "country", "gb")
-//                        articleAdapter.submitList(list)
-//                        articleAdapter.notifyDataSetChanged()
-//                    } else {
-//                        val list = NewsAPI.getArticles("everything", "q", parameters)
-//                        articleAdapter.submitList(list)
-//                        articleAdapter.notifyDataSetChanged()
-//                    }
-//                }
-//                override fun onCancelled(databaseError: DatabaseError) {
-//
-//                }
-//            }
-//            ref.addListenerForSingleValueEvent(keyTermListener)
         }
     }
 }
