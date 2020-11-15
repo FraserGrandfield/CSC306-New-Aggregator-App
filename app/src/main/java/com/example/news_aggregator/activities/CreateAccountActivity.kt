@@ -59,7 +59,11 @@ class CreateAccountActivity : AppCompatActivity()  {
                         //TODO display correct error for if the password is to short or if the account it taken
                         Log.w("Error", "createUserWithEmail:failure", task.exception)
                         TextFieldEmail.error = null
-                        TextFieldPassword.error = task.exception.toString()
+                        var error = task.exception.toString()
+                        error = error.removePrefix("com.google.firebase.auth.FirebaseAuthWeakPasswordException: ")
+                        error = error.removePrefix("com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: ")
+                        error = error.removePrefix("com.google.firebase.auth.FirebaseAuthUserCollisionException: ")
+                        TextFieldPassword.error = error
                     }
                 }
         }

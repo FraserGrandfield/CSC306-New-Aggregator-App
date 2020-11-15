@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatCheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/appCompatCheckBox"
                 android:layout_width="25dp"
                 android:layout_height="wrap_content"

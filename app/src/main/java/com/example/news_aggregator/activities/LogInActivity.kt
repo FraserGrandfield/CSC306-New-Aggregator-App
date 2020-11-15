@@ -40,7 +40,6 @@ class LogInActivity : AppCompatActivity() {
             mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d("Success", "signInWithEmail:success")
                         updateUI()
                     } else {
@@ -50,7 +49,6 @@ class LogInActivity : AppCompatActivity() {
                     }
                 }
         }
-
     }
 
     private fun updateUI() {

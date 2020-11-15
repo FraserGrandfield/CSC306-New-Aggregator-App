@@ -54,28 +54,11 @@
             android:fontFamily="@font/timesbd"
             />
     </com.google.android.material.textfield.TextInputLayout>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="50dp">
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:text="@string/stay_logged_in"
-            android:fontFamily="@font/timesbd"
-            android:src="@drawable/keep_loggedin_selector"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="buttonLogInOnClick"
-            android:text="@string/login"
-            android:theme="@style/Button" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_gravity="center"
+        android:onClick="buttonLogInOnClick"
+        android:text="@string/login"
+        android:theme="@style/Button" />
 </androidx.appcompat.widget.LinearLayoutCompat>
