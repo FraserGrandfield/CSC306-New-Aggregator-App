@@ -15,6 +15,8 @@ import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.NewsAPI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
@@ -22,7 +24,9 @@ class ForYou : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var database : FirebaseFirestore
+    private lateinit var database: FirebaseFirestore
+    private lateinit var ref: DocumentReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
@@ -58,18 +62,15 @@ class ForYou : Fragment() {
             articleAdapter.notifyDataSetChanged()
         } else {
             var parameters = ""
-            val ref = database.collection("users").document(mAuth.uid.toString())
-            ref.addSnapshotListener {snapshot, e ->
-                if (e != null) {
-                    Log.w("Error", "Listen failed.", e)
-                }
-                if (snapshot != null && snapshot.exists()) {
-                    val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
+            ref = database.collection("users").document(mAuth.uid.toString())
+            ref.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val keyTerms = document.data?.get("key_terms") as ArrayList<*>
                     for (term in keyTerms) {
                         parameters += "$term OR "
                     }
                     parameters = parameters.dropLast(4)
-                    if(parameters == "") {
+                    if (parameters == "") {
                         val list = NewsAPI.getArticles("top-headlines", "country", "gb")
                         articleAdapter.submitList(list)
                         articleAdapter.notifyDataSetChanged()
@@ -78,11 +79,10 @@ class ForYou : Fragment() {
                         articleAdapter.submitList(list)
                         articleAdapter.notifyDataSetChanged()
                     }
-
                 } else {
                     Log.d("Error", "Current data: null")
                 }
-            }
+            }.addOnFailureListener { } //TODO add error
         }
     }
 }
