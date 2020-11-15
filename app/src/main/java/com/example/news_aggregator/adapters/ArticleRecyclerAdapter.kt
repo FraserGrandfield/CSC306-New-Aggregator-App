@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
@@ -76,11 +77,30 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 context.startActivity(intent)
             }
 
-            likeButton.setOnCheckedChangeListener { buttonView, isChecked ->
+            val database = FirebaseFirestore.getInstance()
+            val articleURL = dummyData.articleURL.replace("/", "")
+            val ref = database.collection("liked_articles").document(articleURL)
+            ref.get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    itemView.article_likes.text = document.get("likes").toString()
+                } else {
+                    itemView.article_likes.text = "0"
+                }
+            }.addOnFailureListener { } //TODO add error
+
+            ref.collection("liked_users").document(mAuth.uid.toString()).get().addOnSuccessListener { document ->
+                likeButton.isChecked = document.exists()
+                addLikeButtonListener(dummyData)
+            }.addOnFailureListener { } //TODO add error
+        }
+
+        private fun addLikeButtonListener(dummyData: DummyData) {
+
+            likeButton.setOnClickListener {
                 val database = FirebaseFirestore.getInstance()
                 val articleURL = dummyData.articleURL.replace("/", "")
                 val ref = database.collection("liked_articles").document(articleURL)
-                if (isChecked) {
+                if (likeButton.isChecked) {
                     val likes = itemView.article_likes.text.toString().toInt()
                     itemView.article_likes.text = (likes + 1).toString()
                     ref.get().addOnSuccessListener { document ->
