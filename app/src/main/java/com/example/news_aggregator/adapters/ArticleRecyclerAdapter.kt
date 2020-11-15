@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.news_aggregator.R
 import com.example.news_aggregator.activities.ArticleActivity
 import com.example.news_aggregator.models.DummyData
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -97,32 +98,37 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun addLikeButtonListener(dummyData: DummyData) {
 
             likeButton.setOnClickListener {
-                val database = FirebaseFirestore.getInstance()
-                val articleURL = dummyData.articleURL.replace("/", "")
-                val ref = database.collection("liked_articles").document(articleURL)
-                if (likeButton.isChecked) {
-                    val likes = itemView.article_likes.text.toString().toInt()
-                    itemView.article_likes.text = (likes + 1).toString()
-                    ref.get().addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            ref.update("likes", FieldValue.increment(1))
-                            val map = hashMapOf(
-                                "uid" to mAuth.uid.toString()
-                            )
-                            ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
-                        } else {
-                            val map = hashMapOf (
-                                "likes" to 1,
-                            )
-                            ref.set(map)
-                            ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
-                        }
-                    }.addOnFailureListener { } //TODO add error
+                if (mAuth.currentUser != null) {
+                    val database = FirebaseFirestore.getInstance()
+                    val articleURL = dummyData.articleURL.replace("/", "")
+                    val ref = database.collection("liked_articles").document(articleURL)
+                    if (likeButton.isChecked) {
+                        val likes = itemView.article_likes.text.toString().toInt()
+                        itemView.article_likes.text = (likes + 1).toString()
+                        ref.get().addOnSuccessListener { document ->
+                            if (document.exists()) {
+                                ref.update("likes", FieldValue.increment(1))
+                                val map = hashMapOf(
+                                    "uid" to mAuth.uid.toString()
+                                )
+                                ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
+                            } else {
+                                val map = hashMapOf (
+                                    "likes" to 1,
+                                )
+                                ref.set(map)
+                                ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
+                            }
+                        }.addOnFailureListener { } //TODO add error
+                    } else {
+                        val likes = itemView.article_likes.text.toString().toInt()
+                        itemView.article_likes.text = (likes - 1).toString()
+                        ref.update("likes", FieldValue.increment(-1))
+                        ref.collection("liked_users").document(mAuth.uid.toString()).delete()
+                    }
                 } else {
-                    val likes = itemView.article_likes.text.toString().toInt()
-                    itemView.article_likes.text = (likes - 1).toString()
-                    ref.update("likes", FieldValue.increment(-1))
-                    ref.collection("liked_users").document(mAuth.uid.toString()).delete()
+                    likeButton.isChecked = false
+                    Snackbar.make(it, "You need to sign in", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
