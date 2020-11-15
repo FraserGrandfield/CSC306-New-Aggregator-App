@@ -57,8 +57,10 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         if (mAuth.currentUser == null) {
-            val list = NewsAPI.getArticles("top-headlines", "country", "gb")
-            articleAdapter.submitList(list)
+            val list = this.view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }
+            if (list != null) {
+                articleAdapter.submitList(list)
+            }
             articleAdapter.notifyDataSetChanged()
         } else {
             var parameters = ""
@@ -71,12 +73,21 @@ class ForYou : Fragment() {
                     }
                     parameters = parameters.dropLast(4)
                     if (parameters == "") {
-                        val list = NewsAPI.getArticles("top-headlines", "country", "gb")
-                        articleAdapter.submitList(list)
+                        val list = this.view?.let {
+                            NewsAPI.getArticles("top-headlines", "country", "gb", it)
+                        }
+                        if (list != null) {
+                            articleAdapter.submitList(list)
+                        }
                         articleAdapter.notifyDataSetChanged()
                     } else {
-                        val list = NewsAPI.getArticles("everything", "q", parameters)
-                        articleAdapter.submitList(list)
+                        val list =
+                            this.view?.let {
+                                NewsAPI.getArticles("everything", "q", parameters, it)
+                            }
+                        if (list != null) {
+                            articleAdapter.submitList(list)
+                        }
                         articleAdapter.notifyDataSetChanged()
                     }
                 } else {

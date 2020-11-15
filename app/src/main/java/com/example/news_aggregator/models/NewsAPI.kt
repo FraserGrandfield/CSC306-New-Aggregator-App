@@ -1,6 +1,8 @@
 package com.example.news_aggregator.models
 
 import android.util.Log
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,7 +14,7 @@ class NewsAPI {
     companion object {
         //Spare key = bcba5b1f25f1446e9896fa7d58d81d2d
         const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
-        fun getArticles(endPoint: String, parameter: String, query: String) : ArrayList<DummyData> {
+        fun getArticles(endPoint: String, parameter: String, query: String, view: View) : ArrayList<DummyData> {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()
             var jsonArray: JSONArray
@@ -31,8 +33,13 @@ class NewsAPI {
                         val responseData = response.body?.string()
                         //TODO check if 0 were returned
                         val json = JSONObject(responseData)
-                        jsonArray = json.getJSONArray("articles")
-                        list = getListOfArticles(jsonArray)
+                        Log.e("Error", json.get("totalResults").toString())
+                        if (json.get("totalResults").toString().toInt() == 0) {
+                            Snackbar.make(view, "Error no articles match parameters", Snackbar.LENGTH_LONG).show()
+                        } else {
+                            jsonArray = json.getJSONArray("articles")
+                            list = getListOfArticles(jsonArray)
+                        }
                         countDownLatch.countDown()
                     }
                     response.close()
@@ -70,5 +77,6 @@ class NewsAPI {
             }
             return list
         }
+
     }
 }

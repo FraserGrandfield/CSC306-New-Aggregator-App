@@ -54,7 +54,9 @@ class Popular : Fragment() {
 
     private fun addDataSet() {
 //        val data = DataSource.createDataSet()
-        val list = NewsAPI.getArticles("top-headlines", "country", "gb")
-        articleAdapter.submitList(list)
+        val list = this.view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }
+        if (list != null) {
+            articleAdapter.submitList(list)
+        }
     }
 }
