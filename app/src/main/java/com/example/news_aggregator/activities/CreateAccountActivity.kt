@@ -50,9 +50,11 @@ class CreateAccountActivity : AppCompatActivity()  {
                             "key_terms" to tempArr
                         )
                         database.collection("users").document(mAuth.uid.toString()).set(map)
-                            .addOnSuccessListener { Log.d("Done", "DocumentSnapshot successfully written!") }
+                            .addOnSuccessListener {
+                                Log.d("Done", "DocumentSnapshot successfully written!")
+                                updateUI()
+                            }
                             .addOnFailureListener { e -> Log.w("Error", "Error writing document", e) }
-                        updateUI()
                     } else {
                         //TODO display correct error for if the password is to short or if the account it taken
                         Log.w("Error", "createUserWithEmail:failure", task.exception)

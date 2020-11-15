@@ -45,7 +45,6 @@ class SettingsActivity : AppCompatActivity() {
             }
             if (snapshot != null && snapshot.exists()) {
                 list.clear()
-                Log.d("TEST", snapshot.toString())
                 if (snapshot.data != null) {
                     val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
                     for (term in keyTerms) {

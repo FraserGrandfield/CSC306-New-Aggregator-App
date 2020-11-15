@@ -6,5 +6,6 @@ data class DummyData(
     var author: String,
     var summary: String,
     var publisher: String,
-    var datePublished : String,
+    var datePublished: String,
+    var articleURL: String,
 )

@@ -63,7 +63,8 @@ class NewsAPI {
                         author,
                         tempJson.getString("description"),
                         publisher,
-                        publishedAt
+                        publishedAt,
+                        tempJson.getString("url")
                     )
                 )
             }

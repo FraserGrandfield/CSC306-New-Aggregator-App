@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.news_aggregator.R
 import com.example.news_aggregator.activities.ArticleActivity
 import com.example.news_aggregator.models.DummyData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.article_list_item.view.*
 
 class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -43,12 +46,15 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     class ArticleViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val mAuth = FirebaseAuth.getInstance()
+
         private val articleImage: ImageView = itemView.article_image
         private val articleTitle: TextView = itemView.article_title
         private val articleAuthor = itemView.article_author
         private val articlePublisher = itemView.article_publisher
         private val articleButton = itemView.article_button
         private val articlePublishedAt = itemView.article_published_at
+        private val likeButton = itemView.appCompatCheckBox
 
         fun bind(dummyData: DummyData) {
             articleTitle.text = dummyData.title
@@ -69,7 +75,36 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 intent.putExtra("image", dummyData.image)
                 context.startActivity(intent)
             }
-        }
 
+            likeButton.setOnCheckedChangeListener { buttonView, isChecked ->
+                val database = FirebaseFirestore.getInstance()
+                val articleURL = dummyData.articleURL.replace("/", "")
+                val ref = database.collection("liked_articles").document(articleURL)
+                if (isChecked) {
+                    val likes = itemView.article_likes.text.toString().toInt()
+                    itemView.article_likes.text = (likes + 1).toString()
+                    ref.get().addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            ref.update("likes", FieldValue.increment(1))
+                            val map = hashMapOf(
+                                "uid" to mAuth.uid.toString()
+                            )
+                            ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
+                        } else {
+                            val map = hashMapOf (
+                                "likes" to 1,
+                            )
+                            ref.set(map)
+                            ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
+                        }
+                    }.addOnFailureListener { } //TODO add error
+                } else {
+                    val likes = itemView.article_likes.text.toString().toInt()
+                    itemView.article_likes.text = (likes - 1).toString()
+                    ref.update("likes", FieldValue.increment(-1))
+                    ref.collection("liked_users").document(mAuth.uid.toString()).delete()
+                }
+            }
+        }
     }
 }
