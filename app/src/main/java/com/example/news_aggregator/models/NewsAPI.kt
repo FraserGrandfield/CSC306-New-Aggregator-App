@@ -52,23 +52,27 @@ class NewsAPI {
             val list = ArrayList<DummyData>()
             for (i in 0 until 20) {
                 val tempJson = jsonArray.getJSONObject(i)
-                var author = "Author: " + tempJson.getString("author")
-                var publisher = "Publisher: " + tempJson.getJSONObject("source").getString("name")
+                var author = tempJson.getString("author")
+                var publisher = tempJson.getJSONObject("source").getString("name")
                 var publishedAt = "Date: " + tempJson.getString("publishedAt")
+                var description = tempJson.getString("description")
                 if (author == "null" || author == "") {
                     author = "Unknown"
                 }
                 if (publisher == "null" || publisher == "") {
                     publisher = "Unknown"
                 }
+                if (description == "null" || description == "") {
+                    description = "No description available"
+                }
                 publishedAt = publishedAt.split("T")[0]
                 list.add(
                     DummyData(
                         tempJson.getString("title"),
                         tempJson.getString("urlToImage"),
-                        author,
-                        tempJson.getString("description"),
-                        publisher,
+                        "Author: $author",
+                        description,
+                        "Publisher: $publisher",
                         publishedAt,
                         tempJson.getString("url")
                     )
