@@ -13,11 +13,6 @@ import com.example.news_aggregator.models.DataSource
 import com.example.news_aggregator.models.NewsAPI
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class Local : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter

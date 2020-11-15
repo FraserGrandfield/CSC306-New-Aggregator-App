@@ -31,7 +31,6 @@ class NewsAPI {
                     response.use {
                         if (!response.isSuccessful) throw IOException("Unexpected code $response")
                         val responseData = response.body?.string()
-                        //TODO check if 0 were returned
                         val json = JSONObject(responseData)
                         Log.e("Error", json.get("totalResults").toString())
                         if (json.get("totalResults").toString().toInt() == 0) {
