@@ -115,6 +115,13 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             } else {
                                 val map = hashMapOf (
                                     "likes" to 1,
+                                    "title" to dummyData.title,
+                                    "summary" to dummyData.summary,
+                                    "publisher" to dummyData.publisher,
+                                    "author" to dummyData.author,
+                                    "image" to dummyData.image,
+                                    "date_published" to dummyData.datePublished,
+                                    "article_url" to dummyData.articleURL,
                                 )
                                 ref.set(map)
                                 ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
