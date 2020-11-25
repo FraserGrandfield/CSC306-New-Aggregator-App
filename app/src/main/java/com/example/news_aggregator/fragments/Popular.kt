@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
-import com.example.news_aggregator.models.DataSource
 import com.example.news_aggregator.models.DummyData
 import com.example.news_aggregator.models.NewsAPI
 import com.google.firebase.firestore.FirebaseFirestore
@@ -53,27 +52,28 @@ class Popular : Fragment() {
 
     private fun addDataSet() {
         var ref = database.collection("liked_articles").orderBy("likes", Query.Direction.DESCENDING).limit(20)
-        val list = ArrayList<DummyData>()
+        var list = ArrayList<DummyData>()
         ref.get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                Log.e("Error", document.get("article_url").toString())
-                list.add(
-                    DummyData(
-                        document.get("title").toString(),
-                        document.get("image").toString(),
-                        document.get("author").toString(),
-                        document.get("summary").toString(),
-                        document.get("publisher").toString(),
-                        document.get("date_published").toString(),
-                        document.get("article_url").toString(),
-                    ))
+            if (documents.isEmpty) {
+                list = view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }!!
+            } else {
+                for (document in documents) {
+                    Log.e("Error", document.get("article_url").toString())
+                    list.add(
+                        DummyData(
+                            document.get("title").toString(),
+                            document.get("image").toString(),
+                            document.get("author").toString(),
+                            document.get("summary").toString(),
+                            document.get("publisher").toString(),
+                            document.get("date_published").toString(),
+                            document.get("article_url").toString(),
+                        ))
+                }
             }
-            if (list != null) {
-                articleAdapter.submitList(list)
-                articleAdapter.notifyDataSetChanged()
-            }
+            articleAdapter.submitList(list)
+            articleAdapter.notifyDataSetChanged()
         }.addOnFailureListener { } //TODO add error
 
-//        val list = this.view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.news_aggregator.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
-import com.example.news_aggregator.models.DataSource
 import com.example.news_aggregator.R
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.NewsAPI
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
