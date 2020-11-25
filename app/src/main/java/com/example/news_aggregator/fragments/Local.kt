@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
@@ -19,6 +20,7 @@ import com.example.news_aggregator.models.DummyData
 import com.example.news_aggregator.models.NewsAPI
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_for_you.*
 import okhttp3.*
@@ -57,47 +59,47 @@ class Local : Fragment() {
             articleAdapter = ArticleRecyclerAdapter()
             adapter = articleAdapter
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
-        addDataSet(view)
+        checkPermissions()
     }
 
-    private fun addDataSet(view: View) {
-        //TODO get location
+    private fun checkPermissions() {
+        fusedLocationClient = view?.context?.let {
+            LocationServices.getFusedLocationProviderClient(
+                it
+            )
+        }!!
         if (ActivityCompat.checkSelfPermission(
-                view.context,
+                view?.context!!,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                view.context,
+                view?.context!!,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        var longatude: Double = 0.0
-        var latitude: Double = 0.0
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                longatude = location.longitude
+            activity?.let { requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1) }
+            Log.e("permission", "asdf")
+        } else {
+            Log.e("permission", "ghkj")
+            var longatude = 0.0
+            var latitude = 0.0
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    longatude = location.longitude
+                }
+                if (location != null) {
+                    latitude = location.latitude
+                }
+                Log.e("Long", longatude.toString())
+                Log.e("lat", latitude.toString())
+                getCity(longatude, latitude)
+            }.addOnFailureListener {
+                Log.e("Location Error", it.toString())
             }
-            if (location != null) {
-                latitude = location.latitude
-            }
-            Log.e("Long", longatude.toString())
-            Log.e("lat", latitude.toString())
-            getCity(longatude, latitude)
-        }.addOnFailureListener {
-            Log.e("Location Error", it.toString())
         }
     }
 
     private fun getCity(longitude: Double, latitude: Double) {
+        //TODO change search to include country.
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("https://geocodeapi.p.rapidapi.com/GetNearestCities?latitude=$latitude&longitude=$longitude&range=0")
@@ -127,7 +129,7 @@ class Local : Fragment() {
                         //TODO error no city found
                     }
                     Log.e("cityName", city)
-                    view?.let { NewsAPI.getArticles("everything", "q", city, it) { it1 ->
+                    view?.let { NewsAPI.getArticles("everything", "q", city, it, "relevancy") { it1 ->
                         articleAdapter.submitList(it1)
                         activity?.runOnUiThread {
                             articleAdapter.notifyDataSetChanged()
@@ -139,4 +141,17 @@ class Local : Fragment() {
         })
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("permission", "permison changed")
+                    checkPermissions()
+                } else {
+                    view?.let { Snackbar.make(it, "You must allow enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
+                }
+                return
+            }
+        }
+    }
 }

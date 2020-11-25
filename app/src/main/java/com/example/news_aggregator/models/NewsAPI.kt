@@ -7,19 +7,23 @@ import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.time.LocalDate
 import java.util.concurrent.CountDownLatch
 
 class NewsAPI {
 
     companion object {
+        //TODO need to get more relevent articles, mabye only inculde english domains
         //Spare key = bcba5b1f25f1446e9896fa7d58d81d2d
         const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
-        fun getArticles(endPoint: String, parameter: String, query: String, view: View, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
+        fun getArticles(endPoint: String, parameter: String, query: String, view: View,sortBy: String, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()
             var jsonArray: JSONArray
+            var date = LocalDate.now()
+            date = date.minusDays(7)
             val request = Request.Builder()
-                .url("https://newsapi.org/v2/$endPoint?$parameter=$query&$NEWSAPI_KEY")
+                .url("https://newsapi.org/v2/$endPoint?$parameter=$query&from=$date&excludeDomains=reuters.com&sortBy=$sortBy&$NEWSAPI_KEY")
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {

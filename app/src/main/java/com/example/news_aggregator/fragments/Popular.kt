@@ -55,7 +55,7 @@ class Popular : Fragment() {
         var list = ArrayList<DummyData>()
         ref.get().addOnSuccessListener { documents ->
             if (documents.isEmpty) {
-                view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) { it1 ->
+                view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it, "publishedAt") { it1 ->
                     articleAdapter.submitList(it1)
                     activity?.runOnUiThread {
                         articleAdapter.notifyDataSetChanged()

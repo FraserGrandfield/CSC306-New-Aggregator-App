@@ -53,11 +53,7 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         if (mAuth.currentUser == null) {
-//            val list = this.view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }
-//            if (list != null) {
-//                articleAdapter.submitList(list)
-//            }
-            view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) { it1 ->
+            view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it, "publishedAt") { it1 ->
                 articleAdapter.submitList(it1)
                 activity?.runOnUiThread {
                     articleAdapter.notifyDataSetChanged()
@@ -74,14 +70,14 @@ class ForYou : Fragment() {
                     }
                     parameters = parameters.dropLast(4)
                     if (parameters == "") {
-                        view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) { it1 ->
+                        view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it, "publishedAt") { it1 ->
                             articleAdapter.submitList(it1)
                             activity?.runOnUiThread {
                                 articleAdapter.notifyDataSetChanged()
                             }
                         } }
                     } else {
-                        view?.let { NewsAPI.getArticles("everything", "q", parameters, it) { it1 ->
+                        view?.let { NewsAPI.getArticles("everything", "q", parameters, it, "relevancy") { it1 ->
                             articleAdapter.submitList(it1)
                             activity?.runOnUiThread {
                                 articleAdapter.notifyDataSetChanged()
