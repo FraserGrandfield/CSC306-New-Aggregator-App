@@ -14,14 +14,13 @@ class NewsAPI {
     companion object {
         //Spare key = bcba5b1f25f1446e9896fa7d58d81d2d
         const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
-        fun getArticles(endPoint: String, parameter: String, query: String, view: View) : ArrayList<DummyData> {
+        fun getArticles(endPoint: String, parameter: String, query: String, view: View, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()
             var jsonArray: JSONArray
             val request = Request.Builder()
                 .url("https://newsapi.org/v2/$endPoint?$parameter=$query&$NEWSAPI_KEY")
                 .build()
-            val countDownLatch = CountDownLatch(1)
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     e.printStackTrace()
@@ -39,18 +38,21 @@ class NewsAPI {
                             jsonArray = json.getJSONArray("articles")
                             list = getListOfArticles(jsonArray)
                         }
-                        countDownLatch.countDown()
+                        onSuccess(list)
                     }
                     response.close()
                 }
             })
-            countDownLatch.await()
-            return list
         }
 
         fun getListOfArticles(jsonArray: JSONArray) : ArrayList<DummyData> {
             val list = ArrayList<DummyData>()
-            for (i in 0 until 20) {
+            val jsonArrayLength = jsonArray.length()
+            var count = 20
+            if (jsonArrayLength < 20) {
+                count = jsonArrayLength
+            }
+            for (i in 0 until count) {
                 val tempJson = jsonArray.getJSONObject(i)
                 var author = tempJson.getString("author")
                 var publisher = tempJson.getJSONObject("source").getString("name")

@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
+import com.example.news_aggregator.activities.MainActivity
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.DummyData
@@ -104,13 +105,11 @@ class Local : Fragment() {
             .addHeader("x-rapidapi-key", "029c2937e1msh9f0263c9b0ef31ap169bf3jsn386bc28e2fa2")
             .addHeader("x-rapidapi-host", "geocodeapi.p.rapidapi.com")
             .build()
-        val countDownLatch = CountDownLatch(1)
         var list = ArrayList<DummyData>()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
             }
-
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
@@ -119,28 +118,25 @@ class Local : Fragment() {
                     val json = JSONArray(responseData)
                     var city = ""
                     if (json.length() > 0) {
-                        val tempJson = json.getJSONObject(0)
-                        city = tempJson.get("City").toString()
+                        for (i in 0 until json.length()) {
+                            val tempJson = json.getJSONObject(i)
+                            city += tempJson.get("City").toString() + " OR "
+                        }
+                        city = city.dropLast(4)
                     } else {
                         //TODO error no city found
                     }
                     Log.e("cityName", city)
-
-                    list = view?.let { it1 -> NewsAPI.getArticles("everything", "q", city, it1) }!!
-                    countDownLatch.countDown()
-
+                    view?.let { NewsAPI.getArticles("everything", "q", city, it) { it1 ->
+                        articleAdapter.submitList(it1)
+                        activity?.runOnUiThread {
+                            articleAdapter.notifyDataSetChanged()
+                        }
+                    } }
                 }
                 response.close()
             }
         })
-        countDownLatch.await()
-        updateUI(list)
     }
 
-    fun updateUI(list: ArrayList<DummyData>?) {
-        if (list != null) {
-            articleAdapter.submitList(list)
-        }
-        articleAdapter.notifyDataSetChanged()
-    }
 }

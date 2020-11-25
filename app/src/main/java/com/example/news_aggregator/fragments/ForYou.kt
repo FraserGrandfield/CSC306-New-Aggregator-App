@@ -53,11 +53,16 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         if (mAuth.currentUser == null) {
-            val list = this.view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }
-            if (list != null) {
-                articleAdapter.submitList(list)
-            }
-            articleAdapter.notifyDataSetChanged()
+//            val list = this.view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }
+//            if (list != null) {
+//                articleAdapter.submitList(list)
+//            }
+            view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) { it1 ->
+                articleAdapter.submitList(it1)
+                activity?.runOnUiThread {
+                    articleAdapter.notifyDataSetChanged()
+                }
+            } }
         } else {
             var parameters = ""
             ref = database.collection("users").document(mAuth.uid.toString())
@@ -69,22 +74,19 @@ class ForYou : Fragment() {
                     }
                     parameters = parameters.dropLast(4)
                     if (parameters == "") {
-                        val list = this.view?.let {
-                            NewsAPI.getArticles("top-headlines", "country", "gb", it)
-                        }
-                        if (list != null) {
-                            articleAdapter.submitList(list)
-                        }
-                        articleAdapter.notifyDataSetChanged()
-                    } else {
-                        val list =
-                            this.view?.let {
-                                NewsAPI.getArticles("everything", "q", parameters, it)
+                        view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) { it1 ->
+                            articleAdapter.submitList(it1)
+                            activity?.runOnUiThread {
+                                articleAdapter.notifyDataSetChanged()
                             }
-                        if (list != null) {
-                            articleAdapter.submitList(list)
-                        }
-                        articleAdapter.notifyDataSetChanged()
+                        } }
+                    } else {
+                        view?.let { NewsAPI.getArticles("everything", "q", parameters, it) { it1 ->
+                            articleAdapter.submitList(it1)
+                            activity?.runOnUiThread {
+                                articleAdapter.notifyDataSetChanged()
+                            }
+                        } }
                     }
                 } else {
                     Log.d("Error", "Current data: null")

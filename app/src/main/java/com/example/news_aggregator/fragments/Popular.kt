@@ -55,7 +55,11 @@ class Popular : Fragment() {
         var list = ArrayList<DummyData>()
         ref.get().addOnSuccessListener { documents ->
             if (documents.isEmpty) {
-                list = view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) }!!
+                view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", it) { it1 ->
+                    articleAdapter.submitList(it1)
+                    activity?.runOnUiThread {
+                        articleAdapter.notifyDataSetChanged()
+                    }                } }
             } else {
                 for (document in documents) {
                     Log.e("Error", document.get("article_url").toString())
@@ -72,7 +76,9 @@ class Popular : Fragment() {
                 }
             }
             articleAdapter.submitList(list)
-            articleAdapter.notifyDataSetChanged()
+            activity?.runOnUiThread {
+                articleAdapter.notifyDataSetChanged()
+            }
         }.addOnFailureListener { } //TODO add error
 
     }
