@@ -12,11 +12,11 @@ import com.example.news_aggregator.adapters.KeyTermRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.activity_key_terms.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 import kotlinx.android.synthetic.main.fragment_for_you.recycler_view
 
-class SettingsActivity : AppCompatActivity() {
+class KeyTermsActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
     private lateinit var KeyTermAdapter: KeyTermRecyclerAdapter
@@ -24,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_key_terms)
         mAuth = FirebaseAuth.getInstance()
         database = FirebaseFirestore.getInstance()
         val toolbar = top_app_bar

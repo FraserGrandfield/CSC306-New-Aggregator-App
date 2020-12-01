@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.viewpager.widget.ViewPager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.SectionsPagerAdapter
@@ -57,8 +57,11 @@ class MainActivity : AppCompatActivity() {
             } else if (id == R.id.log_in) {
                 val intent = Intent(this, LogInActivity::class.java)
                 startActivity(intent)
-            } else if (id == R.id.settings) {
-                val intent = Intent(this, SettingsActivity::class.java)
+            } else if (id == R.id.key_terms) {
+                val intent = Intent(this, KeyTermsActivity::class.java)
+                startActivity(intent)
+            } else if (id == R.id.notifications) {
+                val intent = Intent(this, NotificationActivity::class.java)
                 startActivity(intent)
             }
             drawer.closeDrawer(GravityCompat.START)
@@ -71,14 +74,15 @@ class MainActivity : AppCompatActivity() {
         if (mAuth.currentUser == null) {
             menu.getItem(0).isVisible = false
             menu.getItem(1).isVisible = false
-            menu.getItem(2).isVisible = true
+            menu.getItem(2).isVisible = false
             menu.getItem(3).isVisible = true
-
+            menu.getItem(4).isVisible = true
         } else {
             menu.getItem(0).isVisible = true
             menu.getItem(1).isVisible = true
-            menu.getItem(2).isVisible = false
+            menu.getItem(2).isVisible = true
             menu.getItem(3).isVisible = false
+            menu.getItem(4).isVisible = false
         }
     }
 }

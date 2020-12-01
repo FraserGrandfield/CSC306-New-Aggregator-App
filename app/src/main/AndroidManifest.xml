@@ -36,11 +36,15 @@
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".activities.KeyTermsActivity"
             android:parentActivityName=".activities.MainActivity"
             android:label="@string/app_name">
         </activity>
-
+        <activity
+            android:name=".activities.NotificationActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>
