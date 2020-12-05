@@ -60,6 +60,7 @@ class KeyTermsActivity : AppCompatActivity() {
     }
 
     fun buttonAddKeyTermOnClick(view : View) {
+        //TODO only allow them to add 10 key terms
         if (TextFieldKeyTerm.text.toString() == "") {
             TextFieldKeyTerm.error = "Please enter a key term"
         } else {

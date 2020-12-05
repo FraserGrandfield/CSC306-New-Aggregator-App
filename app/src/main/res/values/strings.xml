@@ -22,6 +22,14 @@
     <string name="key_terms">Key Terms</string>
     <string name="notifications">Notifications</string>
     <string name="channel_name">777</string>
+    <string name="save">Save</string>
+
+    <string-array name="notification_array">
+        <item>Never</item>
+        <item>4 Hours</item>
+        <item>12 Hours</item>
+        <item>24 Hours</item>
+    </string-array>
 
 
 </resources>

@@ -8,20 +8,25 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.concurrent.CountDownLatch
 
 class NewsAPI {
 
     companion object {
         //TODO need to get more relevent articles, mabye only inculde english domains
-        //Spare key = bcba5b1f25f1446e9896fa7d58d81d2d
-        const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
-        fun getArticles(endPoint: String, parameter: String, query: String, view: View,sortBy: String, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
+        //Spare key = 68bef160bad148b98b324bfd65b522af
+        const val NEWSAPI_KEY = "apiKey=bcba5b1f25f1446e9896fa7d58d81d2d"
+        fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()
             var jsonArray: JSONArray
-            var date = LocalDate.now()
-            date = date.minusDays(7)
+            var date = LocalDateTime.now()
+            if (forNotification) {
+                date.minusMinutes(60)
+            } else {
+                date = date.minusDays(2)
+            }
             val request = Request.Builder()
                 .url("https://newsapi.org/v2/$endPoint?$parameter=$query&from=$date&excludeDomains=reuters.com&sortBy=$sortBy&$NEWSAPI_KEY")
                 .build()
@@ -37,7 +42,7 @@ class NewsAPI {
                         val json = JSONObject(responseData)
                         Log.e("Error", json.get("totalResults").toString())
                         if (json.get("totalResults").toString().toInt() == 0) {
-                            Snackbar.make(view, "Error no articles match parameters", Snackbar.LENGTH_LONG).show()
+                            //TODO throw error that no articels exist
                         } else {
                             jsonArray = json.getJSONArray("articles")
                             list = getListOfArticles(jsonArray)

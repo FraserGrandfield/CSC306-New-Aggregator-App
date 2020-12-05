@@ -1,5 +1,8 @@
 package com.example.news_aggregator.activities
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +14,7 @@ import androidx.core.view.get
 import androidx.viewpager.widget.ViewPager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.SectionsPagerAdapter
+import com.example.news_aggregator.services.NotificationReceiver
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -49,6 +53,10 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             val id = menuItem.itemId
             if (id == R.id.log_out) {
+                val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(this, NotificationReceiver::class.java)
+                val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+                alarmManager.cancel(pendingIntent)
                 mAuth.signOut()
                 this.recreate()
             } else if (id == R.id.create_account) {
@@ -67,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             drawer.closeDrawer(GravityCompat.START)
             true
         }
-
     }
 
     private fun changeNavItems(menu : Menu) {

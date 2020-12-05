@@ -24,6 +24,15 @@
     <androidx.appcompat.widget.AppCompatSpinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:id="@+id/spinner_notifications"/>
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:layout_gravity="center"
+        android:id="@+id/notification_button"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

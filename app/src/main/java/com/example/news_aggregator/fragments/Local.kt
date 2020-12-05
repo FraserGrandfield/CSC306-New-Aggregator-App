@@ -129,7 +129,7 @@ class Local : Fragment() {
                         //TODO error no city found
                     }
                     Log.e("cityName", city)
-                    view?.let { NewsAPI.getArticles("everything", "q", city, it, "relevancy") { it1 ->
+                    view?.let { NewsAPI.getArticles("everything", "q", city, "relevancy", false) { it1 ->
                         articleAdapter.submitList(it1)
                         activity?.runOnUiThread {
                             articleAdapter.notifyDataSetChanged()
