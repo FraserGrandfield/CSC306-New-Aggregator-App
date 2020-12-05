@@ -29,9 +29,8 @@ class KeyTermsActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this.context)
             KeyTermAdapter = KeyTermRecyclerAdapter()

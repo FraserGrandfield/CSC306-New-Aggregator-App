@@ -27,7 +27,6 @@ class CreateAccountActivity : AppCompatActivity()  {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     fun buttonCreateAccountOnClick(view: View) {

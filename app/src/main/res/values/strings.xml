@@ -23,6 +23,8 @@
     <string name="notifications">Notifications</string>
     <string name="channel_name">777</string>
     <string name="save">Save</string>
+    <string name="read_more">Read More</string>
+    <string name="full_article">Full Article</string>
 
     <string-array name="notification_array">
         <item>Never</item>

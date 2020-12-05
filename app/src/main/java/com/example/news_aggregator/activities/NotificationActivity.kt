@@ -23,7 +23,6 @@ class NotificationActivity : AppCompatActivity() {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mAuth = FirebaseAuth.getInstance()
 
         val spinner = spinner_notifications

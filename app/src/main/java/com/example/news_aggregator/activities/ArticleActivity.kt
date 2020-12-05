@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.content_main.top_app_bar
 
 class ArticleActivity : AppCompatActivity() {
     private lateinit var mAuth : FirebaseAuth
+    private lateinit var url : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
@@ -24,25 +25,21 @@ class ArticleActivity : AppCompatActivity() {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         textViewTitle.text = intent.getStringExtra("title")
         textViewSummary.text = intent.getStringExtra("summary")
         textViePublisher.text = intent.getStringExtra("publisher")
         textViewAuthor.text = intent.getStringExtra("author")
-
+        url = intent.getStringExtra("url")
         val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
             R.drawable.ic_launcher_background
         )
         Glide.with(this).applyDefaultRequestOptions(requestOptions).load(intent.getStringExtra("image")).centerCrop().into(imageView)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val currentUser = mAuth.currentUser
-    }
 
-//    fun buttonOnClick(view: View) {
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//    }
+    fun webViewButtonOnClick(view: View) {
+        val intent = Intent(this, WebViewActivity::class.java)
+        intent.putExtra("url", url)
+        startActivity(intent)
+    }
 }

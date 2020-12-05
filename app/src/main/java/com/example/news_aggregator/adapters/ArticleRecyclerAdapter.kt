@@ -75,6 +75,7 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 intent.putExtra("author", dummyData.author)
                 intent.putExtra("publisher", dummyData.publisher)
                 intent.putExtra("image", dummyData.image)
+                intent.putExtra("url", dummyData.articleURL)
                 context.startActivity(intent)
             }
 

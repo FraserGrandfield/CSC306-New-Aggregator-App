@@ -24,27 +24,26 @@
         </activity>
         <activity
             android:name=".activities.LogInActivity"
-            android:parentActivityName=".activities.MainActivity"
             android:label="@string/app_name">
         </activity>
         <activity
             android:name=".activities.ArticleActivity"
-            android:parentActivityName=".activities.MainActivity"
             android:label="@string/app_name">
         </activity>
         <activity
             android:name=".activities.CreateAccountActivity"
-            android:parentActivityName=".activities.MainActivity"
             android:label="@string/app_name">
         </activity>
         <activity
             android:name=".activities.KeyTermsActivity"
-            android:parentActivityName=".activities.MainActivity"
             android:label="@string/app_name">
         </activity>
         <activity
             android:name=".activities.NotificationActivity"
-            android:parentActivityName=".activities.MainActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activities.WebViewActivity"
             android:label="@string/app_name">
         </activity>
         <receiver

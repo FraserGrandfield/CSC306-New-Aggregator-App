@@ -24,7 +24,6 @@ class LogInActivity : AppCompatActivity() {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     fun buttonLogInOnClick(view: View) {
