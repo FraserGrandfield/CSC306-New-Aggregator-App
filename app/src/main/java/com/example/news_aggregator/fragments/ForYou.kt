@@ -52,6 +52,11 @@ class ForYou : Fragment() {
         addDataSet()
     }
 
+    override fun onResume() {
+        super.onResume()
+        addDataSet()
+    }
+
     private fun addDataSet() {
         if (mAuth.currentUser == null) {
             view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { list ->

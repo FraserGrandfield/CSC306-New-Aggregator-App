@@ -30,12 +30,10 @@ import java.util.concurrent.CountDownLatch
 
 
 class Local : Fragment() {
-    //TODO add onResueme and refresh the articles
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
-    private final var LOCATION_API_KEY = "AIzaSyBh4CwTScM2R-5C11-VqrxC7IbzmX-7PIs"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +59,12 @@ class Local : Fragment() {
             adapter = articleAdapter
         }
         checkPermissions()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkPermissions()
+        startLocationUpdates()
     }
 
     private fun checkPermissions() {
@@ -193,10 +197,5 @@ class Local : Fragment() {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        startLocationUpdates()
     }
 }

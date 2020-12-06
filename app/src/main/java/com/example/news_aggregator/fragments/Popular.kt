@@ -17,10 +17,8 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
 class Popular : Fragment() {
-    //TODO add onResueme and refresh the articles
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var database: FirebaseFirestore
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +45,11 @@ class Popular : Fragment() {
             articleAdapter = ArticleRecyclerAdapter()
             adapter = articleAdapter
         }
+        addDataSet()
+    }
+
+    override fun onResume() {
+        super.onResume()
         addDataSet()
     }
 
