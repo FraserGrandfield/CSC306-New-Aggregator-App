@@ -18,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
 class ForYou : Fragment() {
-    //TODO add onResueme and refresh the articles
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
@@ -49,7 +48,6 @@ class ForYou : Fragment() {
             articleAdapter = ArticleRecyclerAdapter()
             adapter = articleAdapter
         }
-        addDataSet()
     }
 
     override fun onResume() {
@@ -103,9 +101,11 @@ class ForYou : Fragment() {
                         } }
                     }
                 } else {
-                    Log.d("Error", "Current data: null")
+                    view?.let { Snackbar.make(it, "Error: Cannot get key terms.", Snackbar.LENGTH_LONG).show() }
                 }
-            }.addOnFailureListener { } //TODO add error
+            }.addOnFailureListener {
+                view?.let { Snackbar.make(it, "Error: Cannot get key terms.", Snackbar.LENGTH_LONG).show() }
+            }
         }
     }
 }

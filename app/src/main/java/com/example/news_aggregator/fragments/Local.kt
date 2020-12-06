@@ -2,31 +2,25 @@ package com.example.news_aggregator.fragments
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
-import com.example.news_aggregator.activities.MainActivity
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.DummyData
 import com.example.news_aggregator.models.NewsAPI
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_for_you.*
 import okhttp3.*
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
-import java.util.concurrent.CountDownLatch
 
 
 class Local : Fragment() {
@@ -34,6 +28,7 @@ class Local : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
+    private var hasRequestedPermission = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,34 +53,28 @@ class Local : Fragment() {
             articleAdapter = ArticleRecyclerAdapter()
             adapter = articleAdapter
         }
-        checkPermissions()
     }
 
     override fun onResume() {
         super.onResume()
-        checkPermissions()
-        startLocationUpdates()
+        getLocation()
     }
 
-    private fun checkPermissions() {
+    private fun getLocation() {
         fusedLocationClient = view?.context?.let {
             LocationServices.getFusedLocationProviderClient(
                 it
             )
         }!!
-        if (ActivityCompat.checkSelfPermission(
-                view?.context!!,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                view?.context!!,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            activity?.let { requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1) }
-            Log.e("permission", "asdf")
+        if (ActivityCompat.checkSelfPermission(view?.context!!, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view?.context!!, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (!hasRequestedPermission) {
+                activity?.let { requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1) }
+                Log.e("permission", "asdf")
+                hasRequestedPermission = true
+            } else {
+                view?.let { Snackbar.make(it, "You must enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
+            }
         } else {
-
-            fusedLocationClient = context?.let { LocationServices.getFusedLocationProviderClient(it) }!!
             locationRequest = LocationRequest()
             locationRequest.interval = 50000
             locationRequest.fastestInterval = 50000
@@ -101,6 +90,11 @@ class Local : Fragment() {
                     }
                 }
             }
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null
+            )
         }
     }
 
@@ -152,7 +146,7 @@ class Local : Fragment() {
             1 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.e("permission", "permison changed")
-                    checkPermissions()
+                    getLocation()
                 } else {
                     view?.let { Snackbar.make(it, "You must enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
                 }
@@ -161,41 +155,13 @@ class Local : Fragment() {
         }
     }
 
-    private fun startLocationUpdates() {
-        if (context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            null
-        )
-    }
 
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    override fun onPause() {
-        super.onPause()
-        stopLocationUpdates()
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        stopLocationUpdates()
+//    }
 }

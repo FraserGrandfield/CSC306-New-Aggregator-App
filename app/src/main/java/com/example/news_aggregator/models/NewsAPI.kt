@@ -12,8 +12,8 @@ class NewsAPI{
 
     companion object {
         //TODO need to get more relevent articles, mabye only inculde english domains
-        //Spare key = bcba5b1f25f1446e9896fa7d58d81d2d
-        const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
+        //Spare key =   68bef160bad148b98b324bfd65b522af    bcba5b1f25f1446e9896fa7d58d81d2d   a2afcd06f1a54787b44592b4d6f1c116
+        const val NEWSAPI_KEY = "apiKey=14751837a2364903a7572d7689bf0c9e"
         fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()
@@ -29,6 +29,7 @@ class NewsAPI{
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
+                    //TODO add snackbar
                     e.printStackTrace()
                 }
 
