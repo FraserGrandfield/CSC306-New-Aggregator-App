@@ -2,10 +2,13 @@ package com.example.news_aggregator.models
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.example.news_aggregator.R
+import com.example.news_aggregator.activities.ArticleActivity
 
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
     private var channelID = "channelID"
@@ -24,10 +27,24 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         return notificationManager
     }
 
-    fun getChannelNotification(title: String, text: String) : NotificationCompat.Builder {
+    fun getChannelNotification(title: String, summary: String, author: String, publisher: String, url: String, image: String) : NotificationCompat.Builder {
+        val intent = Intent(this, ArticleActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("title", title)
+            putExtra("summary", summary)
+            putExtra("publisher", publisher)
+            putExtra("author", author)
+            putExtra("image", image)
+            putExtra("url", url)
+        }
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         return NotificationCompat.Builder(applicationContext, channelID)
+            .setStyle(NotificationCompat.BigTextStyle())
             .setContentTitle(title)
-            .setContentText(text)
+            .setContentText(summary)
             .setSmallIcon(R.drawable.ic_baseline_notifications_none_24)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
     }
 }

@@ -158,8 +158,4 @@ class Local : Fragment() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-//    override fun onPause() {
-//        super.onPause()
-//        stopLocationUpdates()
-//    }
 }

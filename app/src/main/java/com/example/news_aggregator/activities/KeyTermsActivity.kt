@@ -66,7 +66,6 @@ class KeyTermsActivity : AppCompatActivity() {
                 //TODO add on success and on failier listener
                 val ref = database.collection("users").document(mAuth.uid.toString())
                 ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
-
                 TextFieldKeyTerm.text?.clear()
                 val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)

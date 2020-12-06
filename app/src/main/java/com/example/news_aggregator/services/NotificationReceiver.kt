@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore
         }
         mAuth = FirebaseAuth.getInstance()
         database = FirebaseFirestore.getInstance()
-        //TODO add time to firebase and pull here to get time
         getDurationTillNextNotification()
         getKeyTerms()
     }
@@ -35,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore
              val data = it1[0]
              val notification = NotificationHelper(context)
              notification.createChannel()
-             val notificationBuilder = notification.getChannelNotification(data.title, data.summary)
+             val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image)
              notification.getManager().notify((i + 1), notificationBuilder.build())
          }
      }
