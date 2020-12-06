@@ -11,7 +11,7 @@
     <string name="password">Password</string>
     <string name="stay_logged_in">Stay Logged In</string>
     <string name="login">Login</string>
-    <string name="card_line_spliter">|</string>
+    <string name="card_line_splitter">|</string>
     <string name="zero">0</string>
     <string name="log_out">Log Out</string>
     <string name="log_in">Log In</string>

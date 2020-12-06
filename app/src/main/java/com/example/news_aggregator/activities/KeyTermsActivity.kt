@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_for_you.recycler_view
 class KeyTermsActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
-    private lateinit var KeyTermAdapter: KeyTermRecyclerAdapter
+    private lateinit var keyTermAdapter: KeyTermRecyclerAdapter
     private var list = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +33,8 @@ class KeyTermsActivity : AppCompatActivity() {
 
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this.context)
-            KeyTermAdapter = KeyTermRecyclerAdapter()
-            adapter = KeyTermAdapter
+            keyTermAdapter = KeyTermRecyclerAdapter()
+            adapter = keyTermAdapter
         }
 
         val ref = database.collection("users").document(mAuth.uid.toString())
@@ -50,8 +50,8 @@ class KeyTermsActivity : AppCompatActivity() {
                         list.add(term.toString())
                     }
                 }
-                KeyTermAdapter.submitList(list)
-                KeyTermAdapter.notifyDataSetChanged()
+                keyTermAdapter.submitList(list)
+                keyTermAdapter.notifyDataSetChanged()
             } else {
                 Log.d("Error", "Current data: null")
             }

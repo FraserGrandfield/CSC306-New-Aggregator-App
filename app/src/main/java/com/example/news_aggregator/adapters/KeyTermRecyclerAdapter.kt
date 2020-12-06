@@ -48,7 +48,7 @@ class KeyTermRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val deleteButton = itemView.delete_button
         var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
         private val database : FirebaseFirestore = FirebaseFirestore.getInstance()
-        var ref = database.collection("users").document(mAuth.uid.toString())
+        private var ref = database.collection("users").document(mAuth.uid.toString())
 
         fun bind(keyTerm: String) {
             keyTermTextView.text = keyTerm

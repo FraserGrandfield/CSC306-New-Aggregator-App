@@ -57,7 +57,7 @@ class CreateAccountActivity : AppCompatActivity()  {
                     } else {
                         Log.w("Error", "createUserWithEmail:failure", task.exception)
                         TextFieldEmail.error = null
-                        var error = task.exception?.message
+                        val error = task.exception?.message
                         TextFieldPassword.error = error
                     }
                 }

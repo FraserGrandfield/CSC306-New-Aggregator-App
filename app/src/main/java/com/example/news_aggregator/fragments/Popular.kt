@@ -54,8 +54,8 @@ class Popular : Fragment() {
     }
 
     private fun addDataSet() {
-        var ref = database.collection("liked_articles").orderBy("likes", Query.Direction.DESCENDING).limit(20)
-        var list = ArrayList<DummyData>()
+        val ref = database.collection("liked_articles").orderBy("likes", Query.Direction.DESCENDING).limit(20)
+        val list = ArrayList<DummyData>()
         ref.get().addOnSuccessListener { documents ->
             if (documents.isEmpty) {
                 view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { it1 ->

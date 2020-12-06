@@ -39,23 +39,26 @@ class NotificationActivity : AppCompatActivity() {
         val button = notification_button
         button.setOnClickListener {
             val input = filled_exposed_dropdown.text.toString()
-            var alarmTime = System.currentTimeMillis()
-            if (input == "6 Hours") {
-                cancelAlarmManager()
-                startAlarmManager(alarmTime + 10000)
-                Log.e("notification", "1")
-            } else if (input == "12 Hours") {
-                cancelAlarmManager()
-                startAlarmManager(alarmTime + 10000 * 2)
-                Log.e("notification", "2")
+            val alarmTime = System.currentTimeMillis()
+            when (input) {
+                getString(R.string._6_hours) -> {
+                    cancelAlarmManager()
+                    startAlarmManager(alarmTime + 10000)
+                    Log.e("notification", "1")
+                }
+                getString(R.string._12_hours) -> {
+                    cancelAlarmManager()
+                    startAlarmManager(alarmTime + 10000 * 2)
+                    Log.e("notification", "2")
+                }
+                getString(R.string._24_hours) -> {
+                    cancelAlarmManager()
+                    startAlarmManager(alarmTime + 10000 * 5)
+                    Log.e("notification", "3")
+                }
+                getString(R.string.never) -> {
+                    cancelAlarmManager() }
             }
-            else if (input == "24 Hours") {
-                cancelAlarmManager()
-                startAlarmManager(alarmTime + 10000 * 5)
-                Log.e("notification", "3")
-            } else if (input == "Never") {
-                cancelAlarmManager() }
-
         }
     }
 

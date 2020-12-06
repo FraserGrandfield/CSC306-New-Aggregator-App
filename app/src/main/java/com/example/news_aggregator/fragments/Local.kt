@@ -126,7 +126,7 @@ class Local : Fragment() {
                         }
                         city = city.dropLast(4)
                     } else {
-                        //TODO error no city found
+                        view?.let { Snackbar.make(it, "Error: Cannot find your location", Snackbar.LENGTH_LONG).show() }
                     }
                     Log.e("cityName", city)
                     view?.let { NewsAPI.getArticles("everything", "q", city, "relevancy", false) { it1 ->

@@ -52,25 +52,31 @@ class MainActivity : AppCompatActivity() {
         changeNavItems(navigationView.menu)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             val id = menuItem.itemId
-            if (id == R.id.log_out) {
-                val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                val intent = Intent(this, NotificationReceiver::class.java)
-                val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
-                alarmManager.cancel(pendingIntent)
-                mAuth.signOut()
-                this.recreate()
-            } else if (id == R.id.create_account) {
-                val intent = Intent(this, CreateAccountActivity::class.java)
-                startActivity(intent)
-            } else if (id == R.id.log_in) {
-                val intent = Intent(this, LogInActivity::class.java)
-                startActivity(intent)
-            } else if (id == R.id.key_terms) {
-                val intent = Intent(this, KeyTermsActivity::class.java)
-                startActivity(intent)
-            } else if (id == R.id.notifications) {
-                val intent = Intent(this, NotificationActivity::class.java)
-                startActivity(intent)
+            when (id) {
+                R.id.log_out -> {
+                    val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    val intent = Intent(this, NotificationReceiver::class.java)
+                    val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+                    alarmManager.cancel(pendingIntent)
+                    mAuth.signOut()
+                    this.recreate()
+                }
+                R.id.create_account -> {
+                    val intent = Intent(this, CreateAccountActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.log_in -> {
+                    val intent = Intent(this, LogInActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.key_terms -> {
+                    val intent = Intent(this, KeyTermsActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.notifications -> {
+                    val intent = Intent(this, NotificationActivity::class.java)
+                    startActivity(intent)
+                }
             }
             drawer.closeDrawer(GravityCompat.START)
             true
