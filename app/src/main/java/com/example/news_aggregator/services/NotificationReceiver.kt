@@ -71,15 +71,15 @@ import com.google.firebase.firestore.FirebaseFirestore
                      Log.e("gotNotification", duration.toString())
                      when (duration) {
                          6L -> {
-                             val time: Long = 10000
+                             val time: Long = 60000 * 60 * 6
                              scheduleNextNotification(time)
                          }
                          12L -> {
-                             val time: Long = 10000 * 2
+                             val time: Long = 60000 * 60 * 12
                              scheduleNextNotification(time)
                          }
                          24L -> {
-                             val time: Long = 10000 * 5
+                             val time: Long = 60000 * 60 * 24
                              scheduleNextNotification(time)
                          }
                      }
