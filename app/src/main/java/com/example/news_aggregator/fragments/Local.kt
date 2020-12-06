@@ -18,8 +18,7 @@ import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.DummyData
 import com.example.news_aggregator.models.NewsAPI
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_for_you.*
@@ -34,6 +33,8 @@ class Local : Fragment() {
 
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
     private final var LOCATION_API_KEY = "AIzaSyBh4CwTScM2R-5C11-VqrxC7IbzmX-7PIs"
 
     override fun onCreateView(
@@ -79,22 +80,38 @@ class Local : Fragment() {
             activity?.let { requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1) }
             Log.e("permission", "asdf")
         } else {
-            Log.e("permission", "ghkj")
-            var longatude = 0.0
-            var latitude = 0.0
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    longatude = location.longitude
+
+            fusedLocationClient = context?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+            locationRequest = LocationRequest()
+            locationRequest.interval = 50000
+            locationRequest.fastestInterval = 50000
+            locationRequest.smallestDisplacement = 170f //0.1 miles
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    locationResult ?: return
+                    if (locationResult.locations.isNotEmpty()) {
+                        val location = locationResult.lastLocation
+                        getCity(location.longitude, location.latitude)
+                        stopLocationUpdates()
+                    }
                 }
-                if (location != null) {
-                    latitude = location.latitude
-                }
-                Log.e("Long", longatude.toString())
-                Log.e("lat", latitude.toString())
-                getCity(longatude, latitude)
-            }.addOnFailureListener {
-                Log.e("Location Error", it.toString())
             }
+
+//            Log.e("permission", "ghkj")
+//            var longatude = 0.0
+//            var latitude = 0.0
+//            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+//                if (location != null) {
+//                    longatude = location.longitude
+//                    latitude = location.latitude
+//                }
+//                Log.e("Long", longatude.toString())
+//                Log.e("lat", latitude.toString())
+//                getCity(longatude, latitude)
+//            }.addOnFailureListener {
+//                Log.e("Location Error", it.toString())
+//            }
         }
     }
 
@@ -148,10 +165,53 @@ class Local : Fragment() {
                     Log.e("permission", "permison changed")
                     checkPermissions()
                 } else {
-                    view?.let { Snackbar.make(it, "You must allow enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
+                    view?.let { Snackbar.make(it, "You must enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
                 }
                 return
             }
         }
+    }
+
+    private fun startLocationUpdates() {
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            null
+        )
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 }
