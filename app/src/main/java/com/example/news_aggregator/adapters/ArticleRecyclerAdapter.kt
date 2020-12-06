@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.news_aggregator.R
 import com.example.news_aggregator.activities.ArticleActivity
-import com.example.news_aggregator.models.DummyData
+import com.example.news_aggregator.models.ArticleData
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.article_list_item.view.*
 
 class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: List<DummyData> = ArrayList()
+    private var items: List<ArticleData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.article_list_item, parent, false)
@@ -41,7 +41,7 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return items.size
     }
 
-    fun submitList(articleList: List<DummyData>) {
+    fun submitList(articleList: List<ArticleData>) {
         items = articleList
     }
 
@@ -56,29 +56,29 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val articlePublishedAt = itemView.article_published_at
         private val likeButton = itemView.appCompatCheckBox
 
-        fun bind(dummyData: DummyData) {
-            articleTitle.text = dummyData.title
-            articleAuthor.text = dummyData.author
-            articlePublisher.text = dummyData.publisher
-            articlePublishedAt.text = dummyData.datePublished
+        fun bind(articleData: ArticleData) {
+            articleTitle.text = articleData.title
+            articleAuthor.text = articleData.author
+            articlePublisher.text = articleData.publisher
+            articlePublishedAt.text = articleData.datePublished
             val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
                 R.drawable.ic_launcher_background
             )
             val context : Context = itemView.context
-            Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions).load(dummyData.image).into(articleImage)
+            Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions).load(articleData.image).into(articleImage)
             articleButton.setOnClickListener {
                 val intent = Intent(context, ArticleActivity::class.java)
-                intent.putExtra("title", dummyData.title)
-                intent.putExtra("summary", dummyData.summary)
-                intent.putExtra("author", dummyData.author)
-                intent.putExtra("publisher", dummyData.publisher)
-                intent.putExtra("image", dummyData.image)
-                intent.putExtra("url", dummyData.articleURL)
+                intent.putExtra("title", articleData.title)
+                intent.putExtra("summary", articleData.summary)
+                intent.putExtra("author", articleData.author)
+                intent.putExtra("publisher", articleData.publisher)
+                intent.putExtra("image", articleData.image)
+                intent.putExtra("url", articleData.articleURL)
                 context.startActivity(intent)
             }
 
             val database = FirebaseFirestore.getInstance()
-            val articleURL = dummyData.articleURL.replace("/", "")
+            val articleURL = articleData.articleURL.replace("/", "")
             val ref = database.collection("liked_articles").document(articleURL)
             ref.get().addOnSuccessListener { document ->
                 if (document.exists()) {
@@ -92,18 +92,18 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             ref.collection("liked_users").document(mAuth.uid.toString()).get().addOnSuccessListener { document ->
                 likeButton.isChecked = document.exists()
-                addLikeButtonListener(dummyData)
+                addLikeButtonListener(articleData)
             }.addOnFailureListener {
                 Log.e("ArticleRecyclerAdapter", "Ref listener failed: $it")
             }
         }
 
-        private fun addLikeButtonListener(dummyData: DummyData) {
+        private fun addLikeButtonListener(articleData: ArticleData) {
 
             likeButton.setOnClickListener {
                 if (mAuth.currentUser != null) {
                     val database = FirebaseFirestore.getInstance()
-                    val articleURL = dummyData.articleURL.replace("/", "")
+                    val articleURL = articleData.articleURL.replace("/", "")
                     val ref = database.collection("liked_articles").document(articleURL)
                     if (likeButton.isChecked) {
                         val likes = itemView.article_likes.text.toString().toInt()
@@ -118,13 +118,13 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             } else {
                                 val map = hashMapOf (
                                     "likes" to 1,
-                                    "title" to dummyData.title,
-                                    "summary" to dummyData.summary,
-                                    "publisher" to dummyData.publisher,
-                                    "author" to dummyData.author,
-                                    "image" to dummyData.image,
-                                    "date_published" to dummyData.datePublished,
-                                    "article_url" to dummyData.articleURL,
+                                    "title" to articleData.title,
+                                    "summary" to articleData.summary,
+                                    "publisher" to articleData.publisher,
+                                    "author" to articleData.author,
+                                    "image" to articleData.image,
+                                    "date_published" to articleData.datePublished,
+                                    "article_url" to articleData.articleURL,
                                 )
                                 ref.set(map)
                                 ref.collection("liked_users").document(mAuth.uid.toString()).set(map)

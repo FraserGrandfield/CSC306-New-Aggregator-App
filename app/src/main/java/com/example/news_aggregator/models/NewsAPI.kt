@@ -5,18 +5,17 @@ import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-import java.lang.Exception
 import java.time.LocalDateTime
 
 class NewsAPI{
 
     companion object {
         //TODO need to get more relevent articles, mabye only inculde english domains
-        //Spare key =   68bef160bad148b98b324bfd65b522af    bcba5b1f25f1446e9896fa7d58d81d2d   a2afcd06f1a54787b44592b4d6f1c116
-        private const val NEWSAPI_KEY = "apiKey=14751837a2364903a7572d7689bf0c9e"
-        fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
+        //Spare key =   68bef160bad148b98b324bfd65b522af    bcba5b1f25f1446e9896fa7d58d81d2d   a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
+        private const val NEWSAPI_KEY = "apiKey=9e0bdb83896e47da8af5e964329eaaec"
+        fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, onSuccess: (list: ArrayList<ArticleData>) -> Unit) {
             val client = OkHttpClient()
-            var list = ArrayList<DummyData>()
+            var list = ArrayList<ArticleData>()
             var jsonArray: JSONArray
             var date = LocalDateTime.now()
             if (forNotification) {
@@ -36,8 +35,7 @@ class NewsAPI{
                 override fun onResponse(call: Call, response: Response) {
                     response.use {
                         if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                        val responseData = response.body?.string()
-                        val json = JSONObject(responseData)
+                        val json = JSONObject(response.body?.string()!!)
                         Log.e("Error", json.get("totalResults").toString())
                         if (json.get("totalResults").toString().toInt() != 0) {
                             jsonArray = json.getJSONArray("articles")
@@ -50,8 +48,8 @@ class NewsAPI{
             })
         }
 
-        fun getListOfArticles(jsonArray: JSONArray) : ArrayList<DummyData> {
-            val list = ArrayList<DummyData>()
+        fun getListOfArticles(jsonArray: JSONArray) : ArrayList<ArticleData> {
+            val list = ArrayList<ArticleData>()
             val jsonArrayLength = jsonArray.length()
             var count = 20
             if (jsonArrayLength < 20) {
@@ -74,7 +72,7 @@ class NewsAPI{
                 }
                 publishedAt = publishedAt.split("T")[0]
                 list.add(
-                    DummyData(
+                    ArticleData(
                         tempJson.getString("title"),
                         tempJson.getString("urlToImage"),
                         "Author: $author",

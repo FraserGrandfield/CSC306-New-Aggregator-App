@@ -63,6 +63,7 @@ class KeyTermsActivity : AppCompatActivity() {
             if (TextFieldKeyTerm.text.toString() == "") {
                 TextFieldKeyTerm.error = "Please enter a key term"
             } else {
+                //TODO add on success and on failier listener
                 val ref = database.collection("users").document(mAuth.uid.toString())
                 ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
 

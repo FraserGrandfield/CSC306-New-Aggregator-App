@@ -1,6 +1,6 @@
 package com.example.news_aggregator.models
 
-data class DummyData(
+data class ArticleData(
     var title: String,
     var image: String,
     var author: String,

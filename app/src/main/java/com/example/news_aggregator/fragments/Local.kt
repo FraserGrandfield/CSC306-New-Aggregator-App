@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
-import com.example.news_aggregator.models.DummyData
 import com.example.news_aggregator.models.NewsAPI
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
@@ -107,16 +106,15 @@ class Local : Fragment() {
             .addHeader("x-rapidapi-key", "029c2937e1msh9f0263c9b0ef31ap169bf3jsn386bc28e2fa2")
             .addHeader("x-rapidapi-host", "geocodeapi.p.rapidapi.com")
             .build()
-        var list = ArrayList<DummyData>()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                view?.let { Snackbar.make(it, "Error: ", Snackbar.LENGTH_LONG).show() }
                 e.printStackTrace()
             }
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     val responseData = response.body?.string()
-                    Log.e("response data", responseData)
                     val json = JSONArray(responseData)
                     var city = ""
                     if (json.length() > 0) {

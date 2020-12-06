@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
-import com.example.news_aggregator.models.DummyData
+import com.example.news_aggregator.models.ArticleData
 import com.example.news_aggregator.models.NewsAPI
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_for_you.*
@@ -55,7 +56,7 @@ class Popular : Fragment() {
 
     private fun addDataSet() {
         val ref = database.collection("liked_articles").orderBy("likes", Query.Direction.DESCENDING).limit(20)
-        val list = ArrayList<DummyData>()
+        val list = ArrayList<ArticleData>()
         ref.get().addOnSuccessListener { documents ->
             if (documents.isEmpty) {
                 view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { it1 ->
@@ -67,7 +68,7 @@ class Popular : Fragment() {
                 for (document in documents) {
                     Log.e("Error", document.get("article_url").toString())
                     list.add(
-                        DummyData(
+                        ArticleData(
                             document.get("title").toString(),
                             document.get("image").toString(),
                             document.get("author").toString(),
@@ -82,7 +83,9 @@ class Popular : Fragment() {
             activity?.runOnUiThread {
                 articleAdapter.notifyDataSetChanged()
             }
-        }.addOnFailureListener { } //TODO add error
+        }.addOnFailureListener {
+            view?.let { Snackbar.make(it, "Error: Cannot get popular articles.", Snackbar.LENGTH_LONG).show() }
+        }
 
     }
 }

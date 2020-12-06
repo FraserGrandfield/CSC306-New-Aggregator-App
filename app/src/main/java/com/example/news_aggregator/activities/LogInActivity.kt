@@ -48,6 +48,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
+        //TODO when logged in get notification time and start notifications
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
