@@ -25,6 +25,7 @@
     <string name="save">Save</string>
     <string name="read_more">Read More</string>
     <string name="full_article">Full Article</string>
+    <string name="when">When</string>
 
     <string-array name="notification_array">
         <item>Never</item>
