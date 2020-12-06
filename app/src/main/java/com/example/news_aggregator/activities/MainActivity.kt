@@ -10,12 +10,10 @@ import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
-import androidx.viewpager.widget.ViewPager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.SectionsPagerAdapter
 import com.example.news_aggregator.services.NotificationReceiver
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -28,15 +26,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
         Log.e("user", mAuth.currentUser.toString())
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
+        view_pager.adapter = SectionsPagerAdapter(this)
+        TabLayoutMediator(tabs, view_pager) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = getString(R.string.tab_text_1)
+                }
+                1 -> {
+                    tab.text = getString(R.string.tab_text_2)
+                }
+                2 -> {
+                    tab.text = getString(R.string.tab_text_3)
+                }
+            }
+        }.attach()
 
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false);
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         val drawerLayout = drawer
         val toggle = ActionBarDrawerToggle(
             this,
@@ -51,8 +58,7 @@ class MainActivity : AppCompatActivity() {
         val navigationView = nav_view
         changeNavItems(navigationView.menu)
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            val id = menuItem.itemId
-            when (id) {
+            when (menuItem.itemId) {
                 R.id.log_out -> {
                     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
                     val intent = Intent(this, NotificationReceiver::class.java)

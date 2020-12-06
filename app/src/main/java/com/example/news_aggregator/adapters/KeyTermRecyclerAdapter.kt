@@ -1,19 +1,14 @@
 package com.example.news_aggregator.adapters
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news_aggregator.R
-import com.example.news_aggregator.activities.ArticleActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.article_list_item.view.*
 import kotlinx.android.synthetic.main.key_term_list_item.view.*
 
 class KeyTermRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -1,14 +1,11 @@
 package com.example.news_aggregator.activities
 
 import android.os.Bundle
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
 import kotlinx.android.synthetic.main.activity_web_view.*
-import kotlinx.android.synthetic.main.activity_web_view.top_app_bar
-import kotlinx.android.synthetic.main.content_main.*
 
 class WebViewActivity : AppCompatActivity() {
     private lateinit var webView: WebView
@@ -22,7 +19,6 @@ class WebViewActivity : AppCompatActivity() {
 
         val url = intent.extras?.getString("url")
         webView = web_view
-        webView.settings.javaScriptEnabled = true
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {

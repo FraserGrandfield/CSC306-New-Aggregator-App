@@ -1,10 +1,12 @@
 package com.example.news_aggregator.adapters
 
-import android.content.Context
-import androidx.core.content.res.ResourcesCompat.getFont
+import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.news_aggregator.R
 import com.example.news_aggregator.fragments.ForYou
 import com.example.news_aggregator.fragments.Local
@@ -20,10 +22,13 @@ private val TAB_TITLES = arrayOf(
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
-    : FragmentPagerAdapter(fm) {
+class SectionsPagerAdapter(fm: AppCompatActivity) : FragmentStateAdapter(fm) {
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItemCount(): Int {
+        return TAB_TITLES.size
+    }
+
+    override fun createFragment(position: Int): Fragment {
         var fragment : Fragment = ForYou.newInstance()
         when (position) {
             0 -> {
@@ -37,13 +42,5 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
             }
         }
         return fragment
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        return context.resources.getString(TAB_TITLES[position])
-    }
-
-    override fun getCount(): Int {
-        return 3
     }
 }

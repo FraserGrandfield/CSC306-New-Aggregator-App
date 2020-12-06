@@ -2,7 +2,6 @@ package com.example.news_aggregator.activities
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.ContentProvider
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +10,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.get
 import com.example.news_aggregator.R
 import com.example.news_aggregator.services.NotificationReceiver
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_notifications.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar

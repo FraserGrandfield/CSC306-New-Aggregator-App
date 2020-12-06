@@ -7,12 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_account.*
-import kotlinx.android.synthetic.main.activity_create_account.TextFieldEmail
-import kotlinx.android.synthetic.main.activity_create_account.TextFieldPassword
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
 class CreateAccountActivity : AppCompatActivity()  {
