@@ -11,13 +11,14 @@ import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.R
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.NewsAPI
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
 class ForYou : Fragment() {
-
+    //TODO add onResueme and refresh the articles
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
@@ -53,10 +54,14 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         if (mAuth.currentUser == null) {
-            view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { it1 ->
-                articleAdapter.submitList(it1)
-                activity?.runOnUiThread {
-                    articleAdapter.notifyDataSetChanged()
+            view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { list ->
+                if (list.size > 0) {
+                    articleAdapter.submitList(list)
+                    activity?.runOnUiThread {
+                        articleAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    view?.let { Snackbar.make(it, "Error getting articles", Snackbar.LENGTH_LONG).show() }
                 }
             } }
         } else {
@@ -70,17 +75,25 @@ class ForYou : Fragment() {
                     }
                     parameters = parameters.dropLast(4)
                     if (parameters == "") {
-                        view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { it1 ->
-                            articleAdapter.submitList(it1)
-                            activity?.runOnUiThread {
-                                articleAdapter.notifyDataSetChanged()
+                        view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { list ->
+                            if (list.size > 0) {
+                                articleAdapter.submitList(list)
+                                activity?.runOnUiThread {
+                                    articleAdapter.notifyDataSetChanged()
+                                }
+                            } else {
+                                view?.let { Snackbar.make(it, "Error getting articles", Snackbar.LENGTH_LONG).show() }
                             }
                         } }
                     } else {
-                        view?.let { NewsAPI.getArticles("everything", "q", parameters, "relevancy", false) { it1 ->
-                            articleAdapter.submitList(it1)
-                            activity?.runOnUiThread {
-                                articleAdapter.notifyDataSetChanged()
+                        view?.let { NewsAPI.getArticles("everything", "q", parameters, "relevancy", false) { list ->
+                            if (list.size > 0) {
+                                articleAdapter.submitList(list)
+                                activity?.runOnUiThread {
+                                    articleAdapter.notifyDataSetChanged()
+                                }
+                            } else {
+                                view?.let { Snackbar.make(it, "Error: No articles match the key terms", Snackbar.LENGTH_LONG).show() }
                             }
                         } }
                     }

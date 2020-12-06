@@ -17,7 +17,7 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
 class Popular : Fragment() {
-
+    //TODO add onResueme and refresh the articles
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var database: FirebaseFirestore
 

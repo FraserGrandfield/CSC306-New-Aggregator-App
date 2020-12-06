@@ -26,6 +26,10 @@
     <string name="read_more">Read More</string>
     <string name="full_article">Full Article</string>
     <string name="when">When</string>
+    <string name="never">Never</string>
+    <string name="_6_hours">6 Hours</string>
+    <string name="_12_hours">12 Hours</string>
+    <string name="_24_hours">24 Hours</string>
 
     <string-array name="notification_array">
         <item>Never</item>

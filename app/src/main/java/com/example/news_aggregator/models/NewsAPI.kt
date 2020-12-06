@@ -1,22 +1,19 @@
 package com.example.news_aggregator.models
 
 import android.util.Log
-import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-import java.time.LocalDate
+import java.lang.Exception
 import java.time.LocalDateTime
-import java.util.concurrent.CountDownLatch
 
-class NewsAPI {
+class NewsAPI{
 
     companion object {
         //TODO need to get more relevent articles, mabye only inculde english domains
-        //Spare key = 68bef160bad148b98b324bfd65b522af
-        const val NEWSAPI_KEY = "apiKey=bcba5b1f25f1446e9896fa7d58d81d2d"
+        //Spare key = bcba5b1f25f1446e9896fa7d58d81d2d
+        const val NEWSAPI_KEY = "apiKey=68bef160bad148b98b324bfd65b522af"
         fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, onSuccess: (list: ArrayList<DummyData>) -> Unit) {
             val client = OkHttpClient()
             var list = ArrayList<DummyData>()
@@ -41,9 +38,7 @@ class NewsAPI {
                         val responseData = response.body?.string()
                         val json = JSONObject(responseData)
                         Log.e("Error", json.get("totalResults").toString())
-                        if (json.get("totalResults").toString().toInt() == 0) {
-                            //TODO throw error that no articels exist
-                        } else {
+                        if (json.get("totalResults").toString().toInt() != 0) {
                             jsonArray = json.getJSONArray("articles")
                             list = getListOfArticles(jsonArray)
                         }

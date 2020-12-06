@@ -59,17 +59,19 @@ class KeyTermsActivity : AppCompatActivity() {
     }
 
     fun buttonAddKeyTermOnClick(view : View) {
-        //TODO only allow them to add 10 key terms
-        if (TextFieldKeyTerm.text.toString() == "") {
-            TextFieldKeyTerm.error = "Please enter a key term"
-        } else {
-            val ref = database.collection("users").document(mAuth.uid.toString())
-            ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
+        if (list.size < 10) {
+            if (TextFieldKeyTerm.text.toString() == "") {
+                TextFieldKeyTerm.error = "Please enter a key term"
+            } else {
+                val ref = database.collection("users").document(mAuth.uid.toString())
+                ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
 
-            TextFieldKeyTerm.text?.clear()
-            val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
+                TextFieldKeyTerm.text?.clear()
+                val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        } else {
+            TextFieldKeyTerm.error = "Max terms reached."
         }
     }
-
 }

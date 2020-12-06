@@ -32,8 +32,7 @@ class NotificationActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         (notification_menu.editText as? AutoCompleteTextView)?.inputType = EditorInfo.TYPE_NULL
 
-        //TODO makes these items a menu xml
-        val items = listOf("Never", "6 Hours", "12 Hours", "24 Hours")
+        val items = listOf(getString(R.string.never), getString(R.string._6_hours), getString(R.string._12_hours), getString(R.string._24_hours))
         val adapter = ArrayAdapter(this.applicationContext, R.layout.navigation_list_item, items)
         (notification_menu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 

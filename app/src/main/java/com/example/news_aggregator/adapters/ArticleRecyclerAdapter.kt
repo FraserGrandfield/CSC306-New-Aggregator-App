@@ -88,12 +88,16 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     itemView.article_likes.text = "0"
                 }
-            }.addOnFailureListener { } //TODO add error
+            }.addOnFailureListener {
+                Log.e("ArticleRecyclerAdapter", "Ref listener failed: $it")
+            }
 
             ref.collection("liked_users").document(mAuth.uid.toString()).get().addOnSuccessListener { document ->
                 likeButton.isChecked = document.exists()
                 addLikeButtonListener(dummyData)
-            }.addOnFailureListener { } //TODO add error
+            }.addOnFailureListener {
+                Log.e("ArticleRecyclerAdapter", "Ref listener failed: $it")
+            }
         }
 
         private fun addLikeButtonListener(dummyData: DummyData) {
@@ -127,7 +131,9 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 ref.set(map)
                                 ref.collection("liked_users").document(mAuth.uid.toString()).set(map)
                             }
-                        }.addOnFailureListener { } //TODO add error
+                        }.addOnFailureListener {exception ->
+                            Log.e("ArticleRecyclerAdapter", "Ref listener failed: $exception")
+                        }
                     } else {
                         val likes = itemView.article_likes.text.toString().toInt()
                         itemView.article_likes.text = (likes - 1).toString()

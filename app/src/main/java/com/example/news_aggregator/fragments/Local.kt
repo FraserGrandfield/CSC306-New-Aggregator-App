@@ -30,7 +30,7 @@ import java.util.concurrent.CountDownLatch
 
 
 class Local : Fragment() {
-
+    //TODO add onResueme and refresh the articles
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -97,21 +97,6 @@ class Local : Fragment() {
                     }
                 }
             }
-
-//            Log.e("permission", "ghkj")
-//            var longatude = 0.0
-//            var latitude = 0.0
-//            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-//                if (location != null) {
-//                    longatude = location.longitude
-//                    latitude = location.latitude
-//                }
-//                Log.e("Long", longatude.toString())
-//                Log.e("lat", latitude.toString())
-//                getCity(longatude, latitude)
-//            }.addOnFailureListener {
-//                Log.e("Location Error", it.toString())
-//            }
         }
     }
 
