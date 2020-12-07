@@ -1,64 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:theme="@style/AppTheme">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/top_app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ToolBarArrow">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
-                    android:theme="@style/AppTitle"/>
+                    android:theme="@style/AppTitle" />
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_margin="10dp"/>
+            android:layout_gravity="center"
+            android:layout_margin="10dp" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/ArticleTitle"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="20dp"
+            android:theme="@style/ArticleTitle" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewSummary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/ArticleSummary"
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="20dp"
+            android:theme="@style/ArticleSummary" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
-            android:theme="@style/ArticleData"/>
+            android:theme="@style/ArticleData" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViePublisher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/ArticleData"/>
+            android:theme="@style/ArticleData" />
+
         <com.google.android.material.button.MaterialButton
-            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/full_article"
-            android:onClick="webViewButtonOnClick" />
+            android:layout_marginTop="20dp"
+            android:onClick="webViewButtonOnClick"
+            android:text="@string/full_article" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.core.widget.NestedScrollView>

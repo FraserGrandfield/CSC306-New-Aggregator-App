@@ -6,9 +6,8 @@
     tools:context=".fragments.Popular">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:id="@+id/recycler_view">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

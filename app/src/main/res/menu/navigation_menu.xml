@@ -3,27 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/key_terms"
-        android:title="@string/key_terms"
         android:icon="@drawable/ic_baseline_settings_24"
-        app:showAsAction="never"/>
+        android:title="@string/key_terms"
+        app:showAsAction="never" />
     <item
         android:id="@+id/notifications"
-        android:title="@string/notifications"
         android:icon="@drawable/ic_baseline_notifications_none_24"
-        app:showAsAction="never"/>
+        android:title="@string/notifications"
+        app:showAsAction="never" />
     <item
         android:id="@+id/log_out"
-        android:title="@string/log_out"
         android:icon="@drawable/ic_baseline_login_24"
-        app:showAsAction="never"/>
+        android:title="@string/log_out"
+        app:showAsAction="never" />
     <item
         android:id="@+id/log_in"
-        android:title="@string/log_in"
         android:icon="@drawable/ic_baseline_login_24"
-        app:showAsAction="never"/>
+        android:title="@string/log_in"
+        app:showAsAction="never" />
     <item
         android:id="@+id/create_account"
-        android:title="@string/create_account"
         android:icon="@drawable/ic_outline_create_24"
-        app:showAsAction="never"/>
+        android:title="@string/create_account"
+        app:showAsAction="never" />
 </menu>
