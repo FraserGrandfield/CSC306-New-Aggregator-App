@@ -11,7 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
-class CreateAccountActivity : AppCompatActivity()  {
+class CreateAccountActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
 
@@ -43,7 +43,8 @@ class CreateAccountActivity : AppCompatActivity()  {
                         val map = hashMapOf(
                             getString(R.string.firestore_key_terms) to tempArr
                         )
-                        database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString()).set(map)
+                        database.collection(getString(R.string.firestore_users))
+                            .document(mAuth.uid.toString()).set(map)
                             .addOnSuccessListener {
                                 Log.d("Done", "DocumentSnapshot successfully written!")
                                 updateUI()

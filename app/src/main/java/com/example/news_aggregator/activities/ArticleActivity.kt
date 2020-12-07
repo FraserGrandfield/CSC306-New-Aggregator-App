@@ -30,7 +30,8 @@ class ArticleActivity : AppCompatActivity() {
         val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
             R.drawable.ic_launcher_background
         )
-        Glide.with(this).applyDefaultRequestOptions(requestOptions).load(intent.getStringExtra("image")).centerCrop().into(imageView)
+        Glide.with(this).applyDefaultRequestOptions(requestOptions)
+            .load(intent.getStringExtra("image")).centerCrop().into(imageView)
     }
 
     fun webViewButtonOnClick(view: View) {

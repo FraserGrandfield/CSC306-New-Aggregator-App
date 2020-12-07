@@ -45,7 +45,13 @@ class LogInActivity : AppCompatActivity() {
                         TextFieldPassword.error = getString(R.string.account_incorrect_creds)
                     }
                 }.addOnFailureListener {
-                    view.let { Snackbar.make(it, getString(R.string.snackbar_login), Snackbar.LENGTH_LONG).show() }
+                    view.let {
+                        Snackbar.make(
+                            it,
+                            getString(R.string.snackbar_login),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
 
                 }
         }

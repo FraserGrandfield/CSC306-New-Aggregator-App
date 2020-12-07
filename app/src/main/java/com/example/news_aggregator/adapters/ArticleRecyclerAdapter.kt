@@ -25,12 +25,13 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: List<ArticleData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.article_list_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.article_list_item, parent, false)
         return ArticleViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
+        when (holder) {
             is ArticleViewHolder -> {
                 holder.bind(items[position])
             }
@@ -46,9 +47,8 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         items = articleList
     }
 
-    class ArticleViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ArticleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mAuth = FirebaseAuth.getInstance()
-
         private val articleImage: ImageView = itemView.article_image
         private val articleTitle: TextView = itemView.article_title
         private val articleAuthor = itemView.article_author
@@ -62,36 +62,48 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             articleAuthor.text = articleData.author
             articlePublisher.text = articleData.publisher
             articlePublishedAt.text = articleData.datePublished
-            val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
-                R.drawable.ic_launcher_background
-            )
-            val context : Context = itemView.context
-            Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions).load(articleData.image).into(articleImage)
+            val requestOptions =
+                RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
+                    R.drawable.ic_launcher_background
+                )
+            val context: Context = itemView.context
+            Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions)
+                .load(articleData.image).into(articleImage)
             articleButton.setOnClickListener {
                 val intent = Intent(context, ArticleActivity::class.java)
                 intent.putExtra(context.getString(R.string.article_data_title), articleData.title)
-                intent.putExtra(context.getString(R.string.article_data_summary), articleData.summary)
+                intent.putExtra(
+                    context.getString(R.string.article_data_summary),
+                    articleData.summary
+                )
                 intent.putExtra(context.getString(R.string.article_data_author), articleData.author)
-                intent.putExtra(context.getString(R.string.article_data_publisher), articleData.publisher)
+                intent.putExtra(
+                    context.getString(R.string.article_data_publisher),
+                    articleData.publisher
+                )
                 intent.putExtra(context.getString(R.string.article_data_image), articleData.image)
-                intent.putExtra(context.getString(R.string.article_data_article_url), articleData.articleURL)
+                intent.putExtra(
+                    context.getString(R.string.article_data_article_url),
+                    articleData.articleURL
+                )
                 context.startActivity(intent)
             }
-
             val database = FirebaseFirestore.getInstance()
             val articleURL = articleData.articleURL.replace("/", "")
-            val ref = database.collection(context.getString(R.string.firestore_liked_articles)).document(articleURL)
+            val ref = database.collection(context.getString(R.string.firestore_liked_articles))
+                .document(articleURL)
             ref.get().addOnSuccessListener { document ->
                 if (document.exists()) {
-                    itemView.article_likes.text = document.get(context.getString(R.string.firestore_likes)).toString()
+                    itemView.article_likes.text =
+                        document.get(context.getString(R.string.firestore_likes)).toString()
                 } else {
                     itemView.article_likes.text = context.getString(R.string.zero)
                 }
             }.addOnFailureListener {
                 Log.e("ArticleRecyclerAdapter", "Ref listener failed: $it")
             }
-
-            ref.collection(context.getString(R.string.firestore_liked_users)).document(mAuth.uid.toString()).get().addOnSuccessListener { document ->
+            ref.collection(context.getString(R.string.firestore_liked_users))
+                .document(mAuth.uid.toString()).get().addOnSuccessListener { document ->
                 likeButton.isChecked = document.exists()
                 addLikeButtonListener(articleData, context)
             }.addOnFailureListener {
@@ -100,24 +112,29 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun addLikeButtonListener(articleData: ArticleData, context: Context) {
-
             likeButton.setOnClickListener {
                 if (mAuth.currentUser != null) {
                     val database = FirebaseFirestore.getInstance()
                     val articleURL = articleData.articleURL.replace("/", "")
-                    val ref = database.collection(context.getString(R.string.firestore_liked_articles)).document(articleURL)
+                    val ref =
+                        database.collection(context.getString(R.string.firestore_liked_articles))
+                            .document(articleURL)
                     if (likeButton.isChecked) {
                         val likes = itemView.article_likes.text.toString().toInt()
                         itemView.article_likes.text = (likes + 1).toString()
                         ref.get().addOnSuccessListener { document ->
                             if (document.exists()) {
-                                ref.update(context.getString(R.string.firestore_likes), FieldValue.increment(1))
+                                ref.update(
+                                    context.getString(R.string.firestore_likes),
+                                    FieldValue.increment(1)
+                                )
                                 val map = hashMapOf(
                                     context.getString(R.string.firestore_uid) to mAuth.uid.toString()
                                 )
-                                ref.collection(context.getString(R.string.firestore_liked_users)).document(mAuth.uid.toString()).set(map)
+                                ref.collection(context.getString(R.string.firestore_liked_users))
+                                    .document(mAuth.uid.toString()).set(map)
                             } else {
-                                val map = hashMapOf (
+                                val map = hashMapOf(
                                     context.getString(R.string.firestore_likes) to 1,
                                     context.getString(R.string.firestore_title) to articleData.title,
                                     context.getString(R.string.firestore_summary) to articleData.summary,
@@ -128,20 +145,29 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                     context.getString(R.string.firestore_article_url) to articleData.articleURL,
                                 )
                                 ref.set(map)
-                                ref.collection(context.getString(R.string.firestore_liked_users)).document(mAuth.uid.toString()).set(map)
+                                ref.collection(context.getString(R.string.firestore_liked_users))
+                                    .document(mAuth.uid.toString()).set(map)
                             }
-                        }.addOnFailureListener {exception ->
+                        }.addOnFailureListener { exception ->
                             Log.e("ArticleRecyclerAdapter", "Ref listener failed: $exception")
                         }
                     } else {
                         val likes = itemView.article_likes.text.toString().toInt()
                         itemView.article_likes.text = (likes - 1).toString()
-                        ref.update(context.getString(R.string.firestore_likes), FieldValue.increment(-1))
-                        ref.collection(context.getString(R.string.firestore_liked_users)).document(mAuth.uid.toString()).delete()
+                        ref.update(
+                            context.getString(R.string.firestore_likes),
+                            FieldValue.increment(-1)
+                        )
+                        ref.collection(context.getString(R.string.firestore_liked_users))
+                            .document(mAuth.uid.toString()).delete()
                     }
                 } else {
                     likeButton.isChecked = false
-                    Snackbar.make(it, context.getString(R.string.snackbar_not_signed_in), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        it,
+                        context.getString(R.string.snackbar_not_signed_in),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

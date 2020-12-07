@@ -17,17 +17,26 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
     private lateinit var notificationManager: NotificationManager
 
     fun createChannel() {
-        val notificationChannel = NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH)
+        val notificationChannel =
+            NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH)
 
         getManager().createNotificationChannel(notificationChannel)
     }
 
-    fun getManager() : NotificationManager {
+    fun getManager(): NotificationManager {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         return notificationManager
     }
 
-    fun getChannelNotification(title: String, summary: String, author: String, publisher: String, url: String, image: String, context: Context): NotificationCompat.Builder? {
+    fun getChannelNotification(
+        title: String,
+        summary: String,
+        author: String,
+        publisher: String,
+        url: String,
+        image: String,
+        context: Context
+    ): NotificationCompat.Builder? {
         val intent = Intent(this, ArticleActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(context.getString(R.string.article_data_title), title)
@@ -37,7 +46,8 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
             putExtra(context.getString(R.string.article_data_image), image)
             putExtra(context.getString(R.string.article_data_article_url), url)
         }
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         return channelID?.let {
             NotificationCompat.Builder(applicationContext, it)

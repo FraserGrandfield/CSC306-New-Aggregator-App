@@ -26,7 +26,7 @@ class SectionsPagerAdapter(fm: AppCompatActivity) : FragmentStateAdapter(fm) {
     }
 
     override fun createFragment(position: Int): Fragment {
-        var fragment : Fragment = ForYou.newInstance()
+        var fragment: Fragment = ForYou.newInstance()
         when (position) {
             0 -> {
                 fragment = ForYou.newInstance()

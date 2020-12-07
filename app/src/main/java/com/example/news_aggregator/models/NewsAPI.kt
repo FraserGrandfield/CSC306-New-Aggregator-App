@@ -8,11 +8,19 @@ import org.json.JSONObject
 import java.io.IOException
 import java.time.LocalDateTime
 
-class NewsAPI{
+class NewsAPI {
 
     companion object {
         //Spare key = 9e0bdb83896e47da8af5e964329eaaec   68bef160bad148b98b324bfd65b522af      a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
-        fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, context: Context, onSuccess: (list: ArrayList<ArticleData>) -> Unit) {
+        fun getArticles(
+            endPoint: String,
+            parameter: String,
+            query: String,
+            sortBy: String,
+            forNotification: Boolean,
+            context: Context,
+            onSuccess: (list: ArrayList<ArticleData>) -> Unit
+        ) {
             val newsAPIKey = context.getString(R.string.news_api_key)
             val client = OkHttpClient()
             var list = ArrayList<ArticleData>()
@@ -39,9 +47,15 @@ class NewsAPI{
                 override fun onResponse(call: Call, response: Response) {
                     response.use {
                         val json = JSONObject(response.body?.string()!!)
-                        if (json.getString(context.getString(R.string.news_api_status)) != context.getString(R.string.news_api_status_error)) {
-                            if (json.get(context.getString(R.string.news_api_total_results)).toString().toInt() != 0) {
-                                jsonArray = json.getJSONArray(context.getString(R.string.news_api_articles))
+                        if (json.getString(context.getString(R.string.news_api_status)) != context.getString(
+                                R.string.news_api_status_error
+                            )
+                        ) {
+                            if (json.get(context.getString(R.string.news_api_total_results))
+                                    .toString().toInt() != 0
+                            ) {
+                                jsonArray =
+                                    json.getJSONArray(context.getString(R.string.news_api_articles))
                                 list = getListOfArticles(jsonArray, context)
                             }
                             onSuccess(list)
@@ -62,9 +76,14 @@ class NewsAPI{
             for (i in 0 until count) {
                 val tempJson = jsonArray.getJSONObject(i)
                 var author = tempJson.getString(context.getString(R.string.news_api_author))
-                var publisher = tempJson.getJSONObject(context.getString(R.string.news_api_source)).getString(context.getString(R.string.news_api_name))
-                var publishedAt = context.getString(R.string.news_api_date_text) + tempJson.getString(context.getString(R.string.news_api_published_at))
-                var description = tempJson.getString(context.getString(R.string.news_api_description))
+                var publisher = tempJson.getJSONObject(context.getString(R.string.news_api_source))
+                    .getString(context.getString(R.string.news_api_name))
+                var publishedAt =
+                    context.getString(R.string.news_api_date_text) + tempJson.getString(
+                        context.getString(R.string.news_api_published_at)
+                    )
+                var description =
+                    tempJson.getString(context.getString(R.string.news_api_description))
                 if (author == "null" || author == "") {
                     author = context.getString(R.string.news_api_unknown)
                 }

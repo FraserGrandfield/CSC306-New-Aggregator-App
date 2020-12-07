@@ -33,7 +33,12 @@ class NotificationActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         (notification_menu.editText as? AutoCompleteTextView)?.inputType = EditorInfo.TYPE_NULL
         getNotificationDuration()
-        val items = listOf(getString(R.string.never), getString(R.string._6_hours), getString(R.string._12_hours), getString(R.string._24_hours))
+        val items = listOf(
+            getString(R.string.never),
+            getString(R.string._6_hours),
+            getString(R.string._12_hours),
+            getString(R.string._24_hours)
+        )
         val adapter = ArrayAdapter(this.applicationContext, R.layout.navigation_list_item, items)
         (notification_menu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         val hourInMillis: Long = 60000 * 60
@@ -76,19 +81,27 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun addSavedTimeToAccount(time: Long, duration: Int) {
-            val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
-            ref.update(getString(R.string.firestore_duration), duration)
-                .addOnSuccessListener {
-                    if (duration != 0) {
-                        startAlarmManager(time)
-                    }
-                }.addOnFailureListener {
-                    view_pager?.let { Snackbar.make(it, getString(R.string.snackbar_change_notification), Snackbar.LENGTH_LONG).show() }
+        val ref =
+            database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
+        ref.update(getString(R.string.firestore_duration), duration)
+            .addOnSuccessListener {
+                if (duration != 0) {
+                    startAlarmManager(time)
                 }
+            }.addOnFailureListener {
+                view_pager?.let {
+                    Snackbar.make(
+                        it,
+                        getString(R.string.snackbar_change_notification),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
     }
 
     private fun getNotificationDuration() {
-        val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
+        val ref =
+            database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
         var durationPosition = 0
         ref.get()
             .addOnSuccessListener { snapshot ->
@@ -108,7 +121,11 @@ class NotificationActivity : AppCompatActivity() {
                         }
                     }
                 }
-                filled_exposed_dropdown.setText(filled_exposed_dropdown.adapter.getItem(durationPosition).toString(), false)
+                filled_exposed_dropdown.setText(
+                    filled_exposed_dropdown.adapter.getItem(
+                        durationPosition
+                    ).toString(), false
+                )
             }
     }
 }

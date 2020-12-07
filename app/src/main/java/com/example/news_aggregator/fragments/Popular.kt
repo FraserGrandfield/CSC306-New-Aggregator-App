@@ -25,14 +25,19 @@ class Popular : Fragment() {
         database = FirebaseFirestore.getInstance()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_popular, container, false)
     }
 
     companion object {
-        fun newInstance() = Popular().apply { arguments = Bundle().apply {
-                }
+        fun newInstance() = Popular().apply {
+            arguments = Bundle().apply {
             }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,19 +58,26 @@ class Popular : Fragment() {
     }
 
     private fun addDataSet() {
-        val ref = database.collection(getString(R.string.firestore_liked_articles)).orderBy(getString(R.string.firestore_likes), Query.Direction.DESCENDING).limit(20)
+        val ref = database.collection(getString(R.string.firestore_liked_articles))
+            .orderBy(getString(R.string.firestore_likes), Query.Direction.DESCENDING).limit(20)
         val list = ArrayList<ArticleData>()
         ref.get().addOnSuccessListener { documents ->
             if (documents.isEmpty) {
                 view?.let {
                     context?.let { it1 ->
-                        NewsAPI.getArticles(getString(R.string.news_api_top_headlines), getString(R.string.news_api_country), getString(R.string.news_api_gb), getString(R.string.news_api_published_at), false,
+                        NewsAPI.getArticles(
+                            getString(R.string.news_api_top_headlines),
+                            getString(R.string.news_api_country),
+                            getString(R.string.news_api_gb),
+                            getString(R.string.news_api_published_at),
+                            false,
                             it1
                         ) { list ->
                             articleAdapter.submitList(list)
                             activity?.runOnUiThread {
                                 articleAdapter.notifyDataSetChanged()
-                            } }
+                            }
+                        }
                     }
                 }
             } else {
@@ -79,7 +91,8 @@ class Popular : Fragment() {
                             document.get(getString(R.string.firestore_publisher)).toString(),
                             document.get(getString(R.string.firestore_date_published)).toString(),
                             document.get(getString(R.string.firestore_article_url)).toString(),
-                        ))
+                        )
+                    )
                 }
             }
             articleAdapter.submitList(list)
@@ -87,7 +100,13 @@ class Popular : Fragment() {
                 articleAdapter.notifyDataSetChanged()
             }
         }.addOnFailureListener {
-            view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_popular), Snackbar.LENGTH_LONG).show() }
+            view?.let {
+                Snackbar.make(
+                    it,
+                    getString(R.string.snackbar_cannot_get_popular),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
 
     }

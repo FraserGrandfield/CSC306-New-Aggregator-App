@@ -16,10 +16,8 @@ class WebViewActivity : AppCompatActivity() {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
         val url = intent.extras?.getString(getString(R.string.article_data_article_url))
         webView = web_view
-
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 view?.loadUrl(url)

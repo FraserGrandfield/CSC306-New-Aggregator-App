@@ -1,4 +1,4 @@
- package com.example.news_aggregator.receivers
+package com.example.news_aggregator.receivers
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -12,10 +12,10 @@ import com.example.news_aggregator.models.NotificationHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
- class NotificationReceiver : BroadcastReceiver() {
+class NotificationReceiver : BroadcastReceiver() {
     private lateinit var context: Context
     private lateinit var mAuth: FirebaseAuth
-     private lateinit var database: FirebaseFirestore
+    private lateinit var database: FirebaseFirestore
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context != null) {
@@ -27,74 +27,92 @@ import com.google.firebase.firestore.FirebaseFirestore
         getKeyTerms()
     }
 
-     private fun getLatestArticle(list: ArrayList<String>) {
-         for (i in list.indices)
-         NewsAPI.getArticles(context.getString(R.string.news_api_top_headlines), context.getString(R.string.news_api_q), list[i], context.getString(R.string.news_api_published_at), true, context) { articlesList ->
-             if (articlesList.size > 0) {
-                 val data = articlesList[0]
-                 val notification = NotificationHelper(context)
-                 notification.createChannel()
-                 val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image, context)
-                 if (notificationBuilder != null) {
-                     notification.getManager().notify((i + 1), notificationBuilder.build())
-                 }
-             }
-         }
-     }
+    private fun getLatestArticle(list: ArrayList<String>) {
+        for (i in list.indices)
+            NewsAPI.getArticles(
+                context.getString(R.string.news_api_top_headlines),
+                context.getString(R.string.news_api_q),
+                list[i],
+                context.getString(R.string.news_api_published_at),
+                true,
+                context
+            ) { articlesList ->
+                if (articlesList.size > 0) {
+                    val data = articlesList[0]
+                    val notification = NotificationHelper(context)
+                    notification.createChannel()
+                    val notificationBuilder = notification.getChannelNotification(
+                        data.title,
+                        data.summary,
+                        data.author,
+                        data.publisher,
+                        data.articleURL,
+                        data.image,
+                        context
+                    )
+                    if (notificationBuilder != null) {
+                        notification.getManager().notify((i + 1), notificationBuilder.build())
+                    }
+                }
+            }
+    }
 
-     private fun getKeyTerms() {
-         val list = ArrayList<String>()
-         val ref = database.collection(context.getString(R.string.firestore_users)).document(mAuth.uid.toString())
-         ref.get().addOnSuccessListener {snapshot ->
-             if (snapshot != null) {
-                 list.clear()
-                 if (snapshot.data != null) {
-                     val keyTerms = snapshot.data?.get(context.getString(R.string.firestore_key_terms)) as ArrayList<*>
-                     for (term in keyTerms) {
-                         list.add(term.toString())
-                     }
-                 }
-                 getLatestArticle(list)
-             } else {
-                 Log.d("Error", "Current data: null")
-             }
-         }.addOnFailureListener {
-             Log.e("NotificationReceiverError", "Could not get key terms")
-         }
-     }
+    private fun getKeyTerms() {
+        val list = ArrayList<String>()
+        val ref = database.collection(context.getString(R.string.firestore_users))
+            .document(mAuth.uid.toString())
+        ref.get().addOnSuccessListener { snapshot ->
+            if (snapshot != null) {
+                list.clear()
+                if (snapshot.data != null) {
+                    val keyTerms =
+                        snapshot.data?.get(context.getString(R.string.firestore_key_terms)) as ArrayList<*>
+                    for (term in keyTerms) {
+                        list.add(term.toString())
+                    }
+                }
+                getLatestArticle(list)
+            } else {
+                Log.d("Error", "Current data: null")
+            }
+        }.addOnFailureListener {
+            Log.e("NotificationReceiverError", "Could not get key terms")
+        }
+    }
 
-     private fun getDurationTillNextNotification() {
-         val ref = database.collection(context.getString(R.string.firestore_users)).document(mAuth.uid.toString())
-         ref.get()
-             .addOnSuccessListener { snapshot ->
-                 if (snapshot != null) {
-                     when (snapshot.get(context.getString(R.string.firestore_duration)) as Long) {
-                         6L -> {
-                             val time: Long = 60000 * 60 * 6
-                             scheduleNextNotification(time)
-                         }
-                         12L -> {
-                             val time: Long = 60000 * 60 * 12
-                             scheduleNextNotification(time)
-                         }
-                         24L -> {
-                             val time: Long = 60000 * 60 * 24
-                             scheduleNextNotification(time)
-                         }
-                     }
-                 }
+    private fun getDurationTillNextNotification() {
+        val ref = database.collection(context.getString(R.string.firestore_users))
+            .document(mAuth.uid.toString())
+        ref.get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot != null) {
+                    when (snapshot.get(context.getString(R.string.firestore_duration)) as Long) {
+                        6L -> {
+                            val time: Long = 60000 * 60 * 6
+                            scheduleNextNotification(time)
+                        }
+                        12L -> {
+                            val time: Long = 60000 * 60 * 12
+                            scheduleNextNotification(time)
+                        }
+                        24L -> {
+                            val time: Long = 60000 * 60 * 24
+                            scheduleNextNotification(time)
+                        }
+                    }
+                }
 
-             }
-             .addOnFailureListener {
-                 Log.e("NotificationReceiverError", "Could not get duration")
-             }
-     }
+            }
+            .addOnFailureListener {
+                Log.e("NotificationReceiverError", "Could not get duration")
+            }
+    }
 
-     private fun scheduleNextNotification(time: Long) {
-         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-         val newIntent = Intent(context, NotificationReceiver::class.java)
-         val pendingIntent = PendingIntent.getBroadcast(context, 1, newIntent, 0)
-         val alarmTime = System.currentTimeMillis() + time
-         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent)
-     }
+    private fun scheduleNextNotification(time: Long) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val newIntent = Intent(context, NotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 1, newIntent, 0)
+        val alarmTime = System.currentTimeMillis() + time
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent)
+    }
 }

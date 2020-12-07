@@ -37,9 +37,10 @@ class Local : Fragment() {
     }
 
     companion object {
-        fun newInstance() = Local().apply { arguments = Bundle().apply {
-                }
+        fun newInstance() = Local().apply {
+            arguments = Bundle().apply {
             }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,12 +65,30 @@ class Local : Fragment() {
                 it
             )
         }!!
-        if (ActivityCompat.checkSelfPermission(view?.context!!, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view?.context!!, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                view?.context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                view?.context!!,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             if (!hasRequestedPermission) {
-                activity?.let { requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1) }
+                activity?.let {
+                    requestPermissions(
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        1
+                    )
+                }
                 hasRequestedPermission = true
             } else {
-                view?.let { Snackbar.make(it, getString(R.string.snackbar_enable_locations), Snackbar.LENGTH_LONG).show() }
+                view?.let {
+                    Snackbar.make(
+                        it,
+                        getString(R.string.snackbar_enable_locations),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         } else {
             locationRequest = LocationRequest()
@@ -109,9 +128,16 @@ class Local : Fragment() {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_location), Snackbar.LENGTH_LONG).show() }
+                view?.let {
+                    Snackbar.make(
+                        it,
+                        getString(R.string.snackbar_cannot_get_location),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
                 e.printStackTrace()
             }
+
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     val responseData = response.body?.string()
@@ -120,15 +146,27 @@ class Local : Fragment() {
                     if (json.length() > 0) {
                         for (i in 0 until json.length()) {
                             val tempJson = json.getJSONObject(i)
-                            city += tempJson.get(getString(R.string.geocode_city)).toString() + " OR "
+                            city += tempJson.get(getString(R.string.geocode_city))
+                                .toString() + " OR "
                         }
                         city = city.dropLast(4)
                     } else {
-                        view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_location), Snackbar.LENGTH_LONG).show() }
+                        view?.let {
+                            Snackbar.make(
+                                it,
+                                getString(R.string.snackbar_cannot_get_location),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
                     }
                     view?.let {
                         context?.let { it1 ->
-                            NewsAPI.getArticles(getString(R.string.news_api_everything), getString(R.string.news_api_q), city, getString(R.string.news_api_relevancy), false,
+                            NewsAPI.getArticles(
+                                getString(R.string.news_api_everything),
+                                getString(R.string.news_api_q),
+                                city,
+                                getString(R.string.news_api_relevancy),
+                                false,
                                 it1
                             ) { list ->
                                 articleAdapter.submitList(list)
@@ -144,13 +182,23 @@ class Local : Fragment() {
         })
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             1 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation()
                 } else {
-                    view?.let { Snackbar.make(it, getString(R.string.snackbar_must_enable_location), Snackbar.LENGTH_LONG).show() }
+                    view?.let {
+                        Snackbar.make(
+                            it,
+                            getString(R.string.snackbar_must_enable_location),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
                 }
                 return
             }
