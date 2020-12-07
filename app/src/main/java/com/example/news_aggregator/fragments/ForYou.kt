@@ -16,18 +16,36 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
+/**
+ * For you fragment to display articles based on the key terms.
+ * @property articleAdapter ArticleRecyclerAdapter
+ * @property mAuth FirebaseAuth
+ * @property database FirebaseFirestore
+ * @property ref DocumentReference
+ */
 class ForYou : Fragment() {
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
     private lateinit var ref: DocumentReference
 
+    /**
+     * On create function.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
         database = FirebaseFirestore.getInstance()
     }
 
+    /**
+     * Inflate the fragment.
+     * @param inflater LayoutInflater
+     * @param container ViewGroup?
+     * @param savedInstanceState Bundle?
+     * @return View?
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +53,6 @@ class ForYou : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_for_you, container, false)
     }
-
     companion object {
         fun newInstance() = ForYou().apply {
             arguments = Bundle().apply {
@@ -43,6 +60,11 @@ class ForYou : Fragment() {
         }
     }
 
+    /**
+     * attach the adapter to the recycle view.
+     * @param view View
+     * @param savedInstanceState Bundle?
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.apply {
@@ -54,12 +76,19 @@ class ForYou : Fragment() {
         }
     }
 
+    /**
+     * Calls addDataSet every time the fragment is shown.
+     */
     override fun onResume() {
         super.onResume()
         addDataSet()
     }
 
+    /**
+     * Adds articles to the adapter to be displayed.
+     */
     private fun addDataSet() {
+        //If the user isn't logged in just display top headline articles.
         if (mAuth.currentUser == null) {
             view?.let {
                 context?.let { it1 ->
@@ -92,6 +121,7 @@ class ForYou : Fragment() {
             var parameters = ""
             ref = database.collection(getString(R.string.firestore_users))
                 .document(mAuth.uid.toString())
+            //Get the users key terms.
             ref.get().addOnSuccessListener { document ->
                 if (document.exists()) {
                     val keyTerms =
@@ -100,6 +130,7 @@ class ForYou : Fragment() {
                         parameters += "$term OR "
                     }
                     parameters = parameters.dropLast(4)
+                    //If there are no key terms display top headlines.
                     if (parameters == "") {
                         view?.let {
                             context?.let { it1 ->
@@ -129,6 +160,7 @@ class ForYou : Fragment() {
                             }
                         }
                     } else {
+                        //Display articles based on the key terms.
                         view?.let {
                             context?.let { it1 ->
                                 NewsAPI.getArticles(
@@ -145,6 +177,10 @@ class ForYou : Fragment() {
                                             articleAdapter.notifyDataSetChanged()
                                         }
                                     } else {
+                                        articleAdapter.submitList(list)
+                                        activity?.runOnUiThread {
+                                            articleAdapter.notifyDataSetChanged()
+                                        }
                                         view?.let {
                                             Snackbar.make(
                                                 it,

@@ -9,10 +9,23 @@ import org.json.JSONObject
 import java.io.IOException
 import java.time.LocalDateTime
 
+/**
+ * Static class for getting articles from news api.
+ */
 class NewsAPI {
 
     companion object {
-        //Spare key = 9e0bdb83896e47da8af5e964329eaaec   68bef160bad148b98b324bfd65b522af      a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
+        /**
+         * Calls the news api and gets a json of the articles. Then calls getListOfArticles to
+         * to turn the json into an ArrayList of ArticleData.
+         * @param endPoint String endpoint.
+         * @param parameter String type of query.
+         * @param query String what the query is.
+         * @param sortBy String What to sort by.
+         * @param forNotification Boolean Is the request for a notification.
+         * @param context Context
+         * @param onSuccess Function1<[@kotlin.ParameterName] ArrayList<ArticleData>, Unit>
+         */
         fun getArticles(
             endPoint: String,
             parameter: String,
@@ -27,6 +40,8 @@ class NewsAPI {
             var list = ArrayList<ArticleData>()
             var jsonArray: JSONArray
             var date = LocalDateTime.now()
+            //If the request is for a notification get articles from the past hour, otherwise
+            //get articles from the past day.
             if (forNotification) {
                 date.minusMinutes(60)
             } else {
@@ -41,10 +56,22 @@ class NewsAPI {
                 .url(url)
                 .build()
             client.newCall(request).enqueue(object : Callback {
+                /**
+                 * Failed to get articles from the news api.
+                 * @param call Call
+                 * @param e IOException
+                 */
                 override fun onFailure(call: Call, e: IOException) {
                     e.printStackTrace()
                 }
 
+                /**
+                 * Got the articles from the news api. Call getListOfArticles to turn the json
+                 * into an ArrayList of ArticleData. Pass the list into the callback funciton
+                 * onSuccess.
+                 * @param call Call
+                 * @param response Response
+                 */
                 override fun onResponse(call: Call, response: Response) {
                     response.use {
                         val json = JSONObject(response.body?.string()!!)
@@ -67,6 +94,12 @@ class NewsAPI {
             })
         }
 
+        /**
+         * Turn a json of articles into an ArrayList of ArticleData.
+         * @param jsonArray JSONArray jsonArray from news api.
+         * @param context Context
+         * @return ArrayList<ArticleData>
+         */
         fun getListOfArticles(jsonArray: JSONArray, context: Context): ArrayList<ArticleData> {
             val list = ArrayList<ArticleData>()
             val jsonArrayLength = jsonArray.length()
@@ -74,6 +107,7 @@ class NewsAPI {
             if (jsonArrayLength < 20) {
                 count = jsonArrayLength
             }
+            //Only get 20 articles.
             for (i in 0 until count) {
                 val tempJson = jsonArray.getJSONObject(i)
                 var author = tempJson.getString(context.getString(R.string.news_api_author))
@@ -83,6 +117,7 @@ class NewsAPI {
                     context.getString(R.string.news_api_date_text) + tempJson.getString(
                         context.getString(R.string.news_api_published_at)
                     )
+                //If these values are blank, put "unknown" or "no description available".
                 var description =
                     tempJson.getString(context.getString(R.string.news_api_description))
                 if (author == "null" || author == "") {

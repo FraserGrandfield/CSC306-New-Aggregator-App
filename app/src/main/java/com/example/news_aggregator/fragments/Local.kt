@@ -20,7 +20,14 @@ import okhttp3.*
 import org.json.JSONArray
 import java.io.IOException
 
-
+/**
+ * Local fragment to display articles local to the user.
+ * @property articleAdapter ArticleRecyclerAdapter
+ * @property fusedLocationClient FusedLocationProviderClient
+ * @property locationRequest LocationRequest
+ * @property locationCallback LocationCallback
+ * @property hasRequestedPermission Boolean
+ */
 class Local : Fragment() {
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -28,6 +35,13 @@ class Local : Fragment() {
     private lateinit var locationCallback: LocationCallback
     private var hasRequestedPermission = false
 
+    /**
+     * Inflate the local fragment.
+     * @param inflater LayoutInflater
+     * @param container ViewGroup?
+     * @param savedInstanceState Bundle?
+     * @return View?
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +49,6 @@ class Local : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_local, container, false)
     }
-
     companion object {
         fun newInstance() = Local().apply {
             arguments = Bundle().apply {
@@ -43,6 +56,11 @@ class Local : Fragment() {
         }
     }
 
+    /**
+     * Attach the adapter to the recycle view.
+     * @param view View
+     * @param savedInstanceState Bundle?
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.apply {
@@ -54,17 +72,24 @@ class Local : Fragment() {
         }
     }
 
+    /**
+     * Calls getLocation every time the fragment is shown.
+     */
     override fun onResume() {
         super.onResume()
         getLocation()
     }
 
+    /**
+     * Gets the latitude and longitude of the device.
+     */
     private fun getLocation() {
         fusedLocationClient = view?.context?.let {
             LocationServices.getFusedLocationProviderClient(
                 it
             )
         }!!
+        //Checking if the app has location permissions.
         if (ActivityCompat.checkSelfPermission(
                 view?.context!!,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -73,6 +98,7 @@ class Local : Fragment() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            //If the app does not have permissions then ask for them.
             if (!hasRequestedPermission) {
                 activity?.let {
                     requestPermissions(
@@ -91,6 +117,7 @@ class Local : Fragment() {
                 }
             }
         } else {
+            //Get the current location and call getCity function.
             locationRequest = LocationRequest()
             locationRequest.interval = 50000
             locationRequest.fastestInterval = 50000
@@ -114,6 +141,11 @@ class Local : Fragment() {
         }
     }
 
+    /**
+     * Uses a reverse geocoding api to get the city from the long and lat.
+     * @param longitude Double
+     * @param latitude Double
+     */
     private fun getCity(longitude: Double, latitude: Double) {
         val client = OkHttpClient()
         val url = getString(R.string.geocode_url) + getString(R.string.geocode_latitude) +
@@ -127,6 +159,12 @@ class Local : Fragment() {
             .addHeader(getString(R.string.geocode_host_text), getString(R.string.geocode_host))
             .build()
         client.newCall(request).enqueue(object : Callback {
+
+            /**
+             * Failed to request for the city.
+             * @param call Call
+             * @param e IOException
+             */
             override fun onFailure(call: Call, e: IOException) {
                 view?.let {
                     Snackbar.make(
@@ -138,6 +176,12 @@ class Local : Fragment() {
                 e.printStackTrace()
             }
 
+            /**
+             * Get the city from the response and search news api for articles with the city as a
+             * parameter and then submit the articles to the adapter.
+             * @param call Call
+             * @param response Response
+             */
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     val responseData = response.body?.string()
@@ -182,6 +226,12 @@ class Local : Fragment() {
         })
     }
 
+    /**
+     * Request location permissions only once.
+     * @param requestCode Int
+     * @param permissions Array<String>
+     * @param grantResults IntArray
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -205,7 +255,9 @@ class Local : Fragment() {
         }
     }
 
-
+    /**
+     * Stop location updates.
+     */
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }

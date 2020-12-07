@@ -16,15 +16,31 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_for_you.*
 
+/**
+ * Popular fragment for displaying popular articles to the user.
+ * @property articleAdapter ArticleRecyclerAdapter
+ * @property database FirebaseFirestore
+ */
 class Popular : Fragment() {
     private lateinit var articleAdapter: ArticleRecyclerAdapter
     private lateinit var database: FirebaseFirestore
 
+    /**
+     * On create function.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         database = FirebaseFirestore.getInstance()
     }
 
+    /**
+     * Inflate the popular fragment.
+     * @param inflater LayoutInflater
+     * @param container ViewGroup?
+     * @param savedInstanceState Bundle?
+     * @return View?
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,7 +48,6 @@ class Popular : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_popular, container, false)
     }
-
     companion object {
         fun newInstance() = Popular().apply {
             arguments = Bundle().apply {
@@ -40,6 +55,11 @@ class Popular : Fragment() {
         }
     }
 
+    /**
+     * Attach the adapter to the recycle view.
+     * @param view View
+     * @param savedInstanceState Bundle?
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.apply {
@@ -52,16 +72,23 @@ class Popular : Fragment() {
         addDataSet()
     }
 
+    /**
+     * call addDataSet when the fragment is shown.
+     */
     override fun onResume() {
         super.onResume()
         addDataSet()
     }
 
+    /**
+     * Gets the top 20 most liked articles from FireStore and displays submits them to the adapter.
+     */
     private fun addDataSet() {
         val ref = database.collection(getString(R.string.firestore_liked_articles))
             .orderBy(getString(R.string.firestore_likes), Query.Direction.DESCENDING).limit(20)
         val list = ArrayList<ArticleData>()
         ref.get().addOnSuccessListener { documents ->
+            //If there are no liked articles then display top headlines.
             if (documents.isEmpty) {
                 view?.let {
                     context?.let { it1 ->

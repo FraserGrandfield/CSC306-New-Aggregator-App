@@ -10,12 +10,21 @@ import androidx.core.app.NotificationCompat
 import com.example.news_aggregator.R
 import com.example.news_aggregator.activities.ArticleActivity
 
+/**
+ * Class for creating a notification channel.
+ * @property channelID String?
+ * @property channelName String?
+ * @property notificationManager NotificationManager
+ * @constructor
+ */
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
     private var channelID = base?.getString(R.string.notification_channel_id)
     private var channelName = base?.getString(R.string.notification_channel_name)
-
     private lateinit var notificationManager: NotificationManager
 
+    /**
+     * Create a notification channel.
+     */
     fun createChannel() {
         val notificationChannel =
             NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH)
@@ -23,11 +32,26 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         getManager().createNotificationChannel(notificationChannel)
     }
 
+    /**
+     * Get the notification manager.
+     * @return NotificationManager
+     */
     fun getManager(): NotificationManager {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         return notificationManager
     }
 
+    /**
+     * Create a notification.
+     * @param title String
+     * @param summary String
+     * @param author String
+     * @param publisher String
+     * @param url String
+     * @param image String
+     * @param context Context
+     * @return NotificationCompat.Builder?
+     */
     fun getChannelNotification(
         title: String,
         summary: String,
@@ -37,6 +61,8 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         image: String,
         context: Context
     ): NotificationCompat.Builder? {
+        //Intent to open the article activity with the article for when the user clicks the
+        // notification.
         val intent = Intent(this, ArticleActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(context.getString(R.string.article_data_title), title)
