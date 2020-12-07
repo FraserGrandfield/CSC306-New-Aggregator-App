@@ -59,7 +59,7 @@ class CreateAccountActivity : AppCompatActivity() {
                             .addOnSuccessListener {
                                 updateUI()
                             }
-                            .addOnFailureListener { e ->
+                            .addOnFailureListener {
                                 text_field_email.error = null
                                 Text_field_password.error = getString(R.string.account_error)
                             }
