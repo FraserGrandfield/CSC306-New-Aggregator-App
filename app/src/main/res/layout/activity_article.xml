@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/ToolBarArrow">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
@@ -27,36 +27,36 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:layout_margin="10dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewTitle"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:theme="@style/ArticleTitle" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewSummary"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:theme="@style/ArticleSummary" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewAuthor"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:theme="@style/ArticleData" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViePublisher"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_publisher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:theme="@style/ArticleData" />

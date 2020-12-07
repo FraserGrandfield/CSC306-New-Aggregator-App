@@ -21,13 +21,13 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/article_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ArticleTitle" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/article_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/article_author"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
@@ -47,7 +47,7 @@
                     android:maxWidth="180dp"
                     android:theme="@style/ArticleData" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -57,7 +57,7 @@
                     android:textStyle="bold"
                     android:theme="@style/ArticleData" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/article_publisher"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
@@ -72,7 +72,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/appCompatCheckBox"
+                    android:id="@+id/app_compat_check_box"
                     android:layout_width="25dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -81,7 +81,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/article_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,10 +90,10 @@
                     android:text="@string/zero"
                     android:theme="@style/ArticleData"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/appCompatCheckBox"
+                    app:layout_constraintStart_toEndOf="@+id/app_compat_check_box"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/article_published_at"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

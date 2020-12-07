@@ -31,16 +31,16 @@ class ArticleActivity : AppCompatActivity() {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        textViewTitle.text = intent.getStringExtra(getString(R.string.article_data_title))
-        textViewSummary.text = intent.getStringExtra(getString(R.string.article_data_summary))
-        textViePublisher.text = intent.getStringExtra(getString(R.string.article_data_publisher))
-        textViewAuthor.text = intent.getStringExtra(getString(R.string.article_data_author))
+        text_view_title.text = intent.getStringExtra(getString(R.string.article_data_title))
+        text_view_summary.text = intent.getStringExtra(getString(R.string.article_data_summary))
+        text_view_publisher.text = intent.getStringExtra(getString(R.string.article_data_publisher))
+        text_view_author.text = intent.getStringExtra(getString(R.string.article_data_author))
         url = intent.getStringExtra(getString(R.string.article_data_article_url))!!
         val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
             R.drawable.ic_launcher_background
         )
         Glide.with(this).applyDefaultRequestOptions(requestOptions)
-            .load(intent.getStringExtra("image")).centerCrop().into(imageView)
+            .load(intent.getStringExtra(getString(R.string.article_data_image))).centerCrop().into(image_view)
     }
 
     /**

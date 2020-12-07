@@ -88,7 +88,7 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val articlePublisher = itemView.article_publisher
         private val articleButton = itemView.article_button
         private val articlePublishedAt = itemView.article_published_at
-        private val likeButton = itemView.appCompatCheckBox
+        private val likeButton = itemView.app_compat_check_box
 
         /**
          * bind each article.

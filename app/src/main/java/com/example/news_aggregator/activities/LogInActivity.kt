@@ -2,7 +2,6 @@ package com.example.news_aggregator.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
@@ -36,13 +35,13 @@ class LogInActivity : AppCompatActivity() {
      * @param view View
      */
     fun buttonLogInOnClick(view: View) {
-        val email = TextFieldEmail.editText?.text.toString()
-        val password = TextFieldPassword.editText?.text.toString()
+        val email = text_field_email.editText?.text.toString()
+        val password = Text_field_password.editText?.text.toString()
         if (email == "") {
-            TextFieldEmail.error = getString(R.string.account_blank_field)
+            text_field_email.error = getString(R.string.account_blank_field)
         }
         if (password == "") {
-            TextFieldPassword.error = getString(R.string.account_blank_field)
+            Text_field_password.error = getString(R.string.account_blank_field)
         }
         if (password != "" && email != "") {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -50,8 +49,8 @@ class LogInActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         updateUI()
                     } else {
-                        TextFieldEmail.error = null
-                        TextFieldPassword.error = getString(R.string.account_incorrect_creds)
+                        text_field_email.error = null
+                        Text_field_password.error = getString(R.string.account_incorrect_creds)
                     }
                 }.addOnFailureListener {
                     view.let {

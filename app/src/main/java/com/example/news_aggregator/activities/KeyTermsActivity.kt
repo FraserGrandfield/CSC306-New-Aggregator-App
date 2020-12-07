@@ -2,7 +2,6 @@ package com.example.news_aggregator.activities
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -83,14 +82,14 @@ class KeyTermsActivity : AppCompatActivity() {
      */
     fun buttonAddKeyTermOnClick(view: View) {
         if (list.size < 10) {
-            if (TextFieldKeyTerm.text.toString() == "") {
-                TextFieldKeyTerm.error = getString(R.string.key_term_blank_field)
+            if (text_field_key_term.text.toString() == "") {
+                text_field_key_term.error = getString(R.string.key_term_blank_field)
             } else {
                 val ref = database.collection(getString(R.string.firestore_users))
                     .document(mAuth.uid.toString())
                 ref.update(
                     getString(R.string.firestore_key_terms),
-                    FieldValue.arrayUnion(TextFieldKeyTerm.text.toString())
+                    FieldValue.arrayUnion(text_field_key_term.text.toString())
                 ).addOnFailureListener {
                     view.let {
                         Snackbar.make(
@@ -100,13 +99,13 @@ class KeyTermsActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-                TextFieldKeyTerm.text?.clear()
+                text_field_key_term.text?.clear()
                 val hideKeyboard =
                     getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
             }
         } else {
-            TextFieldKeyTerm.error = getString(R.string.key_terms_max_terms)
+            text_field_key_term.error = getString(R.string.key_terms_max_terms)
         }
     }
 }
