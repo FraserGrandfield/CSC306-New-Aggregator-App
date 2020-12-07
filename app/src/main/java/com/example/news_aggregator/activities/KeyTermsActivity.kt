@@ -54,7 +54,7 @@ class KeyTermsActivity : AppCompatActivity() {
         //Get the key terms from the database.
         ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
-                Log.e("Error", "Listen failed.", e)
+                //TODO add snackbar
             }
             if (snapshot != null && snapshot.exists()) {
                 list.clear()
@@ -67,8 +67,6 @@ class KeyTermsActivity : AppCompatActivity() {
                 }
                 keyTermAdapter.submitList(list)
                 keyTermAdapter.notifyDataSetChanged()
-            } else {
-                Log.e("Error", "Current data: null")
             }
         }
     }

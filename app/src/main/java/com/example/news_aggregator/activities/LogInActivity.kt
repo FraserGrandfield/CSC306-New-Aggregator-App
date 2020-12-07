@@ -48,10 +48,8 @@ class LogInActivity : AppCompatActivity() {
             mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Log.d("Success", "signInWithEmail:success")
                         updateUI()
                     } else {
-                        Log.w("Error", "signInWithEmail:failure", task.exception)
                         TextFieldEmail.error = null
                         TextFieldPassword.error = getString(R.string.account_incorrect_creds)
                     }
@@ -63,7 +61,6 @@ class LogInActivity : AppCompatActivity() {
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
-
                 }
         }
     }

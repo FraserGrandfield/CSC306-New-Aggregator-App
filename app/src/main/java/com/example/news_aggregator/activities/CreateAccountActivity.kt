@@ -51,7 +51,6 @@ class CreateAccountActivity : AppCompatActivity() {
             mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Log.v("Success", "createUserWithEmail:success")
                         val tempArr = ArrayList<String>()
                         val map = hashMapOf(
                             getString(R.string.firestore_key_terms) to tempArr
@@ -59,16 +58,13 @@ class CreateAccountActivity : AppCompatActivity() {
                         database.collection(getString(R.string.firestore_users))
                             .document(mAuth.uid.toString()).set(map)
                             .addOnSuccessListener {
-                                Log.d("Done", "DocumentSnapshot successfully written!")
                                 updateUI()
                             }
                             .addOnFailureListener { e ->
-                                Log.w("Error", "Error writing document", e)
                                 TextFieldEmail.error = null
                                 TextFieldPassword.error = getString(R.string.account_error)
                             }
                     } else {
-                        Log.w("Error", "createUserWithEmail:failure", task.exception)
                         TextFieldEmail.error = null
                         val error = task.exception?.message
                         TextFieldPassword.error = error

@@ -90,8 +90,6 @@ class NotificationReceiver : BroadcastReceiver() {
                     }
                 }
                 getLatestArticle(list)
-            } else {
-                Log.d("Error", "Current data: null")
             }
         }.addOnFailureListener {
             Log.e("NotificationReceiverError", "Could not get key terms")
@@ -122,7 +120,6 @@ class NotificationReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-
             }
             .addOnFailureListener {
                 Log.e("NotificationReceiverError", "Could not get duration")
