@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.example.news_aggregator.R
 import com.example.news_aggregator.models.NewsAPI
 import com.example.news_aggregator.models.NotificationHelper
 import com.google.firebase.auth.FirebaseAuth
@@ -28,25 +29,27 @@ import com.google.firebase.firestore.FirebaseFirestore
 
      private fun getLatestArticle(list: ArrayList<String>) {
          for (i in list.indices)
-         NewsAPI.getArticles("top-headlines", "q", list[i], "publishedAt", true, context) { articlesList ->
+         NewsAPI.getArticles(context.getString(R.string.news_api_top_headlines), context.getString(R.string.news_api_q), list[i], context.getString(R.string.news_api_published_at), true, context) { articlesList ->
              if (articlesList.size > 0) {
                  val data = articlesList[0]
                  val notification = NotificationHelper(context)
                  notification.createChannel()
-                 val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image)
-                 notification.getManager().notify((i + 1), notificationBuilder.build())
+                 val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image, context)
+                 if (notificationBuilder != null) {
+                     notification.getManager().notify((i + 1), notificationBuilder.build())
+                 }
              }
          }
      }
 
      private fun getKeyTerms() {
          val list = ArrayList<String>()
-         val ref = database.collection("users").document(mAuth.uid.toString())
+         val ref = database.collection(context.getString(R.string.firestore_users)).document(mAuth.uid.toString())
          ref.get().addOnSuccessListener {snapshot ->
              if (snapshot != null) {
                  list.clear()
                  if (snapshot.data != null) {
-                     val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
+                     val keyTerms = snapshot.data?.get(context.getString(R.string.firestore_key_terms)) as ArrayList<*>
                      for (term in keyTerms) {
                          list.add(term.toString())
                      }
@@ -61,13 +64,11 @@ import com.google.firebase.firestore.FirebaseFirestore
      }
 
      private fun getDurationTillNextNotification() {
-         val ref = database.collection("users").document(mAuth.uid.toString())
+         val ref = database.collection(context.getString(R.string.firestore_users)).document(mAuth.uid.toString())
          ref.get()
              .addOnSuccessListener { snapshot ->
                  if (snapshot != null) {
-                     val duration = snapshot.get("duration") as Long
-                     Log.e("gotNotification", duration.toString())
-                     when (duration) {
+                     when (snapshot.get(context.getString(R.string.firestore_duration)) as Long) {
                          6L -> {
                              val time: Long = 60000 * 60 * 6
                              scheduleNextNotification(time)
@@ -90,7 +91,6 @@ import com.google.firebase.firestore.FirebaseFirestore
      }
 
      private fun scheduleNextNotification(time: Long) {
-         Log.e("gotNotification", time.toString())
          val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
          val newIntent = Intent(context, NotificationReceiver::class.java)
          val pendingIntent = PendingIntent.getBroadcast(context, 1, newIntent, 0)

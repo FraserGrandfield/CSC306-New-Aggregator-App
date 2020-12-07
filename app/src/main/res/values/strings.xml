@@ -25,7 +25,6 @@
     <string name="read_more">Read More</string>
     <string name="full_article">Full Article</string>
 
-
     <!--    Notification Strings-->
     <string name="when">When</string>
     <string name="never">Never</string>
@@ -103,6 +102,10 @@
     <string name="geocode_host_text">x-rapidapi-host</string>
     <string name="geocode_host">geocodeapi.p.rapidapi.com</string>
     <string name="geocode_city">City</string>
+
+    <!--    Notification Helper-->
+    <string name="notification_channel_id">channelID</string>
+    <string name="notification_channel_name">channel name</string>
 
     <!--    LogCat Errors-->
 

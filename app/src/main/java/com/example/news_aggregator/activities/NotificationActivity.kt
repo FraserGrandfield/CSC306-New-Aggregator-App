@@ -76,15 +76,15 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun addSavedTimeToAccount(time: Long, duration: Int) {
-        if (duration != 0) {
             val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
             ref.update(getString(R.string.firestore_duration), duration)
                 .addOnSuccessListener {
-                    startAlarmManager(time)
+                    if (duration != 0) {
+                        startAlarmManager(time)
+                    }
                 }.addOnFailureListener {
                     view_pager?.let { Snackbar.make(it, getString(R.string.snackbar_change_notification), Snackbar.LENGTH_LONG).show() }
                 }
-        }
     }
 
     private fun getNotificationDuration() {

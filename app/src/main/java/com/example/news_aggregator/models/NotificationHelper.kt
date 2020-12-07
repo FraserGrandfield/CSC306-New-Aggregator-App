@@ -11,8 +11,8 @@ import com.example.news_aggregator.R
 import com.example.news_aggregator.activities.ArticleActivity
 
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
-    private var channelID = "channelID"
-    private var channelName = "channel name"
+    private var channelID = base?.getString(R.string.notification_channel_id)
+    private var channelName = base?.getString(R.string.notification_channel_name)
 
     private lateinit var notificationManager: NotificationManager
 
@@ -27,24 +27,26 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         return notificationManager
     }
 
-    fun getChannelNotification(title: String, summary: String, author: String, publisher: String, url: String, image: String) : NotificationCompat.Builder {
+    fun getChannelNotification(title: String, summary: String, author: String, publisher: String, url: String, image: String, context: Context) : NotificationCompat.Builder? {
         val intent = Intent(this, ArticleActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("title", title)
-            putExtra("summary", summary)
-            putExtra("publisher", publisher)
-            putExtra("author", author)
-            putExtra("image", image)
-            putExtra("url", url)
+            putExtra(context.getString(R.string.article_data_title), title)
+            putExtra(context.getString(R.string.article_data_summary), summary)
+            putExtra(context.getString(R.string.article_data_publisher), publisher)
+            putExtra(context.getString(R.string.article_data_author), author)
+            putExtra(context.getString(R.string.article_data_image), image)
+            putExtra(context.getString(R.string.article_data_article_url), url)
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        return NotificationCompat.Builder(applicationContext, channelID)
-            .setStyle(NotificationCompat.BigTextStyle())
-            .setContentTitle(title)
-            .setContentText(summary)
-            .setSmallIcon(R.drawable.ic_baseline_notifications_none_24)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+        return channelID?.let {
+            NotificationCompat.Builder(applicationContext, it)
+                .setStyle(NotificationCompat.BigTextStyle())
+                .setContentTitle(title)
+                .setContentText(summary)
+                .setSmallIcon(R.drawable.ic_baseline_notifications_none_24)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+        }
     }
 }
