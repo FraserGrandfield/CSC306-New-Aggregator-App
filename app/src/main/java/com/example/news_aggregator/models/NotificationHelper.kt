@@ -27,7 +27,7 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         return notificationManager
     }
 
-    fun getChannelNotification(title: String, summary: String, author: String, publisher: String, url: String, image: String, context: Context) : NotificationCompat.Builder? {
+    fun getChannelNotification(title: String, summary: String, author: String, publisher: String, url: String, image: String, context: Context): NotificationCompat.Builder? {
         val intent = Intent(this, ArticleActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(context.getString(R.string.article_data_title), title)

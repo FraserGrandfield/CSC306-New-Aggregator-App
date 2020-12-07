@@ -1,7 +1,6 @@
 package com.example.news_aggregator.models
 
 import android.content.Context
-import android.util.Log
 import com.example.news_aggregator.R
 import okhttp3.*
 import org.json.JSONArray
@@ -12,7 +11,7 @@ import java.time.LocalDateTime
 class NewsAPI{
 
     companion object {
-        //Spare key = 9e0bdb83896e47da8af5e964329eaaec  68bef160bad148b98b324bfd65b522af    bcba5b1f25f1446e9896fa7d58d81d2d   a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
+        //Spare key = 9e0bdb83896e47da8af5e964329eaaec   68bef160bad148b98b324bfd65b522af      a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
         fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, context: Context, onSuccess: (list: ArrayList<ArticleData>) -> Unit) {
             val newsAPIKey = context.getString(R.string.news_api_key)
             val client = OkHttpClient()
@@ -46,8 +45,6 @@ class NewsAPI{
                                 list = getListOfArticles(jsonArray, context)
                             }
                             onSuccess(list)
-                        } else {
-                            //TODO snackbar error
                         }
                     }
                     response.close()
@@ -55,7 +52,7 @@ class NewsAPI{
             })
         }
 
-        fun getListOfArticles(jsonArray: JSONArray, context: Context) : ArrayList<ArticleData> {
+        fun getListOfArticles(jsonArray: JSONArray, context: Context): ArrayList<ArticleData> {
             val list = ArrayList<ArticleData>()
             val jsonArrayLength = jsonArray.length()
             var count = 20

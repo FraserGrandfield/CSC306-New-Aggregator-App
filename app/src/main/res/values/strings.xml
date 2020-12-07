@@ -70,7 +70,7 @@
     <string name="news_api_everything">everything</string>
     <string name="news_api_q">q</string>
     <string name="news_api_relevancy">relevancy</string>
-    <string name="news_api_key">apiKey=68bef160bad148b98b324bfd65b522af</string>
+    <string name="news_api_key">apiKey=bcba5b1f25f1446e9896fa7d58d81d2d</string>
     <string name="news_api_url">https://newsapi.org/v2/</string>
     <string name="news_api_url_from">from</string>
     <string name="news_api_url_exclude_reuters">excludeDomains=reuters.com</string>

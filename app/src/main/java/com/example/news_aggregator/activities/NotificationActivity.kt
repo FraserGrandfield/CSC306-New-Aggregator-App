@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
 class NotificationActivity : AppCompatActivity() {
-    private lateinit var mAuth : FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
 
 

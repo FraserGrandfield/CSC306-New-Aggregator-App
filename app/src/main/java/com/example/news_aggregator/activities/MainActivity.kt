@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeNavItems(menu : Menu) {
+    private fun changeNavItems(menu: Menu) {
         if (mAuth.currentUser == null) {
             menu.getItem(0).isVisible = false
             menu.getItem(1).isVisible = false

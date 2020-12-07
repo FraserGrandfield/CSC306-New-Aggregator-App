@@ -66,7 +66,7 @@ class KeyTermsActivity : AppCompatActivity() {
             } else {
                 val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
                 ref.update(getString(R.string.firestore_key_terms), FieldValue.arrayUnion(TextFieldKeyTerm.text.toString())).addOnFailureListener {
-                    view?.let { Snackbar.make(it, getString(R.string.snackbar_key_terms), Snackbar.LENGTH_LONG).show() }
+                    view.let { Snackbar.make(it, getString(R.string.snackbar_key_terms), Snackbar.LENGTH_LONG).show() }
                 }
                 TextFieldKeyTerm.text?.clear()
                 val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

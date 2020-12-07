@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
 class ArticleActivity : AppCompatActivity() {
-    private lateinit var mAuth : FirebaseAuth
-    private lateinit var url : String
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var url: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
