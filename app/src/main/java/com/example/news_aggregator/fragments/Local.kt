@@ -15,7 +15,7 @@ import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.utils.NewsAPI
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_for_you.*
+import kotlinx.android.synthetic.main.fragment_local.*
 import okhttp3.*
 import org.json.JSONArray
 import java.io.IOException
@@ -63,7 +63,7 @@ class Local : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_view.apply {
+        recycler_view_local.apply {
             layoutManager = LinearLayoutManager(activity)
             val topSpacingItemDecoration = TopSpacingItemDecoration(30)
             addItemDecoration(topSpacingItemDecoration)

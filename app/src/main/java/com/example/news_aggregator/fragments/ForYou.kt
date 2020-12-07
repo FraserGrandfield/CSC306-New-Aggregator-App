@@ -67,7 +67,7 @@ class ForYou : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_view.apply {
+        recycler_view_for_you.apply {
             layoutManager = LinearLayoutManager(activity)
             val topSpacingItemDecoration = TopSpacingItemDecoration(30)
             addItemDecoration(topSpacingItemDecoration)

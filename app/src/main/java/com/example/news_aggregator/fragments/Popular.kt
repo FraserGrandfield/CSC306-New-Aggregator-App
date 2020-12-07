@@ -14,7 +14,7 @@ import com.example.news_aggregator.utils.NewsAPI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.fragment_for_you.*
+import kotlinx.android.synthetic.main.fragment_popular.*
 
 /**
  * Popular fragment for displaying popular articles to the user.
@@ -62,7 +62,7 @@ class Popular : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler_view.apply {
+        recycler_view_popular.apply {
             layoutManager = LinearLayoutManager(activity)
             val topSpacingItemDecoration = TopSpacingItemDecoration(30)
             addItemDecoration(topSpacingItemDecoration)

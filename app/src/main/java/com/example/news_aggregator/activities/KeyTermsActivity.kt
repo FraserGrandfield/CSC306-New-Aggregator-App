@@ -15,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_key_terms.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
-import kotlinx.android.synthetic.main.fragment_for_you.recycler_view
 
 /**
  * Activity for key terms.
