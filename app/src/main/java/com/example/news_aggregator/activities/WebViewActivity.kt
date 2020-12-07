@@ -7,9 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
 import kotlinx.android.synthetic.main.activity_web_view.*
 
+/**
+ * Activity for displaying the full article in a web view.
+ * @property webView WebView
+ */
 class WebViewActivity : AppCompatActivity() {
     private lateinit var webView: WebView
 
+    /**
+     * initializing the activity and getting and displaying the url of the activity.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)

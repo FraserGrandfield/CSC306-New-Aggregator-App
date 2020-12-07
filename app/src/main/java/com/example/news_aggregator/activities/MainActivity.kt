@@ -17,14 +17,23 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
+/**
+ * Main activity.
+ * @property mAuth FirebaseAuth
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
 
+    /**
+     * Initialize the activity.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
         view_pager.adapter = SectionsPagerAdapter(this)
+        //Setting up the tab view.
         TabLayoutMediator(tabs, view_pager) { tab, position ->
             when (position) {
                 0 -> {
@@ -38,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
-
+        //Setting up the tool bar.
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -55,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
         val navigationView = nav_view
         changeNavItems(navigationView.menu)
+        //Setting up the navigation menu and what happens when an item is clicked.
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.log_out -> {
@@ -87,6 +97,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Change what navigation items are shown depending if the user is logged in or not.
+     * @param menu Menu
+     */
     private fun changeNavItems(menu: Menu) {
         if (mAuth.currentUser == null) {
             menu.getItem(0).isVisible = false

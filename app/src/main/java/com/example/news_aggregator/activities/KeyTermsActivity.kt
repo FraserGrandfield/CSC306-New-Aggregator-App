@@ -17,12 +17,23 @@ import kotlinx.android.synthetic.main.activity_key_terms.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 import kotlinx.android.synthetic.main.fragment_for_you.recycler_view
 
+/**
+ * Activity for key terms.
+ * @property mAuth FirebaseAuth
+ * @property database FirebaseFirestore
+ * @property keyTermAdapter KeyTermRecyclerAdapter
+ * @property list ArrayList<String>
+ */
 class KeyTermsActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
     private lateinit var keyTermAdapter: KeyTermRecyclerAdapter
     private var list = ArrayList<String>()
 
+    /**
+     * Initialize the activity. Get the key terms from FireStore and display them.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_key_terms)
@@ -40,9 +51,10 @@ class KeyTermsActivity : AppCompatActivity() {
 
         val ref =
             database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
+        //Get the key terms from the database.
         ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
-                Log.w("Error", "Listen failed.", e)
+                Log.e("Error", "Listen failed.", e)
             }
             if (snapshot != null && snapshot.exists()) {
                 list.clear()
@@ -56,11 +68,15 @@ class KeyTermsActivity : AppCompatActivity() {
                 keyTermAdapter.submitList(list)
                 keyTermAdapter.notifyDataSetChanged()
             } else {
-                Log.d("Error", "Current data: null")
+                Log.e("Error", "Current data: null")
             }
         }
     }
 
+    /**
+     * On click function for when the user tries to add a key term.
+     * @param view View
+     */
     fun buttonAddKeyTermOnClick(view: View) {
         if (list.size < 10) {
             if (TextFieldKeyTerm.text.toString() == "") {

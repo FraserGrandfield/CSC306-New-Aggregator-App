@@ -7,8 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.example.news_aggregator.R
-import com.example.news_aggregator.models.NewsAPI
-import com.example.news_aggregator.models.NotificationHelper
+import com.example.news_aggregator.utils.NewsAPI
+import com.example.news_aggregator.utils.NotificationHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

@@ -20,16 +20,30 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.article_list_item.view.*
 
+/**
+ * Adapter for the article recycle views.
+ * @property items List<ArticleData>
+ */
 class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     private var items: List<ArticleData> = ArrayList()
 
+    /**
+     * Inflating the article list item.
+     * @param parent ViewGroup
+     * @param viewType Int
+     * @return RecyclerView.ViewHolder
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.article_list_item, parent, false)
         return ArticleViewHolder(view)
     }
 
+    /**
+     * Binds each article.
+     * @param holder ViewHolder
+     * @param position Int
+     */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ArticleViewHolder -> {
@@ -38,15 +52,34 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    /**
+     * Get the number of articles.
+     * @return Int
+     */
     override fun getItemCount(): Int {
         return items.size
     }
 
-
+    /**
+     * Pass the list of articles to the adapter to be binded.
+     * @param articleList List<ArticleData>
+     */
     fun submitList(articleList: List<ArticleData>) {
         items = articleList
     }
 
+    /**
+     * Article view holder.
+     * @property mAuth FirebaseAuth
+     * @property articleImage ImageView
+     * @property articleTitle TextView
+     * @property articleAuthor (androidx.appcompat.widget.AppCompatTextView..androidx.appcompat.widget.AppCompatTextView?)
+     * @property articlePublisher (androidx.appcompat.widget.AppCompatTextView..androidx.appcompat.widget.AppCompatTextView?)
+     * @property articleButton (com.google.android.material.button.MaterialButton..com.google.android.material.button.MaterialButton?)
+     * @property articlePublishedAt (androidx.appcompat.widget.AppCompatTextView..androidx.appcompat.widget.AppCompatTextView?)
+     * @property likeButton (com.google.android.material.checkbox.MaterialCheckBox..com.google.android.material.checkbox.MaterialCheckBox?)
+     * @constructor
+     */
     class ArticleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mAuth = FirebaseAuth.getInstance()
         private val articleImage: ImageView = itemView.article_image
@@ -57,6 +90,10 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val articlePublishedAt = itemView.article_published_at
         private val likeButton = itemView.appCompatCheckBox
 
+        /**
+         * bind each article.
+         * @param articleData ArticleData
+         */
         fun bind(articleData: ArticleData) {
             articleTitle.text = articleData.title
             articleAuthor.text = articleData.author
@@ -67,8 +104,10 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     R.drawable.ic_launcher_background
                 )
             val context: Context = itemView.context
+            //Display the image.
             Glide.with(itemView.context).applyDefaultRequestOptions(requestOptions)
                 .load(articleData.image).into(articleImage)
+            //On click listener for when the user clicks to read more on an article.
             articleButton.setOnClickListener {
                 val intent = Intent(context, ArticleActivity::class.java)
                 intent.putExtra(context.getString(R.string.article_data_title), articleData.title)
@@ -88,6 +127,7 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 context.startActivity(intent)
             }
+            //Displaying the amount of likes the article has.
             val database = FirebaseFirestore.getInstance()
             val articleURL = articleData.articleURL.replace("/", "")
             val ref = database.collection(context.getString(R.string.firestore_liked_articles))
@@ -111,6 +151,11 @@ class ArticleRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        /**
+         * On click for liking and disliking the article.
+         * @param articleData ArticleData
+         * @param context Context
+         */
         private fun addLikeButtonListener(articleData: ArticleData, context: Context) {
             likeButton.setOnClickListener {
                 if (mAuth.currentUser != null) {

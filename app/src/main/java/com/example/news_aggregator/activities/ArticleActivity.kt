@@ -11,10 +11,19 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
+/**
+ * Activity for one article
+ * @property mAuth FirebaseAuth
+ * @property url String
+ */
 class ArticleActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var url: String
 
+    /**
+     * Gets all the intents extras and displays the information.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
@@ -34,6 +43,10 @@ class ArticleActivity : AppCompatActivity() {
             .load(intent.getStringExtra("image")).centerCrop().into(imageView)
     }
 
+    /**
+     * Onclick function to open the web view activity for the article.
+     * @param view View
+     */
     fun webViewButtonOnClick(view: View) {
         val intent = Intent(this, WebViewActivity::class.java)
         intent.putExtra(getString(R.string.article_data_article_url), url)

@@ -18,11 +18,19 @@ import kotlinx.android.synthetic.main.activity_notifications.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
+/**
+ * Notification activity for choosing when to display notifications.
+ * @property mAuth FirebaseAuth
+ * @property database FirebaseFirestore
+ */
 class NotificationActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
 
-
+    /**
+     * Initialize the activity.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notifications)
@@ -33,6 +41,7 @@ class NotificationActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         (notification_menu.editText as? AutoCompleteTextView)?.inputType = EditorInfo.TYPE_NULL
         getNotificationDuration()
+        //List of items to choose for how often to get notifications.
         val items = listOf(
             getString(R.string.never),
             getString(R.string._6_hours),
@@ -43,6 +52,7 @@ class NotificationActivity : AppCompatActivity() {
         (notification_menu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         val hourInMillis: Long = 60000 * 60
         val button = notification_button
+        //On click listener for saving how often to get notifications.
         button.setOnClickListener {
             when (filled_exposed_dropdown.text.toString()) {
                 getString(R.string._6_hours) -> {
@@ -65,6 +75,10 @@ class NotificationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * start the alarm manager for getting notifications.
+     * @param time Long
+     */
     private fun startAlarmManager(time: Long) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, NotificationReceiver::class.java)
@@ -73,6 +87,9 @@ class NotificationActivity : AppCompatActivity() {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime + time, pendingIntent)
     }
 
+    /**
+     * cancel the alarm manager for getting notifications.
+     */
     private fun cancelAlarmManager() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, NotificationReceiver::class.java)
@@ -80,6 +97,11 @@ class NotificationActivity : AppCompatActivity() {
         alarmManager.cancel(pendingIntent)
     }
 
+    /**
+     * Add when the user gets notifications to FireStore.
+     * @param time Long
+     * @param duration Int
+     */
     private fun addSavedTimeToAccount(time: Long, duration: Int) {
         val ref =
             database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
@@ -99,6 +121,10 @@ class NotificationActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Get how often the user should get notifications to display in the dropdown menu when the
+     * activity is opened.
+     */
     private fun getNotificationDuration() {
         val ref =
             database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())

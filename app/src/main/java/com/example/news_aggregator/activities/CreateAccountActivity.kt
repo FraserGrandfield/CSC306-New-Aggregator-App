@@ -11,10 +11,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
+/**
+ * Activity to create an account.
+ * @property mAuth FirebaseAuth
+ * @property database FirebaseFirestore
+ */
 class CreateAccountActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
 
+    /**
+     * Initialize activity
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -25,6 +34,10 @@ class CreateAccountActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
+    /**
+     * Onclick function for when the user tries to create an account.
+     * @param view View
+     */
     fun buttonCreateAccountOnClick(view: View) {
         val email = TextFieldEmail.editText?.text.toString()
         val password = TextFieldPassword.editText?.text.toString()
@@ -64,6 +77,9 @@ class CreateAccountActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Go to the main activity if the user created an account.
+     */
     private fun updateUI() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

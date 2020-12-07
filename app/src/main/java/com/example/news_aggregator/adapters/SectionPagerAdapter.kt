@@ -9,22 +9,26 @@ import com.example.news_aggregator.fragments.ForYou
 import com.example.news_aggregator.fragments.Local
 import com.example.news_aggregator.fragments.Popular
 
-private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2,
-    R.string.tab_text_3
-)
-
 /**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
+ * Fragment page adapter that returns a fragment corresponding to
+ * one of the tabs.
+ * @constructor
  */
 class SectionsPagerAdapter(fm: AppCompatActivity) : FragmentStateAdapter(fm) {
 
+    /**
+     * Get the number of fragments.
+     * @return Int
+     */
     override fun getItemCount(): Int {
-        return TAB_TITLES.size
+        return 3
     }
 
+    /**
+     * Creating the fragment depending on the position.
+     * @param position Int
+     * @return Fragment
+     */
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment = ForYou.newInstance()
         when (position) {

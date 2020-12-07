@@ -1,4 +1,4 @@
-package com.example.news_aggregator.models
+package com.example.news_aggregator.utils
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

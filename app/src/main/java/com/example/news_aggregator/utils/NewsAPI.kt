@@ -1,7 +1,8 @@
-package com.example.news_aggregator.models
+package com.example.news_aggregator.utils
 
 import android.content.Context
 import com.example.news_aggregator.R
+import com.example.news_aggregator.models.ArticleData
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject

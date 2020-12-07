@@ -11,10 +11,17 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
-
+/**
+ * Activity for logging in.
+ * @property mAuth FirebaseAuth
+ */
 class LogInActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
 
+    /**
+     * Initialize the activity.
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -24,6 +31,10 @@ class LogInActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
+    /**
+     * On click for when the user tries to log in.
+     * @param view View
+     */
     fun buttonLogInOnClick(view: View) {
         val email = TextFieldEmail.editText?.text.toString()
         val password = TextFieldPassword.editText?.text.toString()
@@ -57,9 +68,11 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * User was able to login so go to main activity.
+     */
     private fun updateUI() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
-
 }

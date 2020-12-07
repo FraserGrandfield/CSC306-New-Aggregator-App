@@ -10,7 +10,7 @@ import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.ArticleRecyclerAdapter
 import com.example.news_aggregator.interfaces.TopSpacingItemDecoration
 import com.example.news_aggregator.models.ArticleData
-import com.example.news_aggregator.models.NewsAPI
+import com.example.news_aggregator.utils.NewsAPI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
