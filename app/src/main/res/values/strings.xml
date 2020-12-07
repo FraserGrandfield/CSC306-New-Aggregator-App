@@ -121,6 +121,7 @@
     <string name="snackbar_cannot_get_location">Error: Cannot find your location.</string>
     <string name="snackbar_must_enable_location">You must enable the use of location to view local articles!</string>
     <string name="snackbar_cannot_get_popular">Error: Cannot get popular articles.</string>
+    <string name="snackbar_cannot_get_key_terms">Error: Cannot get key terms.</string>
 
     <!--    KeyTerms Strings-->
     <string name="key_term_blank_field">Please enter a key term</string>

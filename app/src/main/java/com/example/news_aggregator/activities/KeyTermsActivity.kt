@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_key_terms.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 import kotlinx.android.synthetic.main.fragment_for_you.recycler_view
 
@@ -54,7 +55,12 @@ class KeyTermsActivity : AppCompatActivity() {
         //Get the key terms from the database.
         ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
-                //TODO add snackbar
+                view_pager?.let {
+                    Snackbar.make(
+                        it,
+                        getString(R.string.snackbar_cannot_get_key_terms),
+                        Snackbar.LENGTH_LONG
+                    ).show() }
             }
             if (snapshot != null && snapshot.exists()) {
                 list.clear()
