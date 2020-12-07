@@ -1,6 +1,7 @@
 package com.example.news_aggregator.models
 
 import android.util.Log
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -28,7 +29,6 @@ class NewsAPI{
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    //TODO add snackbar
                     e.printStackTrace()
                 }
 

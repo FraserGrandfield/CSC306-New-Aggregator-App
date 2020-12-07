@@ -29,25 +29,22 @@ import com.google.firebase.firestore.FirebaseFirestore
 
      private fun getLatestArticle(list: ArrayList<String>) {
          for (i in list.indices)
-             //TODO Improve look of notification, and add funciton where if click the notificaiton it will open the article.
-         NewsAPI.getArticles("top-headlines", "q", list[i], "publishedAt", true) { it1 ->
-             val data = it1[0]
-             val notification = NotificationHelper(context)
-             notification.createChannel()
-             val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image)
-             notification.getManager().notify((i + 1), notificationBuilder.build())
+         NewsAPI.getArticles("top-headlines", "q", list[i], "publishedAt", true) { list ->
+             if (list.size > 0) {
+                 val data = list[0]
+                 val notification = NotificationHelper(context)
+                 notification.createChannel()
+                 val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image)
+                 notification.getManager().notify((i + 1), notificationBuilder.build())
+             }
          }
      }
 
      private fun getKeyTerms() {
-        //TODO change to get instead of snapshot listener
          val list = ArrayList<String>()
          val ref = database.collection("users").document(mAuth.uid.toString())
-         ref.addSnapshotListener {snapshot, e ->
-             if (e != null) {
-                 Log.w("Error", "Listen failed.", e)
-             }
-             if (snapshot != null && snapshot.exists()) {
+         ref.get().addOnSuccessListener {snapshot ->
+             if (snapshot != null) {
                  list.clear()
                  if (snapshot.data != null) {
                      val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
@@ -59,6 +56,8 @@ import com.google.firebase.firestore.FirebaseFirestore
              } else {
                  Log.d("Error", "Current data: null")
              }
+         }.addOnFailureListener {
+             Log.e("NotificationReceiverError", "Could not get key terms")
          }
      }
 
@@ -86,8 +85,9 @@ import com.google.firebase.firestore.FirebaseFirestore
                  }
 
              }
-             .addOnFailureListener { //TODO add logcat error
-                  }
+             .addOnFailureListener {
+                 Log.e("NotificationReceiverError", "Could not get duration")
+             }
      }
 
      private fun scheduleNextNotification(time: Long) {

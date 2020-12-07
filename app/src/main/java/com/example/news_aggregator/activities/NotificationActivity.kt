@@ -12,11 +12,13 @@ import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
 import com.example.news_aggregator.services.NotificationReceiver
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_key_terms.*
 import kotlinx.android.synthetic.main.activity_notifications.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
 class NotificationActivity : AppCompatActivity() {
@@ -33,7 +35,6 @@ class NotificationActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         database = FirebaseFirestore.getInstance()
         (notification_menu.editText as? AutoCompleteTextView)?.inputType = EditorInfo.TYPE_NULL
-        //TODO get saved time from database and display in spinner
         getNotificationDuration()
         val items = listOf(getString(R.string.never), getString(R.string._6_hours), getString(R.string._12_hours), getString(R.string._24_hours))
         val adapter = ArrayAdapter(this.applicationContext, R.layout.navigation_list_item, items)
@@ -56,7 +57,6 @@ class NotificationActivity : AppCompatActivity() {
                 }
                 getString(R.string.never) -> {
                     cancelAlarmManager()
-                    //TODO issue: all of these funcitons run when they start when a previouse alarmmanger existed
                     addSavedTimeToAccount(0, 0)
                 }
             }
@@ -67,7 +67,6 @@ class NotificationActivity : AppCompatActivity() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, NotificationReceiver::class.java)
         val alarmTime = System.currentTimeMillis()
-        //TODO issue where changing time gives notification straight away
         val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime + time, pendingIntent)
     }
@@ -80,13 +79,15 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     private fun addSavedTimeToAccount(time: Long, duration: Int) {
-        val ref = database.collection("users").document(mAuth.uid.toString())
-        ref.update("duration", duration)
-            .addOnSuccessListener {
-                startAlarmManager(time)
-            }.addOnFailureListener {
-                //TODO add snackbar for error adding time to database
-            }
+        if (duration != 0) {
+            val ref = database.collection("users").document(mAuth.uid.toString())
+            ref.update("duration", duration)
+                .addOnSuccessListener {
+                    startAlarmManager(time)
+                }.addOnFailureListener {
+                    view_pager?.let { Snackbar.make(it, "Error: could not change notifications", Snackbar.LENGTH_LONG).show() }
+                }
+        }
     }
 
     private fun getNotificationDuration() {

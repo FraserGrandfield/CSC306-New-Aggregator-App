@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.KeyTermRecyclerAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -63,9 +64,10 @@ class KeyTermsActivity : AppCompatActivity() {
             if (TextFieldKeyTerm.text.toString() == "") {
                 TextFieldKeyTerm.error = "Please enter a key term"
             } else {
-                //TODO add on success and on failier listener
                 val ref = database.collection("users").document(mAuth.uid.toString())
-                ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString()))
+                ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString())).addOnFailureListener {
+                    view?.let { Snackbar.make(it, "Error: Could not add key term.", Snackbar.LENGTH_LONG).show() }
+                }
                 TextFieldKeyTerm.text?.clear()
                 val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
