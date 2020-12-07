@@ -17,7 +17,7 @@ class WebViewActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val url = intent.extras?.getString("url")
+        val url = intent.extras?.getString(getString(R.string.article_data_article_url))
         webView = web_view
 
         webView.webViewClient = object : WebViewClient() {

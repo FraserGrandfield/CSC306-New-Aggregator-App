@@ -1,7 +1,8 @@
 package com.example.news_aggregator.models
 
+import android.content.Context
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
+import com.example.news_aggregator.R
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -11,10 +12,9 @@ import java.time.LocalDateTime
 class NewsAPI{
 
     companion object {
-        //TODO need to get more relevent articles, mabye only inculde english domains
-        //Spare key =   68bef160bad148b98b324bfd65b522af    bcba5b1f25f1446e9896fa7d58d81d2d   a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
-        private const val NEWSAPI_KEY = "apiKey=9e0bdb83896e47da8af5e964329eaaec"
-        fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, onSuccess: (list: ArrayList<ArticleData>) -> Unit) {
+        //Spare key = 9e0bdb83896e47da8af5e964329eaaec  68bef160bad148b98b324bfd65b522af    bcba5b1f25f1446e9896fa7d58d81d2d   a2afcd06f1a54787b44592b4d6f1c116  14751837a2364903a7572d7689bf0c9e
+        fun getArticles(endPoint: String, parameter: String, query: String,sortBy: String, forNotification: Boolean, context: Context, onSuccess: (list: ArrayList<ArticleData>) -> Unit) {
+            val newsAPIKey = context.getString(R.string.news_api_key)
             val client = OkHttpClient()
             var list = ArrayList<ArticleData>()
             var jsonArray: JSONArray
@@ -22,10 +22,15 @@ class NewsAPI{
             if (forNotification) {
                 date.minusMinutes(60)
             } else {
-                date = date.minusDays(2)
+                date = date.minusDays(1)
             }
+            val url = context.getString(R.string.news_api_url) + endPoint + "?" +
+                    parameter + "=" + query + "&" +
+                    context.getString(R.string.news_api_url_from) + "=" + date + "&" +
+                    context.getString(R.string.news_api_url_exclude_reuters) + "&" +
+                    context.getString(R.string.news_api_url_sort) + "=" + sortBy + "&" + newsAPIKey
             val request = Request.Builder()
-                .url("https://newsapi.org/v2/$endPoint?$parameter=$query&from=$date&excludeDomains=reuters.com&sortBy=$sortBy&$NEWSAPI_KEY")
+                .url(url)
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -34,14 +39,16 @@ class NewsAPI{
 
                 override fun onResponse(call: Call, response: Response) {
                     response.use {
-                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
                         val json = JSONObject(response.body?.string()!!)
-                        Log.e("Error", json.get("totalResults").toString())
-                        if (json.get("totalResults").toString().toInt() != 0) {
-                            jsonArray = json.getJSONArray("articles")
-                            list = getListOfArticles(jsonArray)
+                        if (json.getString("status") != "error") {
+                            if (json.get("totalResults").toString().toInt() != 0) {
+                                jsonArray = json.getJSONArray("articles")
+                                list = getListOfArticles(jsonArray)
+                            }
+                            onSuccess(list)
+                        } else {
+                            //TODO snackbar error
                         }
-                        onSuccess(list)
                     }
                     response.close()
                 }

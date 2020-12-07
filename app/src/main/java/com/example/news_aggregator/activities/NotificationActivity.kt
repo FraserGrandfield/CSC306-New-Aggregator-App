@@ -5,18 +5,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
-import com.example.news_aggregator.services.NotificationReceiver
+import com.example.news_aggregator.receivers.NotificationReceiver
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_key_terms.*
 import kotlinx.android.synthetic.main.activity_notifications.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
@@ -39,21 +36,21 @@ class NotificationActivity : AppCompatActivity() {
         val items = listOf(getString(R.string.never), getString(R.string._6_hours), getString(R.string._12_hours), getString(R.string._24_hours))
         val adapter = ArrayAdapter(this.applicationContext, R.layout.navigation_list_item, items)
         (notification_menu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-
+        val hourInMillis: Long = 60000 * 60
         val button = notification_button
         button.setOnClickListener {
             when (filled_exposed_dropdown.text.toString()) {
                 getString(R.string._6_hours) -> {
                     cancelAlarmManager()
-                    addSavedTimeToAccount(60000 * 60 * 6, 6)
+                    addSavedTimeToAccount(hourInMillis * 6, 6)
                 }
                 getString(R.string._12_hours) -> {
                     cancelAlarmManager()
-                    addSavedTimeToAccount(60000 * 60 * 12, 12)
+                    addSavedTimeToAccount(hourInMillis * 12, 12)
                 }
                 getString(R.string._24_hours) -> {
                     cancelAlarmManager()
-                    addSavedTimeToAccount(60000 * 60 * 24, 24)
+                    addSavedTimeToAccount(hourInMillis * 24, 24)
                 }
                 getString(R.string.never) -> {
                     cancelAlarmManager()
@@ -80,25 +77,23 @@ class NotificationActivity : AppCompatActivity() {
 
     private fun addSavedTimeToAccount(time: Long, duration: Int) {
         if (duration != 0) {
-            val ref = database.collection("users").document(mAuth.uid.toString())
-            ref.update("duration", duration)
+            val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
+            ref.update(getString(R.string.firestore_duration), duration)
                 .addOnSuccessListener {
                     startAlarmManager(time)
                 }.addOnFailureListener {
-                    view_pager?.let { Snackbar.make(it, "Error: could not change notifications", Snackbar.LENGTH_LONG).show() }
+                    view_pager?.let { Snackbar.make(it, getString(R.string.snackbar_change_notification), Snackbar.LENGTH_LONG).show() }
                 }
         }
     }
 
     private fun getNotificationDuration() {
-        val ref = database.collection("users").document(mAuth.uid.toString())
+        val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
         var durationPosition = 0
         ref.get()
             .addOnSuccessListener { snapshot ->
-                if (snapshot != null) {
-                    val duration = snapshot.get("duration") as Long
-                    Log.e("gotNotification", duration.toString())
-                    when (duration) {
+                if (snapshot?.get(getString(R.string.firestore_duration)) != null) {
+                    when (snapshot.get(getString(R.string.firestore_duration)) as Long) {
                         6L -> {
                             durationPosition = 1
                         }

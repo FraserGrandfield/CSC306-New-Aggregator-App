@@ -29,27 +29,30 @@ class CreateAccountActivity : AppCompatActivity()  {
         val email = TextFieldEmail.editText?.text.toString()
         val password = TextFieldPassword.editText?.text.toString()
         if (email == "") {
-            TextFieldEmail.error = "Field cannot be blank"
+            TextFieldEmail.error = getString(R.string.account_blank_field)
         }
         if (password == "") {
-            TextFieldPassword.error = "Field cannot be blank"
+            TextFieldPassword.error = getString(R.string.account_blank_field)
         }
         if (email != "" && password != "") {
             mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d("Success", "createUserWithEmail:success")
+                        Log.v("Success", "createUserWithEmail:success")
                         val tempArr = ArrayList<String>()
                         val map = hashMapOf(
-                            "key_terms" to tempArr
+                            getString(R.string.firestore_key_terms) to tempArr
                         )
-                        database.collection("users").document(mAuth.uid.toString()).set(map)
+                        database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString()).set(map)
                             .addOnSuccessListener {
                                 Log.d("Done", "DocumentSnapshot successfully written!")
                                 updateUI()
                             }
-                            .addOnFailureListener { e -> Log.w("Error", "Error writing document", e) }
+                            .addOnFailureListener { e ->
+                                Log.w("Error", "Error writing document", e)
+                                TextFieldEmail.error = null
+                                TextFieldPassword.error = getString(R.string.account_error)
+                            }
                     } else {
                         Log.w("Error", "createUserWithEmail:failure", task.exception)
                         TextFieldEmail.error = null

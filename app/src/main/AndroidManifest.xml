@@ -47,7 +47,7 @@
             android:label="@string/app_name">
         </activity>
         <receiver
-            android:name=".services.NotificationReceiver"
+            android:name=".receivers.NotificationReceiver"
             android:enabled="true"
             android:exported="true"/>
 

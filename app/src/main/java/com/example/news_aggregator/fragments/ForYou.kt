@@ -56,54 +56,70 @@ class ForYou : Fragment() {
 
     private fun addDataSet() {
         if (mAuth.currentUser == null) {
-            view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { list ->
-                if (list.size > 0) {
-                    articleAdapter.submitList(list)
-                    activity?.runOnUiThread {
-                        articleAdapter.notifyDataSetChanged()
+            view?.let {
+                context?.let { it1 ->
+                    NewsAPI.getArticles(getString(R.string.news_api_top_headlines), getString(R.string.news_api_country), getString(R.string.news_api_gb), getString(R.string.news_api_published_at), false, it1) { list ->
+                        if (list.size > 0) {
+                            articleAdapter.submitList(list)
+                            activity?.runOnUiThread {
+                                articleAdapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            view?.let { Snackbar.make(it, getString(R.string.snackbar_error_getting_articles), Snackbar.LENGTH_LONG).show() }
+                        }
                     }
-                } else {
-                    view?.let { Snackbar.make(it, "Error getting articles", Snackbar.LENGTH_LONG).show() }
                 }
-            } }
+            }
         } else {
             var parameters = ""
-            ref = database.collection("users").document(mAuth.uid.toString())
+            ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
             ref.get().addOnSuccessListener { document ->
                 if (document.exists()) {
-                    val keyTerms = document.data?.get("key_terms") as ArrayList<*>
+                    val keyTerms = document.data?.get(getString(R.string.firestore_key_terms)) as ArrayList<*>
                     for (term in keyTerms) {
                         parameters += "$term OR "
                     }
                     parameters = parameters.dropLast(4)
                     if (parameters == "") {
-                        view?.let { NewsAPI.getArticles("top-headlines", "country", "gb", "publishedAt", false) { list ->
-                            if (list.size > 0) {
-                                articleAdapter.submitList(list)
-                                activity?.runOnUiThread {
-                                    articleAdapter.notifyDataSetChanged()
+                        view?.let {
+                            context?.let { it1 ->
+                                NewsAPI.getArticles(getString(R.string.news_api_top_headlines), getString(R.string.news_api_country), getString(R.string.news_api_gb), getString(R.string.news_api_published_at), false,
+                                    it1
+                                ) { list ->
+                                    if (list.size > 0) {
+                                        articleAdapter.submitList(list)
+                                        activity?.runOnUiThread {
+                                            articleAdapter.notifyDataSetChanged()
+                                        }
+                                    } else {
+                                        view?.let { Snackbar.make(it, getString(R.string.snackbar_error_getting_articles), Snackbar.LENGTH_LONG).show() }
+                                    }
                                 }
-                            } else {
-                                view?.let { Snackbar.make(it, "Error getting articles", Snackbar.LENGTH_LONG).show() }
                             }
-                        } }
+                        }
                     } else {
-                        view?.let { NewsAPI.getArticles("everything", "q", parameters, "relevancy", false) { list ->
-                            if (list.size > 0) {
-                                articleAdapter.submitList(list)
-                                activity?.runOnUiThread {
-                                    articleAdapter.notifyDataSetChanged()
+                        view?.let {
+                            context?.let { it1 ->
+                                NewsAPI.getArticles(getString(R.string.news_api_everything), getString(R.string.news_api_q), parameters, getString(R.string.news_api_relevancy), false,
+                                    it1
+                                ) { list ->
+                                    if (list.size > 0) {
+                                        articleAdapter.submitList(list)
+                                        activity?.runOnUiThread {
+                                            articleAdapter.notifyDataSetChanged()
+                                        }
+                                    } else {
+                                        view?.let { Snackbar.make(it, getString(R.string.snackbar_no_articles), Snackbar.LENGTH_LONG).show() }
+                                    }
                                 }
-                            } else {
-                                view?.let { Snackbar.make(it, "Error: No articles match the key terms", Snackbar.LENGTH_LONG).show() }
                             }
-                        } }
+                        }
                     }
                 } else {
-                    view?.let { Snackbar.make(it, "Error: Cannot get key terms.", Snackbar.LENGTH_LONG).show() }
+                    view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_key_term), Snackbar.LENGTH_LONG).show() }
                 }
             }.addOnFailureListener {
-                view?.let { Snackbar.make(it, "Error: Cannot get key terms.", Snackbar.LENGTH_LONG).show() }
+                view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_key_term), Snackbar.LENGTH_LONG).show() }
             }
         }
     }

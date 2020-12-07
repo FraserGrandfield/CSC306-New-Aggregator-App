@@ -1,4 +1,4 @@
- package com.example.news_aggregator.services
+ package com.example.news_aggregator.receivers
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.news_aggregator.R
 import com.example.news_aggregator.models.NewsAPI
 import com.example.news_aggregator.models.NotificationHelper
 import com.google.firebase.auth.FirebaseAuth
@@ -29,9 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 
      private fun getLatestArticle(list: ArrayList<String>) {
          for (i in list.indices)
-         NewsAPI.getArticles("top-headlines", "q", list[i], "publishedAt", true) { list ->
-             if (list.size > 0) {
-                 val data = list[0]
+         NewsAPI.getArticles("top-headlines", "q", list[i], "publishedAt", true, context) { articlesList ->
+             if (articlesList.size > 0) {
+                 val data = articlesList[0]
                  val notification = NotificationHelper(context)
                  notification.createChannel()
                  val notificationBuilder = notification.getChannelNotification(data.title, data.summary, data.author, data.publisher, data.articleURL, data.image)
@@ -92,7 +91,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
      private fun scheduleNextNotification(time: Long) {
          Log.e("gotNotification", time.toString())
-         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
          val newIntent = Intent(context, NotificationReceiver::class.java)
          val pendingIntent = PendingIntent.getBroadcast(context, 1, newIntent, 0)
          val alarmTime = System.currentTimeMillis() + time

@@ -38,7 +38,7 @@ class KeyTermsActivity : AppCompatActivity() {
             adapter = keyTermAdapter
         }
 
-        val ref = database.collection("users").document(mAuth.uid.toString())
+        val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
         ref.addSnapshotListener {snapshot, e ->
             if (e != null) {
                 Log.w("Error", "Listen failed.", e)
@@ -46,7 +46,7 @@ class KeyTermsActivity : AppCompatActivity() {
             if (snapshot != null && snapshot.exists()) {
                 list.clear()
                 if (snapshot.data != null) {
-                    val keyTerms = snapshot.data?.get("key_terms") as ArrayList<*>
+                    val keyTerms = snapshot.data?.get(getString(R.string.firestore_key_terms)) as ArrayList<*>
                     for (term in keyTerms) {
                         list.add(term.toString())
                     }
@@ -62,18 +62,18 @@ class KeyTermsActivity : AppCompatActivity() {
     fun buttonAddKeyTermOnClick(view : View) {
         if (list.size < 10) {
             if (TextFieldKeyTerm.text.toString() == "") {
-                TextFieldKeyTerm.error = "Please enter a key term"
+                TextFieldKeyTerm.error = getString(R.string.key_term_blank_field)
             } else {
-                val ref = database.collection("users").document(mAuth.uid.toString())
-                ref.update("key_terms", FieldValue.arrayUnion(TextFieldKeyTerm.text.toString())).addOnFailureListener {
-                    view?.let { Snackbar.make(it, "Error: Could not add key term.", Snackbar.LENGTH_LONG).show() }
+                val ref = database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
+                ref.update(getString(R.string.firestore_key_terms), FieldValue.arrayUnion(TextFieldKeyTerm.text.toString())).addOnFailureListener {
+                    view?.let { Snackbar.make(it, getString(R.string.snackbar_key_terms), Snackbar.LENGTH_LONG).show() }
                 }
                 TextFieldKeyTerm.text?.clear()
                 val hideKeyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 hideKeyboard.hideSoftInputFromWindow(view.windowToken, 0)
             }
         } else {
-            TextFieldKeyTerm.error = "Max terms reached."
+            TextFieldKeyTerm.error = getString(R.string.key_terms_max_terms)
         }
     }
 }

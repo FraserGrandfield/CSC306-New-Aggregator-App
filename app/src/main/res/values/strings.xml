@@ -19,24 +19,94 @@
     <string name="key_term">Key Term</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>
-    <string name="key_terms">Key Terms</string>
     <string name="notifications">Notifications</string>
     <string name="channel_name">777</string>
     <string name="save">Save</string>
     <string name="read_more">Read More</string>
     <string name="full_article">Full Article</string>
+
+
+    <!--    Notification Strings-->
     <string name="when">When</string>
     <string name="never">Never</string>
     <string name="_6_hours">6 Hours</string>
     <string name="_12_hours">12 Hours</string>
     <string name="_24_hours">24 Hours</string>
 
-    <string-array name="notification_array">
-        <item>Never</item>
-        <item>4 Hours</item>
-        <item>12 Hours</item>
-        <item>24 Hours</item>
-    </string-array>
+    <!--    ArticleData Strings-->
+    <string name="article_data_title">title</string>
+    <string name="article_data_image">image</string>
+    <string name="article_data_author">author</string>
+    <string name="article_data_summary">summary</string>
+    <string name="article_data_publisher">publisher</string>
+    <string name="article_data_date_published">datePublished</string>
+    <string name="article_data_article_url">articleURL</string>
+
+    <!--    Account Strings-->
+    <string name="account_blank_field">Field cannot be blank</string>
+    <string name="account_error">Error creating account</string>
+    <string name="account_incorrect_creds">Password or email is incorrect</string>
+
+    <!--    FireStore Strings-->
+    <string name="firestore_key_terms">key_terms</string>
+    <string name="firestore_users">users</string>
+    <string name="firestore_duration">duration</string>
+    <string name="firestore_liked_articles">liked_articles</string>
+    <string name="firestore_likes">likes</string>
+    <string name="firestore_liked_users">liked_users</string>
+    <string name="firestore_uid">uid</string>
+    <string name="firestore_title">title</string>
+    <string name="firestore_summary">summary</string>
+    <string name="firestore_publisher">publisher</string>
+    <string name="firestore_author">author</string>
+    <string name="firestore_image">image</string>
+    <string name="firestore_date_published">date_published</string>
+    <string name="firestore_article_url">article_url</string>
+
+    <!--    NewsAPI Strings-->
+    <string name="news_api_top_headlines">top-headlines</string>
+    <string name="news_api_country">country</string>
+    <string name="news_api_gb">gb</string>
+    <string name="news_api_published_at">publishedAt</string>
+    <string name="news_api_everything">everything</string>
+    <string name="news_api_q">q</string>
+    <string name="news_api_relevancy">relevancy</string>
+    <string name="news_api_key">apiKey=68bef160bad148b98b324bfd65b522af</string>
+    <string name="news_api_url">https://newsapi.org/v2/</string>
+    <string name="news_api_url_from">from</string>
+    <string name="news_api_url_exclude_reuters">excludeDomains=reuters.com</string>
+    <string name="news_api_url_sort">sortBy</string>
+
+    <!--    GeocodeAPI Strings-->
+    <string name="geocode_url">https://geocodeapi.p.rapidapi.com/GetNearestCities?</string>
+    <string name="geocode_latitude">latitude</string>
+    <string name="geocode_longitude">longitude</string>
+    <string name="geocode_url_range">range=0</string>
+    <string name="geocode_key_text">x-rapidapi-key</string>
+    <string name="geocode_key">029c2937e1msh9f0263c9b0ef31ap169bf3jsn386bc28e2fa2</string>
+    <string name="geocode_host_text">x-rapidapi-host</string>
+    <string name="geocode_host">geocodeapi.p.rapidapi.com</string>
+    <string name="geocode_city">City</string>
+
+    <!--    LogCat Errors-->
+
+    <!--    SnackBar Errors-->
+    <string name="snackbar_key_terms">Error: Could not add key term.</string>
+    <string name="snackbar_login">Error: Could not connect.</string>
+    <string name="snackbar_change_notification">Error: could not change notifications.</string>
+    <string name="snackbar_not_signed_in">You need to sign in.</string>
+    <string name="snackbar_error_getting_articles">Error getting articles.</string>
+    <string name="snackbar_no_articles">Error: No articles match the key terms.</string>
+    <string name="snackbar_cannot_get_key_term">Error: Cannot get key terms.</string>
+    <string name="snackbar_enable_locations">You must enable the use of location to view local articles!</string>
+    <string name="snackbar_cannot_get_location">Error: Cannot find your location.</string>
+    <string name="snackbar_must_enable_location">You must enable the use of location to view local articles!</string>
+    <string name="snackbar_cannot_get_popular">Error: Cannot get popular articles.</string>
+
+    <!--    KeyTerms Strings-->
+    <string name="key_term_blank_field">Please enter a key term</string>
+    <string name="key_terms">Key Terms</string>
+    <string name="key_terms_max_terms">Max terms reached.</string>
 
 
 </resources>

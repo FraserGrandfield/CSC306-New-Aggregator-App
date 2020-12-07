@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.news_aggregator.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
@@ -27,10 +28,10 @@ class LogInActivity : AppCompatActivity() {
         val email = TextFieldEmail.editText?.text.toString()
         val password = TextFieldPassword.editText?.text.toString()
         if (email == "") {
-            TextFieldEmail.error = "Field cannot be blank"
+            TextFieldEmail.error = getString(R.string.account_blank_field)
         }
         if (password == "") {
-            TextFieldPassword.error = "Field cannot be blank"
+            TextFieldPassword.error = getString(R.string.account_blank_field)
         }
         if (password != "" && email != "") {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -41,14 +42,16 @@ class LogInActivity : AppCompatActivity() {
                     } else {
                         Log.w("Error", "signInWithEmail:failure", task.exception)
                         TextFieldEmail.error = null
-                        TextFieldPassword.error = "Password or email is incorrect"
+                        TextFieldPassword.error = getString(R.string.account_incorrect_creds)
                     }
+                }.addOnFailureListener {
+                    view?.let { Snackbar.make(it, getString(R.string.snackbar_login), Snackbar.LENGTH_LONG).show() }
+
                 }
         }
     }
 
     private fun updateUI() {
-        //TODO when logged in get notification time and start notifications
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.content_main.top_app_bar
 class ArticleActivity : AppCompatActivity() {
     private lateinit var mAuth : FirebaseAuth
     private lateinit var url : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
@@ -21,11 +22,11 @@ class ArticleActivity : AppCompatActivity() {
         val toolbar = top_app_bar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        textViewTitle.text = intent.getStringExtra("title")
-        textViewSummary.text = intent.getStringExtra("summary")
-        textViePublisher.text = intent.getStringExtra("publisher")
-        textViewAuthor.text = intent.getStringExtra("author")
-        url = intent.getStringExtra("url")!!
+        textViewTitle.text = intent.getStringExtra(getString(R.string.article_data_title))
+        textViewSummary.text = intent.getStringExtra(getString(R.string.article_data_summary))
+        textViePublisher.text = intent.getStringExtra(getString(R.string.article_data_publisher))
+        textViewAuthor.text = intent.getStringExtra(getString(R.string.article_data_author))
+        url = intent.getStringExtra(getString(R.string.article_data_article_url))!!
         val requestOptions = RequestOptions().placeholder(R.drawable.ic_launcher_background).error(
             R.drawable.ic_launcher_background
         )
@@ -34,7 +35,7 @@ class ArticleActivity : AppCompatActivity() {
 
     fun webViewButtonOnClick(view: View) {
         val intent = Intent(this, WebViewActivity::class.java)
-        intent.putExtra("url", url)
+        intent.putExtra(getString(R.string.article_data_article_url), url)
         startActivity(intent)
     }
 }

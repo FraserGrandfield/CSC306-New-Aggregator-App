@@ -5,14 +5,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.news_aggregator.R
 import com.example.news_aggregator.adapters.SectionsPagerAdapter
-import com.example.news_aggregator.services.NotificationReceiver
+import com.example.news_aggregator.receivers.NotificationReceiver
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
-        Log.e("user", mAuth.currentUser.toString())
         view_pager.adapter = SectionsPagerAdapter(this)
         TabLayoutMediator(tabs, view_pager) { tab, position ->
             when (position) {

@@ -3,7 +3,6 @@ package com.example.news_aggregator.fragments
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,10 +67,9 @@ class Local : Fragment() {
         if (ActivityCompat.checkSelfPermission(view?.context!!, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view?.context!!, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (!hasRequestedPermission) {
                 activity?.let { requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1) }
-                Log.e("permission", "asdf")
                 hasRequestedPermission = true
             } else {
-                view?.let { Snackbar.make(it, "You must enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
+                view?.let { Snackbar.make(it, getString(R.string.snackbar_enable_locations), Snackbar.LENGTH_LONG).show() }
             }
         } else {
             locationRequest = LocationRequest()
@@ -98,41 +96,48 @@ class Local : Fragment() {
     }
 
     private fun getCity(longitude: Double, latitude: Double) {
-        //TODO change search to include country.
         val client = OkHttpClient()
+        val url = getString(R.string.geocode_url) + getString(R.string.geocode_latitude) +
+                "=" + latitude + "&" +
+                getString(R.string.geocode_longitude) + "=" + longitude +
+                "&" + getString(R.string.geocode_url_range)
         val request = Request.Builder()
-            .url("https://geocodeapi.p.rapidapi.com/GetNearestCities?latitude=$latitude&longitude=$longitude&range=0")
+            .url(url)
             .get()
-            .addHeader("x-rapidapi-key", "029c2937e1msh9f0263c9b0ef31ap169bf3jsn386bc28e2fa2")
-            .addHeader("x-rapidapi-host", "geocodeapi.p.rapidapi.com")
+            .addHeader(getString(R.string.geocode_key_text), getString(R.string.geocode_key))
+            .addHeader(getString(R.string.geocode_host_text), getString(R.string.geocode_host))
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                view?.let { Snackbar.make(it, "Error: ", Snackbar.LENGTH_LONG).show() }
+                view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_location), Snackbar.LENGTH_LONG).show() }
                 e.printStackTrace()
             }
             override fun onResponse(call: Call, response: Response) {
                 response.use {
-                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     val responseData = response.body?.string()
                     val json = JSONArray(responseData)
                     var city = ""
                     if (json.length() > 0) {
                         for (i in 0 until json.length()) {
                             val tempJson = json.getJSONObject(i)
-                            city += tempJson.get("City").toString() + " OR "
+                            city += tempJson.get(getString(R.string.geocode_city)).toString() + " OR "
                         }
                         city = city.dropLast(4)
                     } else {
-                        view?.let { Snackbar.make(it, "Error: Cannot find your location", Snackbar.LENGTH_LONG).show() }
+                        view?.let { Snackbar.make(it, getString(R.string.snackbar_cannot_get_location), Snackbar.LENGTH_LONG).show() }
                     }
-                    Log.e("cityName", city)
-                    view?.let { NewsAPI.getArticles("everything", "q", city, "relevancy", false) { it1 ->
-                        articleAdapter.submitList(it1)
-                        activity?.runOnUiThread {
-                            articleAdapter.notifyDataSetChanged()
+                    view?.let {
+                        context?.let { it1 ->
+                            NewsAPI.getArticles(getString(R.string.news_api_everything), getString(R.string.news_api_q), city, getString(R.string.news_api_relevancy), false,
+                                it1
+                            ) { list ->
+                                articleAdapter.submitList(list)
+                                activity?.runOnUiThread {
+                                    articleAdapter.notifyDataSetChanged()
+                                }
+                            }
                         }
-                    } }
+                    }
                 }
                 response.close()
             }
@@ -143,10 +148,9 @@ class Local : Fragment() {
         when (requestCode) {
             1 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("permission", "permison changed")
                     getLocation()
                 } else {
-                    view?.let { Snackbar.make(it, "You must enable the use of location to view local articles!", Snackbar.LENGTH_LONG).show() }
+                    view?.let { Snackbar.make(it, getString(R.string.snackbar_must_enable_location), Snackbar.LENGTH_LONG).show() }
                 }
                 return
             }
@@ -157,5 +161,4 @@ class Local : Fragment() {
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
-
 }
