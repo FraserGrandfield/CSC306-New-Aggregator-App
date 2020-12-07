@@ -40,10 +40,10 @@ class NewsAPI{
                 override fun onResponse(call: Call, response: Response) {
                     response.use {
                         val json = JSONObject(response.body?.string()!!)
-                        if (json.getString("status") != "error") {
-                            if (json.get("totalResults").toString().toInt() != 0) {
-                                jsonArray = json.getJSONArray("articles")
-                                list = getListOfArticles(jsonArray)
+                        if (json.getString(context.getString(R.string.news_api_status)) != context.getString(R.string.news_api_status_error)) {
+                            if (json.get(context.getString(R.string.news_api_total_results)).toString().toInt() != 0) {
+                                jsonArray = json.getJSONArray(context.getString(R.string.news_api_articles))
+                                list = getListOfArticles(jsonArray, context)
                             }
                             onSuccess(list)
                         } else {
@@ -55,7 +55,7 @@ class NewsAPI{
             })
         }
 
-        fun getListOfArticles(jsonArray: JSONArray) : ArrayList<ArticleData> {
+        fun getListOfArticles(jsonArray: JSONArray, context: Context) : ArrayList<ArticleData> {
             val list = ArrayList<ArticleData>()
             val jsonArrayLength = jsonArray.length()
             var count = 20
@@ -64,34 +64,33 @@ class NewsAPI{
             }
             for (i in 0 until count) {
                 val tempJson = jsonArray.getJSONObject(i)
-                var author = tempJson.getString("author")
-                var publisher = tempJson.getJSONObject("source").getString("name")
-                var publishedAt = "Date: " + tempJson.getString("publishedAt")
-                var description = tempJson.getString("description")
+                var author = tempJson.getString(context.getString(R.string.news_api_author))
+                var publisher = tempJson.getJSONObject(context.getString(R.string.news_api_source)).getString(context.getString(R.string.news_api_name))
+                var publishedAt = context.getString(R.string.news_api_date_text) + tempJson.getString(context.getString(R.string.news_api_published_at))
+                var description = tempJson.getString(context.getString(R.string.news_api_description))
                 if (author == "null" || author == "") {
-                    author = "Unknown"
+                    author = context.getString(R.string.news_api_unknown)
                 }
                 if (publisher == "null" || publisher == "") {
-                    publisher = "Unknown"
+                    publisher = context.getString(R.string.news_api_unknown)
                 }
                 if (description == "null" || description == "") {
-                    description = "No description available"
+                    description = context.getString(R.string.news_api_no_desc)
                 }
                 publishedAt = publishedAt.split("T")[0]
                 list.add(
                     ArticleData(
-                        tempJson.getString("title"),
-                        tempJson.getString("urlToImage"),
-                        "Author: $author",
+                        tempJson.getString(context.getString(R.string.news_api_title)),
+                        tempJson.getString(context.getString(R.string.news_api_url_image)),
+                        context.getString(R.string.news_api_author_text) + author,
                         description,
-                        "Publisher: $publisher",
+                        context.getString(R.string.news_api_publisher_text) + publisher,
                         publishedAt,
-                        tempJson.getString("url")
+                        tempJson.getString(context.getString(R.string.news_api_json_url))
                     )
                 )
             }
             return list
         }
-
     }
 }

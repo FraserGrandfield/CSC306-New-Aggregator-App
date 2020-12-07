@@ -76,6 +76,22 @@
     <string name="news_api_url_from">from</string>
     <string name="news_api_url_exclude_reuters">excludeDomains=reuters.com</string>
     <string name="news_api_url_sort">sortBy</string>
+    <string name="news_api_total_results">totalResults</string>
+    <string name="news_api_status">status</string>
+    <string name="news_api_status_error">error</string>
+    <string name="news_api_articles">articles</string>
+    <string name="news_api_author">author</string>
+    <string name="news_api_source">source</string>
+    <string name="news_api_name">name</string>
+    <string name="news_api_description">description</string>
+    <string name="news_api_unknown">Unknown</string>
+    <string name="news_api_no_desc">No description available</string>
+    <string name="news_api_title">title</string>
+    <string name="news_api_url_image">urlToImage</string>
+    <string name="news_api_json_url">url</string>
+    <string name="news_api_date_text">Date: </string>
+    <string name="news_api_author_text">Author: </string>
+    <string name="news_api_publisher_text">Publisher: </string>
 
     <!--    GeocodeAPI Strings-->
     <string name="geocode_url">https://geocodeapi.p.rapidapi.com/GetNearestCities?</string>
