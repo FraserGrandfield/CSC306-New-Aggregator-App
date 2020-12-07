@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_notifications.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_main.top_app_bar
 
 /**
@@ -107,17 +106,20 @@ class NotificationActivity : AppCompatActivity() {
             database.collection(getString(R.string.firestore_users)).document(mAuth.uid.toString())
         ref.update(getString(R.string.firestore_duration), duration)
             .addOnSuccessListener {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.snackbar_notifications_settings_saved),
+                    Snackbar.LENGTH_LONG
+                ).show()
                 if (duration != 0) {
                     startAlarmManager(time)
                 }
             }.addOnFailureListener {
-                view_pager?.let {
                     Snackbar.make(
-                        it,
+                        findViewById(android.R.id.content),
                         getString(R.string.snackbar_change_notification),
                         Snackbar.LENGTH_LONG
                     ).show()
-                }
             }
     }
 

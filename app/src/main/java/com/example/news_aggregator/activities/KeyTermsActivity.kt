@@ -53,12 +53,11 @@ class KeyTermsActivity : AppCompatActivity() {
         //Get the key terms from the database.
         ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
-                view_pager?.let {
                     Snackbar.make(
-                        it,
+                        findViewById(android.R.id.content),
                         getString(R.string.snackbar_cannot_get_key_terms),
                         Snackbar.LENGTH_LONG
-                    ).show() }
+                    ).show()
             }
             if (snapshot != null && snapshot.exists()) {
                 list.clear()
