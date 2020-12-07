@@ -100,6 +100,7 @@ class NotificationReceiver : BroadcastReceiver() {
      * Gets how long the next notification should be.
      */
     private fun getDurationTillNextNotification() {
+        val hourInMillis: Long = 60000 * 60
         val ref = database.collection(context.getString(R.string.firestore_users))
             .document(mAuth.uid.toString())
         ref.get()
@@ -107,15 +108,15 @@ class NotificationReceiver : BroadcastReceiver() {
                 if (snapshot != null) {
                     when (snapshot.get(context.getString(R.string.firestore_duration)) as Long) {
                         6L -> {
-                            val time: Long = 60000 * 60 * 6
+                            val time: Long = hourInMillis * 6
                             scheduleNextNotification(time)
                         }
                         12L -> {
-                            val time: Long = 60000 * 60 * 12
+                            val time: Long = hourInMillis * 12
                             scheduleNextNotification(time)
                         }
                         24L -> {
-                            val time: Long = 60000 * 60 * 24
+                            val time: Long = hourInMillis * 24
                             scheduleNextNotification(time)
                         }
                     }
