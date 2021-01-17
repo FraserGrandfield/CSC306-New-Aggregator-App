@@ -1,2 +1,2 @@
-# CSC306-New-Aggregator-App
+# CSC306-News-Aggregator-App
 Android News aggregator app using newsapi.
