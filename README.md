@@ -8,3 +8,5 @@ An Android new application using news api.
 - Preferences
 - Like articles
 - Local news
+
+![newsapp](https://user-images.githubusercontent.com/45278231/106481700-9ad50d00-64a4-11eb-8d9a-0f702e5750a4.PNG)
