@@ -6,5 +6,5 @@ An Android new application using news api.
 - Firebase Authentication accounts
 - Firestore cloud storage
 - Preferences
-- Like feature
+- Like articles
 - Local news
