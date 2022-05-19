@@ -1,5 +1,5 @@
 # Quick News Bits
-An Android new application using news api.
+An Android news application using news api.
 
 
 # Features
